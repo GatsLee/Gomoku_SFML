@@ -1,58 +1,47 @@
-#include <includes/Gomoku.hpp>
+#include <Gomoku.hpp>
 
 Gomoku::Gomoku()
 {
-	mWindow.create(sf::VideoMode(1080, 1080), "Gomoku with sfml", sf::Style::Titlebar | sf::Style::Close);
-	mWindow.setVerticalSyncEnabled(true);
+	this->mWindow = new sf::RenderWindow(sf::VideoMode(1080, 1080), "Gomoku with sfml", sf::Style::Titlebar | sf::Style::Close);
+	(*mWindow).setVerticalSyncEnabled(true);
+	this->mScenes.push()
 }
 
 Gomoku::~Gomoku()
 {
-	mWindow.close();
+	(*mWindow).close();
+}
+
+void Gomoku::update()
+{
+	while ((*mWindow).pollEvent(mEvent))
+	{
+		if (mEvent.type == sf::Event::Closed)
+		{
+			(*mWindow).close();
+		}
+	}
+	if (!mScenes.empty())
+	{
+		mScenes.top()->update();
+	}
+}
+
+void Gomoku::render()
+{
+	(*mWindow).clear();
+	if (!mScenes.empty())
+	{
+		mScenes.top()->render();
+	}
+	(*mWindow).display();
 }
 
 void Gomoku::run()
 {
-	sf::Texture background;
-	if (!background.loadFromFile("./asset/goExtended.png"))
+	while ((*mWindow).isOpen())
 	{
-		std::cerr << "Error loading background.png" << std::endl;
-		return;
-	}
-
-	while (mWindow.isOpen())
-	{
-		sf::Event event;
-		while (mWindow.pollEvent(event))
-		{
-			switch (event.type)
-			{
-				case sf::Event::Closed:
-					mWindow.close();
-					break;
-
-				case sf::Event::MouseButtonPressed:
-					break;
-				case sf::Event::
-
-				default:
-					break;
-			}
-		}
-
-		mWindow.clear();
-		// start with click start button or press
-		// else press escape button or close button to exit
-
-		// select mode : 1 player with AI or 2 player in one computer
-
-		// draw background
-
-
-
-
-		mWindow.display();
+		Gomoku::update();
+		Gomoku::render();
 	}
 }
-
-

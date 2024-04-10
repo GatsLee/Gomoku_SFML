@@ -10,4 +10,4 @@ fi
 pwd=$(pwd)
 
 echo "CompileFlags:" > .clangd
-echo "  Add: [-I$pwd/$sfml_path, -I$pwd/src, -std=c++14]" >> .clangd
+echo "  Add: [-I$pwd/$sfml_path, -I$pwd/includes, -I$pwd/src, -std=c++14]" >> .clangd

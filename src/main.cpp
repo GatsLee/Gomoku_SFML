@@ -5,17 +5,10 @@ int main(const int ac, const char **av)
 	if (ac != 1)
 	{
 		std::cerr << "Usage: ./gomoku" << std::endl;
-		return 1;
+		return EXIT_FAILURE;
 	}
-	try
-	{
-		Gomoku gomoku;
-		gomoku.run();
-	}
-	catch (const std::exception &e)
-	{
-		std::cerr << e.what() << std::endl;
-	}
+	Gomoku gomoku;
+	gomoku.run();
 
-	return 0;
+	return EXIT_SUCCESS;
 }
