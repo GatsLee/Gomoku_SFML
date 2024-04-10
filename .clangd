@@ -1,2 +1,2 @@
 CompileFlags:
-  Add: [-I/Users/joon-lee/Desktop/Gomoku_SFML/lib/sfml/2.6.1/include, -I/Users/joon-lee/Desktop/Gomoku_SFML/includes, -I/Users/joon-lee/Desktop/Gomoku_SFML/src, -std=c++14]
+  Add: [-I/Users/joonyeol/Desktop/Gomoku_SFML/lib/sfml/2.6.1/include, -I/Users/joonyeol/Desktop/Gomoku_SFML/includes, -I/Users/joonyeol/Desktop/Gomoku_SFML/src, -std=c++14]

@@ -1,8 +1,9 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <IAI.hpp>
+#include <IScene.hpp>
 #include <iostream>
-#include <bitset>
 
 class GameHandler
 {
@@ -11,17 +12,20 @@ public:
     ~GameHandler();
 
     void run();
+    void playLocalGame();
+    void playAIGame();
+    void pauseGame();
+public:
+    enum eGameUnit
+    {
+        BLACK_STONE = 1,
+        WHITE_STONE = 2,
+        BOARD_SIZE = 15,
+    };
 
 private:
-    enum GameState
-    {
-        START_MENU,
-        SELECT_MODE,
-        PLAYING,
-        PAUSE,
-        END_GAME,
-    };
-    std::bitset<5> mGameState;
+    IScene::eSceneType  mCurrentSceneType;
+    IAI*                mAI;
     
-
+	int mBoard[15][15] = {0};
 };
