@@ -31,5 +31,5 @@ public:
 private:
 	sf::RenderWindow* mWindow;
 	sf::Event mEvent;
-	std::stack<IScene *> mScenes;
+	std::stack<AScene *> mScenes;
 };
