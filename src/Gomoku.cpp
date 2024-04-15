@@ -4,7 +4,8 @@ Gomoku::Gomoku()
 {
 	this->mWindow = new sf::RenderWindow(sf::VideoMode(1080, 1080), "Gomoku with sfml", sf::Style::Titlebar | sf::Style::Close);
 	(*mWindow).setVerticalSyncEnabled(true);
-	this->mScenes.push()
+	(*mScenes).push(new StartMenuScene());
+	(*mScenes).top()->init(mWindow);
 }
 
 Gomoku::~Gomoku()

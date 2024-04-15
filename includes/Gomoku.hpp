@@ -1,8 +1,9 @@
 #pragma once
 
-#include "SFML/Window/Event.hpp"
+#include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
-#include <IScene.hpp>
+#include <AScene.hpp>
+#include <StartMenuScene.hpp>
 #include <iostream>
 #include <stack>
 
