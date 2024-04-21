@@ -32,6 +32,32 @@ void Gomoku::update()
 	if (!mScenes.empty())
 	{
 		sf::Vector2i mousePosition = sf::Mouse::getPosition(*mWindow);
+		switch (mScenes.top()->GetNextSceneType())
+		{
+		case AScene::START_MENU:
+			mScenes.push(new StartMenuScene(mWindow, mCurrentSceneType));
+			break;
+		case AScene::SELECT_MODE:
+			mScenes.push(new SelectModeScene(mWindow, mCurrentSceneType));
+			break;
+		// case AScene::SELECT_LOCAL:
+		// 	mScenes.push(new SelectLocalScene(mWindow, mCurrentSceneType));
+		// 	break;
+		// case AScene::SELECT_AI:
+		// 	mScenes.push(new SelectAIScene(mWindow, mCurrentSceneType));
+		// 	break;
+		// case AScene::PAUSE:
+		// 	mScenes.push(new PauseScene(mWindow, mCurrentSceneType));
+		// 	break;
+		// case AScene::GAME:
+		// 	mScenes.push(new GameScene(mWindow, mCurrentSceneType));
+		// 	break;
+		// case AScene::GAME_OVER:
+		// 	mScenes.push(new GameOverScene(mWindow, mCurrentSceneType));
+		// 	break;
+		case AScene::NOT_DEFINED:
+			break;
+		}
 		mScenes.top()->Update(mousePosition);
 	}
 }

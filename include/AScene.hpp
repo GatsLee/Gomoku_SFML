@@ -27,17 +27,15 @@ public:
     virtual void Update(const sf::Vector2i &mousePosition) = 0;
     virtual void Render() = 0;
 
+    eSceneType GetSceneType() { return mSceneType; }
+    eSceneType GetNextSceneType() { return mNextSceneType; }
+
+    void SetNextSceneType(eSceneType nextSceneType) { mNextSceneType = nextSceneType; }
 protected:
     eSceneType mSceneType;
+    eSceneType mNextSceneType;
     sf::View mView;
     sf::Vector2i mViewGridPosition;
     sf::RenderWindow* mWindow;
     sf::Font mFont;
-
-    bool mPaused;
-    bool mIsRunning;
-
-    sf::Vector2i mMousePosition;
-    sf::Vector2i mMouseGridPosition;
-    sf::Vector2i mMouseGridPositionOld;
 };

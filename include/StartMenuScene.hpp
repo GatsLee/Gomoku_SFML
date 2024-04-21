@@ -28,6 +28,4 @@ private:
     sf::Text *mMakerText;
     Button* mPlayButton;
     Button* mExitButton;
-    AScene::eSceneType &mCurrentSceneType;
-    
 };
