@@ -1,9 +1,9 @@
 TARGET		= Gomoku_SFML
 
 CXX			= c++
-CXXFLAGS	= -I./lib/sfml/2.6.1/include -I./includes -std=c++11
+CXXFLAGS	= -I./lib/sfml/2.6.1/include -I./include
 
-LDFLAGS		= -L./lib/sfml/2.6.1/lib -lsfml-graphics -lsfml-window -lsfml-system -Wl,-rpath,./lib/sfml/2.6.1/lib
+LDFLAGS		= -L./lib/sfml/2.6.1/lib -lsfml-system -lsfml-graphics -lsfml-window -Wl,-rpath,./lib/sfml/2.6.1/lib -arch arm64
 
 SRC_DIR		= ./src
 OBJ_DIR		= ./obj

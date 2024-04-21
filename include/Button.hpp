@@ -1,24 +1,12 @@
 #pragma once
 
-#include "SFML/Graphics/Color.hpp"
-#include "SFML/System/Vector2.hpp"
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
 class Button
 {
-public:
-    Button(sf::Texture *original, sf::Texture *hover, \
-            std::string text, sf::Vector2f position, \
-            float width, float height);
-    ~Button();
-
-    sf::String getText() const;
-    void setText(const sf::String &text);
-
-    void update(const sf::Vector2i &mousePosition);
-    void render(sf::RenderWindow *window);
-
 public:
     enum eButtonState
     {
@@ -26,6 +14,21 @@ public:
         HOVER,
         ACTIVE
     };
+
+public:
+    Button(std::string text, sf::Vector2f position);
+    ~Button();
+
+    sf::String getText() const;
+    sf::Vector2f getPosition() const;
+    enum eButtonState getState() const;
+
+    void setText(const sf::String &text);
+    void setPosition(const sf::Vector2f &position);
+    void setState(enum eButtonState state);
+
+    void update(const sf::Vector2i &mousePosition);
+    void render(sf::RenderWindow *window);
 
 private:
     eButtonState mButtonState;

@@ -2,10 +2,17 @@
 
 Gomoku::Gomoku()
 {
-	this->mWindow = new sf::RenderWindow(sf::VideoMode(1080, 1080), "Gomoku with sfml", sf::Style::Titlebar | sf::Style::Close);
+	this->mWindow = new sf::RenderWindow(sf::VideoMode(800, 800), "Gomoku with sfml", sf::Style::Titlebar | sf::Style::Close);
+	if (!(*mWindow).isOpen())
+	{
+		std::cerr << "Error: Could not create window" << std::endl;
+		exit(1);
+	}
+	(*mWindow).setFramerateLimit(60);
 	(*mWindow).setVerticalSyncEnabled(true);
-	(*mScenes).push(new StartMenuScene());
-	(*mScenes).top()->init(mWindow);
+	mCurrentSceneType = AScene::START_MENU;
+	mScenes.push(new StartMenuScene(mWindow, mCurrentSceneType));
+	mScenes.top()->Init();
 }
 
 Gomoku::~Gomoku()
@@ -24,7 +31,8 @@ void Gomoku::update()
 	}
 	if (!mScenes.empty())
 	{
-		mScenes.top()->update();
+		sf::Vector2i mousePosition = sf::Mouse::getPosition(*mWindow);
+		mScenes.top()->Update(mousePosition);
 	}
 }
 
@@ -33,7 +41,7 @@ void Gomoku::render()
 	(*mWindow).clear();
 	if (!mScenes.empty())
 	{
-		mScenes.top()->render();
+		mScenes.top()->Render();
 	}
 	(*mWindow).display();
 }

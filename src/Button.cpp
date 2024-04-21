@@ -1,30 +1,75 @@
 #include <Button.hpp>
 
-Button::Button(sf::Texture *original, sf::Texture *hover, \
-            std::string text, sf::Vector2f position, \
-            float width, float height)
+Button::Button(std::string text, sf::Vector2f position)
     : mButtonState(IDLE)
-    , mOriginal(*original)
-    , mHover(*hover)
 {
+    // set Button Sprite
+    sf::Texture *texture = new sf::Texture();
+    sf::Texture *textureHover = new sf::Texture();
+    if (!texture->loadFromFile("asset/texture/GomokuButton.png")
+        || !textureHover->loadFromFile("asset/texture/GomokuButton.png"))
+    {
+        std::cerr << "Error: Could not load GomokuButton.png" << std::endl;
+        exit(1);
+    }
+    
+    mOriginal.setTexture(*texture);
     mOriginal.setPosition(position);
-    mHover.setPosition(position);
-    mText.setString(text);
-    mText.setPosition(position.x + 10, position.y + 10);
-    mCurrent = &mOriginal;
-    mText.setFillColor(sf::Color::Black);
+    mOriginal.setScale(0.7, 0.7);
 
-    std::cout << "Button created" << std::endl;
+    mHover.setTexture(*textureHover);
+    mHover.setPosition(position);
+    mHover.setScale(0.7, 0.7);
+    mHover.setColor(sf::Color(128, 128, 128));
+
+    // set Button Text
+    sf::Text textObj;
+    sf::Font * font = new sf::Font();
+    if (!font->loadFromFile("asset/font/joystix_monospace.otf"))
+    {
+        std::cerr << "Error: Could not load joystix_monospace.otf" << std::endl;
+        exit(1);
+    }
+
+    textObj.setString(text);
+    textObj.setPosition(position.x + 53, position.y + 27);
+    textObj.setFillColor(sf::Color::Black);
+    textObj.setFont(*font);
+    textObj.setCharacterSize(20);
+    mText = textObj;
+
+    mCurrent = &mOriginal;
 }
 
 Button::~Button()
 {
-    std::cout << "Button destroyed" << std::endl;
 }
 
 sf::String Button::getText() const
 {
     return mText.getString();
+}
+
+sf::Vector2f Button::getPosition() const
+{
+    return mOriginal.getPosition();
+}
+
+enum Button::eButtonState Button::getState() const
+{
+    return mButtonState;
+}
+
+void Button::setPosition(const sf::Vector2f &position)
+{
+    mOriginal.setPosition(position);
+    mHover.setPosition(position);
+    mText.setPosition(position.x + 5, position.y + 5);
+}
+
+void Button::setState(enum eButtonState state)
+{
+    this->mButtonState = state;
 }
 
 void Button::setText(const sf::String &text)
@@ -36,7 +81,7 @@ void Button::update(const sf::Vector2i &mousePosition)
 {
     this->mButtonState = IDLE;
 
-    if (mCurrent->getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+    if ((*mCurrent).getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
     {
         this->mButtonState = HOVER;
 

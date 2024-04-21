@@ -2,7 +2,7 @@
 
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
-#include <AScene.hpp>
+#include <SFML/Window.hpp>
 #include <StartMenuScene.hpp>
 #include <iostream>
 #include <stack>
@@ -32,4 +32,5 @@ private:
 	sf::RenderWindow* mWindow;
 	sf::Event mEvent;
 	std::stack<AScene *> mScenes;
+	AScene::eSceneType  mCurrentSceneType;
 };

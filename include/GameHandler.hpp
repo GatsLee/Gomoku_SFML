@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <IAI.hpp>
-#include <IScene.hpp>
+#include <AScene.hpp>
 #include <iostream>
 
 class GameHandler
@@ -24,7 +24,6 @@ public:
     };
 
 private:
-    IScene::eSceneType  mCurrentSceneType;
     IAI*                mAI;
     
 	int mBoard[15][15] = {0};
