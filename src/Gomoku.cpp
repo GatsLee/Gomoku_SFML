@@ -11,7 +11,7 @@ Gomoku::Gomoku()
 	(*mWindow).setFramerateLimit(60);
 	(*mWindow).setVerticalSyncEnabled(true);
 	mCurrentSceneType = AScene::START_MENU;
-	mScenes.push(new StartMenuScene(mWindow, mCurrentSceneType));
+	mScenes.push(new StartMenuScene(mWindow));
 	mScenes.top()->Init();
 }
 
@@ -35,22 +35,23 @@ void Gomoku::update()
 		switch (mScenes.top()->GetNextSceneType())
 		{
 		case AScene::START_MENU:
-			mScenes.push(new StartMenuScene(mWindow, mCurrentSceneType));
+			mScenes.push(new StartMenuScene(mWindow));
 			break;
 		case AScene::SELECT_MODE:
-			mScenes.push(new SelectModeScene(mWindow, mCurrentSceneType));
+			mScenes.push(new SelectModeScene(mWindow));
+			// std::cout << mScenes.top()->GetSceneType() << std::endl;
 			break;
 		// case AScene::SELECT_LOCAL:
-		// 	mScenes.push(new SelectLocalScene(mWindow, mCurrentSceneType));
+		// 	mScenes.push(new SelectLocalScene(mWindow));
 		// 	break;
 		// case AScene::SELECT_AI:
-		// 	mScenes.push(new SelectAIScene(mWindow, mCurrentSceneType));
+		// 	mScenes.push(new SelectAIScene(mWindow));
 		// 	break;
 		// case AScene::PAUSE:
-		// 	mScenes.push(new PauseScene(mWindow, mCurrentSceneType));
+		// 	mScenes.push(new PauseScene(mWindow));
 		// 	break;
 		// case AScene::GAME:
-		// 	mScenes.push(new GameScene(mWindow, mCurrentSceneType));
+		// 	mScenes.push(new GameScene(mWindow));
 		// 	break;
 		// case AScene::GAME_OVER:
 		// 	mScenes.push(new GameOverScene(mWindow, mCurrentSceneType));

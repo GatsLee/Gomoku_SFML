@@ -10,7 +10,7 @@
 class StartMenuScene : public AScene
 {
 public:
-    StartMenuScene(sf::RenderWindow* window, AScene::eSceneType &mCurrentSceneType);
+    StartMenuScene(sf::RenderWindow* window);
     ~StartMenuScene();
 
     void Init();

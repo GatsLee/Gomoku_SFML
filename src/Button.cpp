@@ -6,8 +6,8 @@ Button::Button(std::string text, sf::Vector2f position)
     // set Button Sprite
     sf::Texture *texture = new sf::Texture();
     sf::Texture *textureHover = new sf::Texture();
-    if (!texture->loadFromFile("asset/texture/GomokuButton.png")
-        || !textureHover->loadFromFile("asset/texture/GomokuButton.png"))
+    if (!texture->loadFromFile("asset/texture/GomokuButton2.png")
+        || !textureHover->loadFromFile("asset/texture/GomokuButton2.png"))
     {
         std::cerr << "Error: Could not load GomokuButton.png" << std::endl;
         exit(1);
@@ -15,11 +15,9 @@ Button::Button(std::string text, sf::Vector2f position)
     
     mOriginal.setTexture(*texture);
     mOriginal.setPosition(position);
-    mOriginal.setScale(0.7, 0.7);
 
     mHover.setTexture(*textureHover);
     mHover.setPosition(position);
-    mHover.setScale(0.7, 0.7);
     mHover.setColor(sf::Color(128, 128, 128));
 
     // set Button Text
@@ -32,10 +30,10 @@ Button::Button(std::string text, sf::Vector2f position)
     }
 
     textObj.setString(text);
-    textObj.setPosition(position.x + 53, position.y + 27);
+    textObj.setPosition(position.x + 110, position.y + 28);
     textObj.setFillColor(sf::Color::Black);
     textObj.setFont(*font);
-    textObj.setCharacterSize(20);
+    textObj.setCharacterSize(30);
     mText = textObj;
 
     mCurrent = &mOriginal;

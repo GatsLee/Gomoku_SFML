@@ -5,19 +5,25 @@
 #include <SFML/Graphics.hpp>
 #include <AScene.hpp>
 #include <Button.hpp>
-#include <iostream>
 
-class SelectMenuScene : public AScene
+class SelectModeScene : public AScene
 {
 public:
-    SelectMenuScene(sf::RenderWindow* window, AScene::eSceneType &mCurrentSceneType);
-    ~SelectMenuScene();
+    SelectModeScene(sf::RenderWindow* window);
+    ~SelectModeScene();
 
     void Init();
     void Update(const sf::Vector2i &mousePosition);
     void Render();
 private:
+    enum eTextureType
+    {
+        GO_BACKGROUND,
+        MODAL_BACKGROUND,
+        SELECT_TITLE,
+    };
 
+    sf::Sprite mSprites[3];
     Button *mPlayLocalButton;
     Button *mPlayAIButton;
     Button *mBackButton;

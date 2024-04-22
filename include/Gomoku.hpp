@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <StartMenuScene.hpp>
+#include <SelectModeScene.hpp>
 #include <iostream>
 #include <stack>
 

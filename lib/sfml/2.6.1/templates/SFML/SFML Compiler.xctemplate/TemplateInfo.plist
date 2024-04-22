@@ -71,7 +71,7 @@ subject to the following restrictions:
 
                 <!-- DEPLOYMENT -->
                 <key>MACOSX_DEPLOYMENT_TARGET</key>
-                <string>11.00</string>
+                <string>10.15</string>
 
                 <!-- SERACH PATHS -->
                 <key>FRAMEWORK_SEARCH_PATHS</key>

@@ -10,3 +10,18 @@ AScene::AScene(eSceneType sceneType, sf::RenderWindow* window)
 
 AScene::~AScene()
 {};
+
+AScene::eSceneType AScene::GetSceneType() const
+{
+    return mSceneType;
+}
+
+AScene::eSceneType AScene::GetNextSceneType() const
+{
+    return mNextSceneType;
+}
+
+void AScene::SetNextSceneType(eSceneType nextSceneType)
+{
+    mNextSceneType = nextSceneType;
+}
