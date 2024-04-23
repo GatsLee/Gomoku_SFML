@@ -2,9 +2,7 @@
 
 SelectModeScene::SelectModeScene(sf::RenderWindow* window)
     : AScene(SELECT_MODE, window)
-{
-    std::cout << window << std::endl;
-}
+{}
 
 SelectModeScene::~SelectModeScene()
 {
@@ -29,19 +27,19 @@ void SelectModeScene::Init()
     mSprites[GO_BACKGROUND].setColor(sf::Color(255, 255, 255, 100));
     mSprites[MODAL_BACKGROUND].setTexture(*textModalBackground);
     mSprites[SELECT_TITLE].setTexture(*textSelectTitle);
-    mSprites[SELECT_TITLE].setScale(0.5, 0.5);
 
     mSprites[GO_BACKGROUND].setPosition(0, 0);
     mSprites[MODAL_BACKGROUND].setPosition(115, 50);
-    mSprites[SELECT_TITLE].setPosition(180, 120);
+    mSprites[SELECT_TITLE].setPosition(240, 120);
 
     // set Buttons
-    mPlayLocalButton = new Button("Play Local", sf::Vector2f(315, 350));
-    mPlayAIButton = new Button("Play AI", sf::Vector2f(315, 460));
-    mBackButton = new Button("Back", sf::Vector2f(315, 570));
+    mPlayLocalButton = new Button("Play Local", sf::Vector2f(240, 250), sf::Vector2f(35, 24));
+    mPlayAIButton = new Button("Play AI", sf::Vector2f(240, 360), sf::Vector2f(70, 24));
+    mBackButton = new Button("Back", sf::Vector2f(240, 470), sf::Vector2f(110, 24));
+    SetIsInit(true);
 }
 
-void SelectModeScene::Update(const sf::Vector2i &mousePosition)
+void SelectModeScene::Update(const sf::Vector2i &mousePosition, std::stack<AScene *> *mScenes)
 {
     // update buttons
     mPlayLocalButton->update(mousePosition);
@@ -51,7 +49,7 @@ void SelectModeScene::Update(const sf::Vector2i &mousePosition)
     // check if buttons are clicked
     if (mPlayLocalButton->getState() == Button::ACTIVE)
     {
-        SetNextSceneType(AScene::SELECT_LOCAL);
+        SetNextSceneType(AScene::PLAY_LOCAL);
     }
     else if (mPlayAIButton->getState() == Button::ACTIVE)
     {
@@ -59,7 +57,8 @@ void SelectModeScene::Update(const sf::Vector2i &mousePosition)
     }
     else if (mBackButton->getState() == Button::ACTIVE)
     {
-        SetNextSceneType(AScene::START_MENU);
+        (*mScenes).pop();
+        (*mScenes).top()->SetNextSceneType(AScene::NOT_DEFINED);
     }
 }
 

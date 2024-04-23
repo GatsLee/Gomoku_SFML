@@ -33,5 +33,4 @@ private:
 	sf::RenderWindow* mWindow;
 	sf::Event mEvent;
 	std::stack<AScene *> mScenes;
-	AScene::eSceneType  mCurrentSceneType;
 };

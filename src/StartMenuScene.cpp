@@ -2,9 +2,7 @@
 
 StartMenuScene::StartMenuScene(sf::RenderWindow* window)
     : AScene(START_MENU, window)
-{
-    std::cout << window << std::endl;
-}
+{}
 
 StartMenuScene::~StartMenuScene()
 {}
@@ -48,15 +46,18 @@ void StartMenuScene::Init()
 
 
     // set Buttons
-    mPlayButton = new Button("Play", sf::Vector2f(240, 350));
-    mExitButton = new Button("Exit", sf::Vector2f(240,460));
+    mPlayButton = new Button("Play", sf::Vector2f(240, 350), sf::Vector2f(110, 24));
+    mExitButton = new Button("Exit", sf::Vector2f(240,460), sf::Vector2f(110, 24));
+    
+    SetIsInit(true);
 }
 
-void StartMenuScene::Update(const sf::Vector2i &mousePosition)
+void StartMenuScene::Update(const sf::Vector2i &mousePosition, std::stack<AScene *> *mScenes)
 {
     // update buttons
     mPlayButton->update(mousePosition);
     mExitButton->update(mousePosition);
+
 
     // check if buttons are clicked
     if (mPlayButton->getState() == Button::ACTIVE)
@@ -65,7 +66,7 @@ void StartMenuScene::Update(const sf::Vector2i &mousePosition)
     }
     else if (mExitButton->getState() == Button::ACTIVE)
     {
-        exit(0);
+        mNextSceneType = EXIT;
     }
 }
 

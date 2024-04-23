@@ -16,7 +16,8 @@ public:
     };
 
 public:
-    Button(std::string text, sf::Vector2f position);
+    Button(std::string text, \
+            sf::Vector2f buttonPosition, sf::Vector2f textPosition);
     ~Button();
 
     sf::String getText() const;

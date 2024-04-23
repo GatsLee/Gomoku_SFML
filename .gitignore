@@ -1,3 +1,6 @@
 .DS_Store
 .env
 .clangd
+
+# Build files
+./obj/*

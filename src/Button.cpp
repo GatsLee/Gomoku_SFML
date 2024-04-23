@@ -1,6 +1,6 @@
 #include <Button.hpp>
 
-Button::Button(std::string text, sf::Vector2f position)
+Button::Button(std::string text, sf::Vector2f buttonPosition, sf::Vector2f textPosition)
     : mButtonState(IDLE)
 {
     // set Button Sprite
@@ -14,10 +14,10 @@ Button::Button(std::string text, sf::Vector2f position)
     }
     
     mOriginal.setTexture(*texture);
-    mOriginal.setPosition(position);
+    mOriginal.setPosition(buttonPosition);
 
     mHover.setTexture(*textureHover);
-    mHover.setPosition(position);
+    mHover.setPosition(buttonPosition);
     mHover.setColor(sf::Color(128, 128, 128));
 
     // set Button Text
@@ -30,7 +30,8 @@ Button::Button(std::string text, sf::Vector2f position)
     }
 
     textObj.setString(text);
-    textObj.setPosition(position.x + 110, position.y + 28);
+    // 110, 28 for 4 letters
+    textObj.setPosition(buttonPosition.x + textPosition.x, buttonPosition.y + textPosition.y);
     textObj.setFillColor(sf::Color::Black);
     textObj.setFont(*font);
     textObj.setCharacterSize(30);

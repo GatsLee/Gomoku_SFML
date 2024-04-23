@@ -13,7 +13,7 @@ public:
     ~SelectModeScene();
 
     void Init();
-    void Update(const sf::Vector2i &mousePosition);
+    void Update(const sf::Vector2i &mousePosition, std::stack<AScene *> *mScenes);
     void Render();
 private:
     enum eTextureType

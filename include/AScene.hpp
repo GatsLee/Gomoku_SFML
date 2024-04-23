@@ -3,6 +3,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include <stack>
 
 class AScene
 {
@@ -11,12 +12,14 @@ public:
     {
         START_MENU,
         SELECT_MODE,
-        SELECT_LOCAL,
         SELECT_AI,
+        PLAY_LOCAL,
         PAUSE,
-        GAME,
+        GAME_LOCAL,
+        GAME_AI,
         GAME_OVER,
-        NOT_DEFINED
+        NOT_DEFINED,
+        EXIT
     };
 
 public:
@@ -24,11 +27,14 @@ public:
     virtual ~AScene();
 
     virtual void Init() = 0;
-    virtual void Update(const sf::Vector2i &mousePosition) = 0;
+    virtual void Update(const sf::Vector2i &mousePosition, 	std::stack<AScene *> *mScenes) = 0;
     virtual void Render() = 0;
 
     AScene::eSceneType GetSceneType() const;
     AScene::eSceneType GetNextSceneType() const;
+
+    bool IsInit() const;
+    void SetIsInit(bool isInit);
 
     void SetNextSceneType(eSceneType nextSceneType);
 protected:
@@ -36,5 +42,6 @@ protected:
     eSceneType mNextSceneType;
     sf::View mView;
     sf::RenderWindow* mWindow;
-    sf::Font mFont;
+
+    bool mIsInit;
 };
