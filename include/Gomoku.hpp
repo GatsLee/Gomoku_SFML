@@ -6,7 +6,7 @@
 #include <StartMenuScene.hpp>
 #include <SelectModeScene.hpp>
 #include <iostream>
-#include <stack>
+#include <vector>
 
 class Gomoku
 {
@@ -32,5 +32,5 @@ public:
 private:
 	sf::RenderWindow* mWindow;
 	sf::Event mEvent;
-	std::stack<AScene *> mScenes;
+	std::vector<AScene *> mScenes;
 };

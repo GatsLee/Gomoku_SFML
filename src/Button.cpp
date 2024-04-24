@@ -1,3 +1,4 @@
+#include "SFML/Window/Event.hpp"
 #include <Button.hpp>
 
 Button::Button(std::string text, sf::Vector2f buttonPosition, sf::Vector2f textPosition)
@@ -76,16 +77,18 @@ void Button::setText(const sf::String &text)
     mText.setString(text);
 }
 
-void Button::update(const sf::Vector2i &mousePosition)
+void Button::update(const sf::Vector2i &mousePosition, sf::Event event)
 {
     this->mButtonState = IDLE;
-
     if ((*mCurrent).getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
     {
         this->mButtonState = HOVER;
 
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
             this->mButtonState = ACTIVE;
+        }
     }
 
     switch (this->mButtonState)

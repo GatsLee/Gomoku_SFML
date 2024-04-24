@@ -1,9 +1,11 @@
 #pragma once
 
+#include "SFML/Window/Event.hpp"
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-#include <stack>
+#include <vector>
+#include <iostream>
 
 class AScene
 {
@@ -27,7 +29,7 @@ public:
     virtual ~AScene();
 
     virtual void Init() = 0;
-    virtual void Update(const sf::Vector2i &mousePosition, 	std::stack<AScene *> *mScenes) = 0;
+    virtual void Update(const sf::Vector2i &mousePosition, 	std::vector<AScene *> *mScenes, sf::Event event) = 0;
     virtual void Render() = 0;
 
     AScene::eSceneType GetSceneType() const;
@@ -35,6 +37,11 @@ public:
 
     bool IsInit() const;
     void SetIsInit(bool isInit);
+
+    bool IsRunning() const;
+    void SetIsRunning(bool isRunning);
+
+    bool IsAnySceneRunning(std::vector<AScene *> *mScenes);
 
     void SetNextSceneType(eSceneType nextSceneType);
 protected:
@@ -44,4 +51,5 @@ protected:
     sf::RenderWindow* mWindow;
 
     bool mIsInit;
+    bool mIsRunning;
 };

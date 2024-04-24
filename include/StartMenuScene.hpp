@@ -14,7 +14,9 @@ public:
     ~StartMenuScene();
 
     void Init();
-    void Update(const sf::Vector2i &mousePosition, std::stack<AScene *> *mScenes);
+    void Update(const sf::Vector2i &mousePosition, \
+                    std::vector<AScene *> *mScenes, \
+                    sf::Event event);
     void Render();
 private:
     enum eTextureType

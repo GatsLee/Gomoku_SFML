@@ -1,3 +1,4 @@
+#include "AScene.hpp"
 #include <StartMenuScene.hpp>
 
 StartMenuScene::StartMenuScene(sf::RenderWindow* window)
@@ -50,23 +51,29 @@ void StartMenuScene::Init()
     mExitButton = new Button("Exit", sf::Vector2f(240,460), sf::Vector2f(110, 24));
     
     SetIsInit(true);
+    SetIsRunning(true);
 }
 
-void StartMenuScene::Update(const sf::Vector2i &mousePosition, std::stack<AScene *> *mScenes)
+void StartMenuScene::Update(const sf::Vector2i &mousePosition, std::vector<AScene *> *mScenes, sf::Event event)
 {
-    // update buttons
-    mPlayButton->update(mousePosition);
-    mExitButton->update(mousePosition);
-
-
-    // check if buttons are clicked
-    if (mPlayButton->getState() == Button::ACTIVE)
+    if (IsAnySceneRunning(mScenes) == false)
     {
-        mNextSceneType = SELECT_MODE;
-    }
-    else if (mExitButton->getState() == Button::ACTIVE)
-    {
-        mNextSceneType = EXIT;
+        SetIsRunning(true);
+        // update buttons
+        mPlayButton->update(mousePosition, event);
+        mExitButton->update(mousePosition, event);
+
+        // check if buttons are clicked
+        if (mPlayButton->getState() == Button::ACTIVE)
+        {
+            SetNextSceneType(AScene::SELECT_MODE);
+            SetIsRunning(false);
+        }
+        else if (mExitButton->getState() == Button::ACTIVE)
+        {
+            SetNextSceneType(AScene::EXIT);
+            SetIsRunning(false);
+        }
     }
 }
 

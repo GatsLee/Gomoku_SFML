@@ -37,3 +37,28 @@ void AScene::SetIsInit(bool isInit)
 {
     mIsInit = isInit;
 }
+
+bool AScene::IsRunning() const
+{
+    return mIsRunning;
+}
+
+void AScene::SetIsRunning(bool isRunning)
+{
+    mIsRunning = isRunning;
+}
+
+bool AScene::IsAnySceneRunning(std::vector<AScene *> *mScenes)
+{
+    bool anySceneRunning = false;
+    for (auto scene : *mScenes)
+    {
+        if (scene->IsRunning() && scene->GetSceneType() != this->GetSceneType())
+        {
+            std::cout << "Scene " << scene->GetSceneType() << " is running" << std::endl;
+            anySceneRunning = true;
+            break;
+        }
+    }
+    return anySceneRunning;
+}

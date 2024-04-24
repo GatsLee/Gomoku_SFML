@@ -1,9 +1,12 @@
 #pragma once
 
+#include "SFML/Window/Event.hpp"
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 class Button
 {
@@ -28,7 +31,7 @@ public:
     void setPosition(const sf::Vector2f &position);
     void setState(enum eButtonState state);
 
-    void update(const sf::Vector2i &mousePosition);
+    void update(const sf::Vector2i &mousePosition, sf::Event event);
     void render(sf::RenderWindow *window);
 
 private:

@@ -1,9 +1,4 @@
-#!/bin/bash
-
-git clone https://github.com/GatsLee/Gomoku_SFML.git && cd Gomoku_SFML
-
-compiler=$(cc --version)
-arch=$(uname -m)
+rm -rf ./lib/sfml
 
 if [[ $compiler == *"gcc"* ]] && [ "$arch" = "x86_64" ]; then
   sfml_bundle="SFML-2.6.1-linux-gcc-64-bit.tar.gz"
@@ -14,8 +9,6 @@ elif [[ $compiler == *"clang"* ]]; then
     sfml_bundle="SFML-2.6.1-macOS-clang-arm64.tar.gz"
   fi
 fi
-
-mkdir ./lib/sfml
 
 if [ -n "$sfml_bundle" ]; then
   tar -xzvf "./lib/$sfml_bundle" -C "./lib/sfml"

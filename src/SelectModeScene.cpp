@@ -37,28 +37,36 @@ void SelectModeScene::Init()
     mPlayAIButton = new Button("Play AI", sf::Vector2f(240, 360), sf::Vector2f(70, 24));
     mBackButton = new Button("Back", sf::Vector2f(240, 470), sf::Vector2f(110, 24));
     SetIsInit(true);
+    SetIsRunning(true);
 }
 
-void SelectModeScene::Update(const sf::Vector2i &mousePosition, std::stack<AScene *> *mScenes)
+void SelectModeScene::Update(const sf::Vector2i& mousePosition, std::vector<AScene*>* mScenes, sf::Event event)
 {
-    // update buttons
-    mPlayLocalButton->update(mousePosition);
-    mPlayAIButton->update(mousePosition);
-    mBackButton->update(mousePosition);
+    if (IsAnySceneRunning(mScenes) == false)
+    {
+        SetIsRunning(true);
+        // update buttons
+        mPlayLocalButton->update(mousePosition, event);
+        mPlayAIButton->update(mousePosition, event);
+        mBackButton->update(mousePosition, event);
 
-    // check if buttons are clicked
-    if (mPlayLocalButton->getState() == Button::ACTIVE)
-    {
-        SetNextSceneType(AScene::PLAY_LOCAL);
-    }
-    else if (mPlayAIButton->getState() == Button::ACTIVE)
-    {
-        SetNextSceneType(AScene::SELECT_AI);
-    }
-    else if (mBackButton->getState() == Button::ACTIVE)
-    {
-        (*mScenes).pop();
-        (*mScenes).top()->SetNextSceneType(AScene::NOT_DEFINED);
+        // check if buttons are clicked
+        if (mPlayLocalButton->getState() == Button::ACTIVE)
+        {
+            SetNextSceneType(AScene::PLAY_LOCAL);
+            SetIsRunning(false);
+        }
+        else if (mPlayAIButton->getState() == Button::ACTIVE)
+        {
+            SetNextSceneType(AScene::SELECT_AI);
+            SetIsRunning(false);
+        }
+        else if (mBackButton->getState() == Button::ACTIVE)
+        {
+            SetIsRunning(false);
+            mScenes->pop_back();
+            mScenes->back()->SetNextSceneType(AScene::NOT_DEFINED);
+        }
     }
 }
 

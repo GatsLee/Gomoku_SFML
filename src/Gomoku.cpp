@@ -2,7 +2,8 @@
 
 Gomoku::Gomoku()
 {
-	this->mWindow = new sf::RenderWindow(sf::VideoMode(800, 800), "Gomoku with sfml", sf::Style::Titlebar | sf::Style::Close);
+	this->mWindow = new sf::RenderWindow(sf::VideoMode(800, 800), \
+										"Gomoku with sfml", sf::Style::Titlebar | sf::Style::Close);
 	if (!(*mWindow).isOpen())
 	{
 		std::cerr << "Error: Could not create window" << std::endl;
@@ -10,7 +11,7 @@ Gomoku::Gomoku()
 	}
 	(*mWindow).setFramerateLimit(60);
 	(*mWindow).setVerticalSyncEnabled(true);
-	mScenes.push(new StartMenuScene(mWindow));
+	mScenes.push_back(new StartMenuScene(mWindow));
 }
 
 Gomoku::~Gomoku()
@@ -30,13 +31,13 @@ void Gomoku::update()
 	if (!mScenes.empty())
 	{
 		sf::Vector2i mousePosition = sf::Mouse::getPosition(*mWindow);
-		switch (mScenes.top()->GetNextSceneType())
+		switch (mScenes.back()->GetNextSceneType())
 		{
 		case AScene::START_MENU:
-			mScenes.push(new StartMenuScene(mWindow));
+			mScenes.push_back(new StartMenuScene(mWindow));
 			break;
 		case AScene::SELECT_MODE:
-			mScenes.push(new SelectModeScene(mWindow));
+			mScenes.push_back(new SelectModeScene(mWindow));
 			break;
 		// case AScene::SELECT_LOCAL:
 		// 	mScenes.push(new SelectLocalScene(mWindow));
@@ -59,12 +60,11 @@ void Gomoku::update()
 		case AScene::NOT_DEFINED:
 			break;
 		}
-		if (mScenes.top()->IsInit() == false)
+		if (mScenes.back()->IsInit() == false)
 		{
-			mScenes.top()->Init();
+			mScenes.back()->Init();
 		}
-		mScenes.top()->Update(mousePosition, &mScenes);
-		
+		mScenes.back()->Update(mousePosition, &mScenes, mEvent);
 	}
 }
 
@@ -73,7 +73,7 @@ void Gomoku::render()
 	(*mWindow).clear();
 	if (!mScenes.empty())
 	{
-		mScenes.top()->Render();
+		mScenes.back()->Render();
 	}
 	(*mWindow).display();
 }
