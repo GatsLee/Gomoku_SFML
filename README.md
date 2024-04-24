@@ -4,7 +4,7 @@ play gomoku built with SFML(#Graphic_Library #AI)
 
 ## Game Screen
 
-![Start Menu Image](https:://github.com/GatsLee/Gomoku_SFML/blob/main/doc/startMenu.png)
+![Start Menu Image](https:://github.com/GatsLee/Gomoku_SFML/blob/main/doc/startMenu.png?raw=true)
 
 ## Objective
 
@@ -17,7 +17,7 @@ play gomoku built with SFML(#Graphic_Library #AI)
 
 ---
 
-![Gomoku Game Flow](https::/github.com/GatsLee/Gomoku_SFML/blob/main/doc/gameFlow.png)
+![Gomoku Game Flow](https::/github.com/GatsLee/Gomoku_SFML/blob/main/doc/gameFlow.png?raw=true)
 
 ## How to play
 
