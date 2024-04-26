@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SFML/Window/Event.hpp"
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
@@ -20,7 +19,7 @@ public:
 
 public:
     Button(std::string text, \
-            sf::Vector2f buttonPosition, sf::Vector2f textPosition);
+            sf::Vector2f buttonPosition, sf::Vector2f textPosition, int fontSize = 30);
     ~Button();
 
     sf::String getText() const;
@@ -34,10 +33,16 @@ public:
     void update(const sf::Vector2i &mousePosition, sf::Event event);
     void render(sf::RenderWindow *window);
 
+    // static bool IsAnyButtonClicked();
+    // static void SetIsAnyButtonClicked();
+
+    static bool isAnyButtonClicked;
 private:
     eButtonState mButtonState;
     sf::Sprite mOriginal;
     sf::Sprite mHover;
     sf::Sprite *mCurrent;
     sf::Text mText;
+
+    int mFontSize;
 };

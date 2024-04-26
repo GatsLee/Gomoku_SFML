@@ -5,6 +5,7 @@
 #include <SFML/Window.hpp>
 #include <StartMenuScene.hpp>
 #include <SelectModeScene.hpp>
+#include <SelectLocalRuleScene.hpp>
 #include <iostream>
 #include <vector>
 

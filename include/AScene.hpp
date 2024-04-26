@@ -13,6 +13,7 @@ public:
     {
         START_MENU,
         SELECT_MODE,
+        SELECT_LOCAL_RULE,
         SELECT_AI,
         PLAY_LOCAL,
         PAUSE,

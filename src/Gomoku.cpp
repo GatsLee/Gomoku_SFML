@@ -39,9 +39,9 @@ void Gomoku::update()
 		case AScene::SELECT_MODE:
 			mScenes.push_back(new SelectModeScene(mWindow));
 			break;
-		// case AScene::SELECT_LOCAL:
-		// 	mScenes.push(new SelectLocalScene(mWindow));
-		// 	break;
+		case AScene::SELECT_LOCAL_RULE:
+			mScenes.push_back(new SelectLocalRuleScene(mWindow));
+			break;
 		// case AScene::SELECT_AI:
 		// 	mScenes.push(new SelectAIScene(mWindow));
 		// 	break;
