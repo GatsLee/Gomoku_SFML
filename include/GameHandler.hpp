@@ -1,14 +1,19 @@
 #pragma once
 
-#include "SFML/System/Vector2.hpp"
+#include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <IAI.hpp>
 #include <AScene.hpp>
-#include <iostream>
 
 class GameHandler
 {
 public:
+    enum eTurn
+    {
+        BLACK_TURN = 0,
+        WHITE_TURN = 1,
+    };
+
     enum eGameUnit
     {
         BLACK_STONE = 1,
@@ -17,39 +22,52 @@ public:
         MAX_STONE = 225,
     };
 
-    enum eTurn
+    enum eGameRule
     {
-        BLACK_TURN = 0,
-        WHITE_TURN = 1,
+        RULE_FREESTYLE,
+        RULE_STANDARD,
+        RULE_RENJU,
     };
 
     enum eGameStatus
     {
-        GAME_READY,
-        GAME_RUNNING,
-        GAME_PAUSE,
+        GAME_ONGOING,
         GAME_WHITE_WIN,
         GAME_BLACK_WIN,
+        GAME_DRAW,
+    };
+
+    enum ePlayMode
+    {
+        MODE_LOCAL,
+        MODE_AI,
+    };
+
+    enum eAIType
+    {
+        AI_NOTDEFINED,
+        AI_RANDOM,
+        AI_MINIMAX,
+        AI_MCTS,
     };
 
 public:
-    GameHandler();
+    GameHandler(GameHandler::eGameRule rule, \
+                GameHandler::ePlayMode mode, \
+                eAIType aiType);
     ~GameHandler();
 
     bool PlaceStone(sf::Vector2i position);
-
-
-
-    // void run();
-    // void playLocalGame();
-    // void playAIGame();
-    // void pauseGame();
+    bool IsGameEnd();
 
 private:
     eTurn mTurn;
+    eGameRule mRule;
+    ePlayMode mMode;
+    eGameStatus mStatus;
     IAI*                mAI;
     
-	int mBoard[15][15] = {0};
+	int mBoard[15][15];
 
 private:
     std::vector<std::pair<int, int> > mBlackStoneHistory;
