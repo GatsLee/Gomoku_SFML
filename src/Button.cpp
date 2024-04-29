@@ -1,3 +1,4 @@
+#include "SFML/Window/Event.hpp"
 #include <Button.hpp>
 
 bool Button::isAnyButtonClicked = false;
