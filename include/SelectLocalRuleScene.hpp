@@ -4,6 +4,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
+#include <PlayLocalScene.hpp>
 #include <AScene.hpp>
 #include <Button.hpp>
 

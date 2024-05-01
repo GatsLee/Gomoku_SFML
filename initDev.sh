@@ -11,6 +11,7 @@ elif [[ $compiler == *"clang"* ]]; then
 fi
 
 if [ -n "$sfml_bundle" ]; then
+  mkdir ./lib/sfml
   tar -xzvf "./lib/$sfml_bundle" -C "./lib/sfml"
   mv "./lib/sfml/${sfml_bundle%.tar.gz}" "./lib/sfml/2.6.1"
   mv "./lib/sfml/2.6.1/extlibs/"{FLAC,freetype,ogg,vorbis,vorbisenc,vorbisfile}.framework "./lib/sfml/2.6.1/Frameworks/"

@@ -1,3 +1,4 @@
+#include "PlayLocalScene.hpp"
 #include <SelectLocalRuleScene.hpp>
 
 SelectLocalRuleScene::SelectLocalRuleScene(sf::RenderWindow* window)
@@ -55,16 +56,19 @@ void SelectLocalRuleScene::Update(const sf::Vector2i& mousePosition, std::vector
         if (mFreeRuleButton->getState() == Button::ACTIVE)
         {
             SetNextSceneType(AScene::PLAY_LOCAL);
+            PlayLocalScene::LocalRuleSetting = 0;
             SetIsRunning(false);
         }
         else if (mStandardRuleButton->getState() == Button::ACTIVE)
         {
             SetNextSceneType(AScene::PLAY_LOCAL);
+            PlayLocalScene::LocalRuleSetting = 1;
             SetIsRunning(false);
         }
         else if (mRenjuRuleButton->getState() == Button::ACTIVE)
         {
             SetNextSceneType(AScene::PLAY_LOCAL);
+            PlayLocalScene::LocalRuleSetting = 2;
             SetIsRunning(false);
         }
         else if (mBackButton->getState() == Button::ACTIVE)

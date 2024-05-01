@@ -5,13 +5,14 @@
 #include <SFML/Graphics.hpp>
 #include <AScene.hpp>
 #include <Button.hpp>
+#include <GameHandler.hpp>
 #include <vector>
 
-class PlayScene : public AScene
+class PlayLocalScene : public AScene
 {
 public:
-    PlayScene(sf::RenderWindow* window);
-    ~PlayScene();
+    PlayLocalScene(sf::RenderWindow* window);
+    ~PlayLocalScene();
 
     void Init();
     void Update(const sf::Vector2i &mousePosition, \
@@ -19,6 +20,7 @@ public:
                 sf::Event event);
     void Render();
 
+    static int LocalRuleSetting;
 private:
     enum eTextureType
     {
@@ -31,5 +33,6 @@ private:
     Button *mRerollButton;
     Button *mOptionButton;
     Button *mBackButton;
+
 
 };
