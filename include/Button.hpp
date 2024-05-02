@@ -17,8 +17,16 @@ public:
         ACTIVE
     };
 
+    enum eButtonSize
+    {
+        SMALL = 0,
+        MEDIUM,
+        LARGE
+    };
+
 public:
-    Button(std::string text, \
+    Button(std::string fileLocation, sf::Vector2f buttonPosition);
+    Button(enum eButtonSize buttonSize, std::string text, \
             sf::Vector2f buttonPosition, sf::Vector2f textPosition, int fontSize = 30);
     ~Button();
 

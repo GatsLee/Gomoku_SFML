@@ -31,6 +31,15 @@ GameHandler::~GameHandler()
     }
 }
 
+bool GameHandler::IsLegalMove(sf::Vector2i position)
+{
+    if (mStatus != GAME_ONGOING)
+        return false;
+    if (mBoard[position.x][position.y] != 0)
+        return false;
+    return true;
+}
+
 bool GameHandler::PlaceStone(sf::Vector2i position)
 {
     if (mStatus != GAME_ONGOING)

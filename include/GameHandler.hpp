@@ -60,6 +60,8 @@ public:
     bool PlaceStone(sf::Vector2i position);
     bool IsGameEnd();
 
+    bool IsLegalMove(sf::Vector2i position);
+
 private:
     eTurn mTurn;
     eGameRule mRule;

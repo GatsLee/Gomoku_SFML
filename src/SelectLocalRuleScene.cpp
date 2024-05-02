@@ -33,10 +33,10 @@ void SelectLocalRuleScene::Init()
     mSprites[SELECT_TITLE].setPosition(240, 120);
 
     // set Buttons
-    mFreeRuleButton = new Button("Free Rule", sf::Vector2f(240, 250), sf::Vector2f(60, 26), 26);
-    mStandardRuleButton = new Button("Standard Rule", sf::Vector2f(240, 360), sf::Vector2f(15, 26), 26);
-    mRenjuRuleButton = new Button("Renju Rule", sf::Vector2f(240, 470), sf::Vector2f(50, 26), 26);
-    mBackButton = new Button("Back", sf::Vector2f(240, 580), sf::Vector2f(105, 24));
+    mFreeRuleButton = new Button(Button::LARGE, "Free Rule", sf::Vector2f(240, 250), sf::Vector2f(60, 26), 26);
+    mStandardRuleButton = new Button(Button::LARGE,"Standard Rule", sf::Vector2f(240, 360), sf::Vector2f(15, 26), 26);
+    mRenjuRuleButton = new Button(Button::LARGE,"Renju Rule", sf::Vector2f(240, 470), sf::Vector2f(50, 26), 26);
+    mBackButton = new Button(Button::SMALL, "Back", sf::Vector2f(240, 580), sf::Vector2f(105, 24));
     SetIsInit(true);
     SetIsRunning(true);
 }

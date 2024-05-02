@@ -3,7 +3,31 @@
 
 bool Button::isAnyButtonClicked = false;
 
-Button::Button(std::string text, sf::Vector2f buttonPosition, sf::Vector2f textPosition, int fontSize)
+Button::Button(std::string fileLocation, sf::Vector2f buttonPosition)
+    : mButtonState(IDLE)
+{
+    // set Button Sprite
+    sf::Texture *texture = new sf::Texture();
+    sf::Texture *textureHover = new sf::Texture();
+    if (!texture->loadFromFile(fileLocation) \
+        || !textureHover->loadFromFile(fileLocation))
+    {
+        std::cerr << "Error: Could not load texture for Button" << std::endl;
+        exit(1);
+    }
+
+    mOriginal.setTexture(*texture);
+    mOriginal.setPosition(buttonPosition);
+
+    mHover.setTexture(*textureHover);
+    mHover.setPosition(buttonPosition);
+    mHover.setColor(sf::Color(128, 128, 128));
+
+    mCurrent = &mOriginal;
+}
+
+Button::Button(enum eButtonSize buttonSize, std::string text, \
+                sf::Vector2f buttonPosition, sf::Vector2f textPosition, int fontSize)
     : mButtonState(IDLE)
 {
     // set Button Sprite

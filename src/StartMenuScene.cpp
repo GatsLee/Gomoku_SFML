@@ -47,8 +47,8 @@ void StartMenuScene::Init()
 
 
     // set Buttons
-    mPlayButton = new Button("Play", sf::Vector2f(240, 350), sf::Vector2f(110, 24));
-    mExitButton = new Button("Exit", sf::Vector2f(240,460), sf::Vector2f(110, 24));
+    mPlayButton = new Button(Button::LARGE,"Play", sf::Vector2f(240, 350), sf::Vector2f(110, 24));
+    mExitButton = new Button(Button::LARGE, "Exit", sf::Vector2f(240,460), sf::Vector2f(110, 24));
     
     SetIsInit(true);
     SetIsRunning(true);

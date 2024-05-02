@@ -20,6 +20,8 @@ public:
                 sf::Event event);
     void Render();
 
+    void DrawStone(sf::Vector2i position, GameHandler::eGameUnit unit);
+
     static int LocalRuleSetting;
 private:
     enum eTextureType
@@ -29,10 +31,9 @@ private:
         GO_BOARD,
     };
     
+    GameHandler *mGameHandler;
+
     sf::Sprite mSprites[3];
-    Button *mRerollButton;
     Button *mOptionButton;
-    Button *mBackButton;
-
-
+    Button *mRuleButton;
 };

@@ -4,24 +4,26 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <vector>
-#include <iostream>
 
 class AScene
 {
 public:
     enum eSceneType
     {
+        // GAME SCENE
         START_MENU,
         SELECT_MODE,
         SELECT_LOCAL_RULE,
         SELECT_AI,
         PLAY_LOCAL,
-        PAUSE,
-        GAME_LOCAL,
-        GAME_AI,
         GAME_OVER,
         NOT_DEFINED,
-        EXIT
+        EXIT,
+        // POPUP: still have to draw the scene under POPUP
+        OPTION_POPUP,
+        PAUSE_POPUP,
+        CHECK_POPUP,
+        RULE_POPUP,
     };
 
 public:

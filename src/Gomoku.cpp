@@ -1,3 +1,4 @@
+#include "AScene.hpp"
 #include <Gomoku.hpp>
 
 Gomoku::Gomoku()
@@ -33,6 +34,7 @@ void Gomoku::update()
 		sf::Vector2i mousePosition = sf::Mouse::getPosition(*mWindow);
 		switch (mScenes.back()->GetNextSceneType())
 		{
+		// GAME SCENE
 		case AScene::START_MENU:
 			mScenes.push_back(new StartMenuScene(mWindow));
 			break;
@@ -41,6 +43,14 @@ void Gomoku::update()
 			break;
 		case AScene::SELECT_LOCAL_RULE:
 			mScenes.push_back(new SelectLocalRuleScene(mWindow));
+			break;
+		case AScene::PLAY_LOCAL:
+			mScenes.push_back(new PlayLocalScene(mWindow));
+			break;
+		case AScene::EXIT:
+			exit(0);
+			break;
+		case AScene::NOT_DEFINED:
 			break;
 		// case AScene::SELECT_AI:
 		// 	mScenes.push(new SelectAIScene(mWindow));
@@ -54,11 +64,7 @@ void Gomoku::update()
 		// case AScene::GAME_OVER:
 		// 	mScenes.push(new GameOverScene(mWindow, mCurrentSceneType));
 		// 	break;
-		case AScene::EXIT:
-			exit(0);
-			break;
-		case AScene::NOT_DEFINED:
-			break;
+		// POPUP
 		}
 		if (mScenes.back()->IsInit() == false)
 		{
