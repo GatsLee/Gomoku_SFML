@@ -37,6 +37,7 @@ public:
     void setText(const sf::String &text);
     void setPosition(const sf::Vector2f &position);
     void setState(enum eButtonState state);
+    void setScale(float x, float y);
 
     void update(const sf::Vector2i &mousePosition, sf::Event event);
     void render(sf::RenderWindow *window);

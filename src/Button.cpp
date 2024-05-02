@@ -30,11 +30,27 @@ Button::Button(enum eButtonSize buttonSize, std::string text, \
                 sf::Vector2f buttonPosition, sf::Vector2f textPosition, int fontSize)
     : mButtonState(IDLE)
 {
+    std::string fileLocation;
+
     // set Button Sprite
     sf::Texture *texture = new sf::Texture();
     sf::Texture *textureHover = new sf::Texture();
-    if (!texture->loadFromFile("asset/texture/GomokuButton2.png")
-        || !textureHover->loadFromFile("asset/texture/GomokuButton2.png"))
+
+    switch(buttonSize)
+    {
+        case SMALL:
+            fileLocation = "asset/texture/GomokuButtonSmall.png";
+            break;
+        case MEDIUM:
+            fileLocation = "asset/texture/GomokuButtonMedium.png";
+            break;
+        case LARGE:
+            fileLocation = "asset/texture/GomokuButtonLarge.png";
+            break;
+    }
+
+    if (!texture->loadFromFile(fileLocation) \
+        || !textureHover->loadFromFile(fileLocation))
     {
         std::cerr << "Error: Could not load GomokuButton.png" << std::endl;
         exit(1);
@@ -101,6 +117,12 @@ void Button::setState(enum eButtonState state)
 void Button::setText(const sf::String &text)
 {
     mText.setString(text);
+}
+
+void Button::setScale(float x, float y)
+{
+    mOriginal.setScale(x, y);
+    mHover.setScale(x, y);
 }
 
 void Button::update(const sf::Vector2i &mousePosition, sf::Event event)

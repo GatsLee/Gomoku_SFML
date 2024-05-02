@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SFML/Graphics/RectangleShape.hpp"
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
@@ -34,6 +35,12 @@ private:
     GameHandler *mGameHandler;
 
     sf::Sprite mSprites[3];
+    sf::RectangleShape mWhiteBackground;
     Button *mOptionButton;
     Button *mRuleButton;
+
+    sf::Text *mPlayerOneName;
+    sf::Text *mPlayerTwoName;
+
+    sf::Sprite *spriteBlackStone;
 };
