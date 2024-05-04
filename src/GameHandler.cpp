@@ -31,31 +31,50 @@ GameHandler::~GameHandler()
     }
 }
 
-bool GameHandler::IsLegalMove(sf::Vector2i position)
+std::vector<std::pair<int, int> > GameHandler::GetBlackStoneHistory() const
+{
+    return mBlackStoneHistory;
+}
+
+std::vector<std::pair<int, int> > GameHandler::GetWhiteStoneHistory() const
+{
+    return mWhiteStoneHistory;
+}
+
+
+
+bool GameHandler::IsLegalMove(int x, int y)
 {
     if (mStatus != GAME_ONGOING)
         return false;
-    if (mBoard[position.x][position.y] != 0)
+    if (mBoard[y][x] != 0)
         return false;
     return true;
 }
 
-bool GameHandler::PlaceStone(sf::Vector2i position)
+bool GameHandler::PlaceStone(int x, int y)
 {
     if (mStatus != GAME_ONGOING)
         return false;
     // based on free style rule: no limitation on the stone placement
-    if (mBoard[position.x][position.y] != 0)
+    if (mBoard[y][x] != 0)
         return false;
-    mBoard[position.x][position.y] = mTurn;
+    mBoard[y][x] = mTurn;
     if (IsGameEnd())
         return true;
     if (mTurn == BLACK_TURN)
+    {
+        std::cout << "Black turn" << std::endl;
+        mBlackStoneHistory.push_back(std::make_pair(x, y));
         mTurn = WHITE_TURN;
+    }
     else
+    {
+        std::cout << "White turn" << std::endl;
+        mWhiteStoneHistory.push_back(std::make_pair(x, y));
         mTurn = BLACK_TURN;
+    }
     return true;
-    // check the game status after placing the stone
 }
 
 bool GameHandler::IsGameEnd()
@@ -67,11 +86,11 @@ bool GameHandler::IsGameEnd()
     bool isFull = true;
 
     // check if the board is a draw
-    for (int x = 0; x < BOARD_SIZE; ++x)
+    for (int y = 0; y < BOARD_SIZE; ++y)
     {
-        for (int y = 0; y < BOARD_SIZE; ++y)
+        for (int x = 0; x < BOARD_SIZE; ++x)
         {
-            if (mBoard[x][y] == 0)
+            if (mBoard[y][x] == 0)
             {
                 isFull = false;
                 break;
@@ -85,11 +104,13 @@ bool GameHandler::IsGameEnd()
     }
 
     // check if the game is finished
-    for (int x = 0; x < BOARD_SIZE; ++x) {
-        for (int y = 0; y < BOARD_SIZE; ++y) {
-            if (mBoard[x][y] != 0)
+    for (int y = 0; y < BOARD_SIZE; ++y)
+    {
+        for (int x = 0; x < BOARD_SIZE; ++x)
+        {
+            if (mBoard[y][x] != 0)
             {
-                int color = mBoard[x][y];
+                int color = mBoard[y][x];
 
                 for (const auto& dir : directions)
                 {
@@ -99,13 +120,12 @@ bool GameHandler::IsGameEnd()
                     int nx = x + dx, ny = y + dy;
                     
                     while (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE &&
-                           mBoard[nx][ny] == color)
+                           mBoard[ny][nx] == color)
                     {
                         ++count;
                         nx += dx;
                         ny += dy;
                     }
-
                     if (count == 5)
                     {
                         mStatus = (color == BLACK_STONE) ? GAME_BLACK_WIN : GAME_WHITE_WIN;
@@ -119,3 +139,7 @@ bool GameHandler::IsGameEnd()
     return false;
 }
 
+GameHandler::eTurn GameHandler::GetTurn() const
+{
+    return mTurn;
+}

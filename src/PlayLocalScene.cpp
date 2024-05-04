@@ -1,6 +1,7 @@
 #include "GameHandler.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/Text.hpp"
+#include "SFML/Graphics/Texture.hpp"
 #include <PlayLocalScene.hpp>
 
 /**
@@ -75,21 +76,26 @@ void PlayLocalScene::Init()
     mOptionButton->setScale(0.8, 0.8);
     mRuleButton->setScale(0.8, 0.8);
 
-    SetIsInit(true);
-    SetIsRunning(true);
-
-    //test for draw stone
+    // set stone sprite
     sf::Texture *textureBlackStone = new sf::Texture();
-    if (!textureBlackStone->loadFromFile("asset/texture/BlackStone2.png"))
+    sf::Texture *textureWhiteStone = new sf::Texture();
+    if (!textureBlackStone->loadFromFile("asset/texture/BlackStone2.png")
+        || !textureWhiteStone->loadFromFile("asset/texture/WhiteStone2.png"))
     {
         std::cerr << "Error: Could not load BlackStone.png" << std::endl;
         exit(1);
     }
-    // textureBlackStone->setSmooth(true);
     spriteBlackStone = new sf::Sprite();
+    spriteWhiteStone = new sf::Sprite();
     spriteBlackStone->setTexture(*textureBlackStone);
-    // spriteBlackStone->setScale(0.8, 0.8);
-    spriteBlackStone->setPosition(300, 300);
+    spriteWhiteStone->setTexture(*textureWhiteStone);
+    spriteBlackStone->setScale(0.6, 0.6);
+    spriteWhiteStone->setScale(0.6, 0.6);
+
+    mStoneTmpPosition = std::make_pair(-1, -1);
+
+    SetIsInit(true);
+    SetIsRunning(true);
 
 }
 
@@ -107,9 +113,7 @@ void PlayLocalScene::Update(const sf::Vector2i &mousePosition, \
             SetNextSceneType(AScene::OPTION_POPUP);
             SetIsRunning(false);
         }
-    
-        // 102 160: start of go board
-        std::cout << mousePosition.x << " " << mousePosition.y << std::endl;
+
         // update buttons  
         mOptionButton->update(mousePosition, event);
         mRuleButton->update(mousePosition, event);
@@ -125,17 +129,110 @@ void PlayLocalScene::Update(const sf::Vector2i &mousePosition, \
             SetNextSceneType(AScene::RULE_POPUP);
             SetIsRunning(false);
         }
-
         // set stone
-
+        UpdateStone(mousePosition);
         // check game status
-
     }
 }
 
+void PlayLocalScene::UpdateStone(const sf::Vector2i &mousePosition)
+{
+    int x = -1, y = -1;
+
+    // Check if the mousePosition is on the go board
+    if (mousePosition.x >= GO_BOARD_X - GO_BOARD_PADDING \
+            && mousePosition.x <= GO_BOARD_X + GO_BOARD_GAP * 14 + GO_BOARD_PADDING \
+            && mousePosition.y >= GO_BOARD_Y - GO_BOARD_PADDING \
+            && mousePosition.y <= GO_BOARD_Y + GO_BOARD_GAP * 14 + GO_BOARD_PADDING)
+    {
+        // classify the position near edge
+        if (mousePosition.x >= GO_BOARD_X - GO_BOARD_PADDING \
+            && mousePosition.x <= GO_BOARD_X)
+        {   
+            x = 0;
+        }
+        else if (mousePosition.x >= GO_BOARD_X + GO_BOARD_GAP * 14 \
+            && mousePosition.x <= GO_BOARD_X + GO_BOARD_GAP * 14 + GO_BOARD_PADDING)
+        {
+            x = 14;
+        }
+        if (mousePosition.y >= GO_BOARD_Y - GO_BOARD_PADDING \
+            && mousePosition.y <= GO_BOARD_Y)
+        {
+            y = 0;
+        }
+        else if (mousePosition.y >= GO_BOARD_Y + GO_BOARD_GAP * 14 \
+            && mousePosition.y <= GO_BOARD_Y + GO_BOARD_GAP * 14 + GO_BOARD_PADDING)
+        {
+            y = 14;
+        }
+        // classify the position: rest of the board
+        float tmpX = std::roundf(static_cast<float>(mousePosition.x - GO_BOARD_X) / GO_BOARD_GAP);
+        float tmpY = std::roundf(static_cast<float>(mousePosition.y - GO_BOARD_Y) / GO_BOARD_GAP);
+
+        // set x, y
+        if (x == -1)
+            x = static_cast<int>(tmpX);
+        if (y == -1)
+            y = static_cast<int>(tmpY);
+        // temporary stone position: hover over the board
+        if (mGameHandler->IsLegalMove(x, y))
+        {
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                if (mGameHandler->PlaceStone(x, y))
+                {
+                    std::cout << "Stone placed at " << x << ", " << y << std::endl;
+                    mStoneTmpPosition = std::make_pair(-1, -1);
+                }
+            }
+        }
+        else
+        {
+            mStoneTmpPosition = std::make_pair(-1, -1);
+            return;
+        }
+        // place stone if the user clicks the mouse
+    }
+}
+
+void PlayLocalScene::DrawStone()
+{
+    for (auto &stone : mGameHandler->GetBlackStoneHistory())
+    {
+        spriteBlackStone->setPosition(GO_BOARD_X + stone.first * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)), \
+                                        GO_BOARD_Y + stone.second * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)) );
+        mWindow->draw(*spriteBlackStone);
+    }
+    for (auto &stone : mGameHandler->GetWhiteStoneHistory())
+    {
+        spriteWhiteStone->setPosition(GO_BOARD_X + stone.first * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)), \
+                                        GO_BOARD_Y + stone.second * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6) ));
+        mWindow->draw(*spriteWhiteStone);
+    }
+    // for the temporary stone
+    if (mStoneTmpPosition.first != -1)
+    {
+        if (mGameHandler->GetTurn() == GameHandler::BLACK_TURN)
+        {
+            spriteBlackStone->setPosition(GO_BOARD_X + mStoneTmpPosition.first * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6) ), \
+                                        GO_BOARD_Y + mStoneTmpPosition.second * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6) ));
+            mWindow->draw(*spriteBlackStone);
+        }
+        else
+        {
+            spriteWhiteStone->setPosition(GO_BOARD_X + mStoneTmpPosition.first * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6) ), \
+                                        GO_BOARD_Y + mStoneTmpPosition.second * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6) ));
+            mWindow->draw(*spriteWhiteStone);
+        }
+        mStoneTmpPosition = std::make_pair(-1, -1);
+    }
+
+}
+
+
 void PlayLocalScene::Render()
 {
-
     // draw background
     mWindow->draw(mWhiteBackground);
     // draw go board
@@ -149,4 +246,6 @@ void PlayLocalScene::Render()
     // draw buttons
     mOptionButton->render(mWindow);
     mRuleButton->render(mWindow);
+    // draw stone
+    DrawStone();
 }

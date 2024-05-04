@@ -8,9 +8,21 @@
 #include <Button.hpp>
 #include <GameHandler.hpp>
 #include <vector>
+#include <cmath>
+#include <iostream>
 
 class PlayLocalScene : public AScene
 {
+public:
+    enum ePlayLocalSceneUnit
+    {
+        GO_BOARD_X = 101,
+        GO_BOARD_Y = 160,
+        GO_BOARD_GAP = 43,
+        GO_BOARD_PADDING = 15,
+        STONE_RADIUS = 56,
+    };
+
 public:
     PlayLocalScene(sf::RenderWindow* window);
     ~PlayLocalScene();
@@ -21,7 +33,8 @@ public:
                 sf::Event event);
     void Render();
 
-    void DrawStone(sf::Vector2i position, GameHandler::eGameUnit unit);
+    void UpdateStone(const sf::Vector2i &mousePosition);
+    void DrawStone();
 
     static int LocalRuleSetting;
 private:
@@ -43,4 +56,7 @@ private:
     sf::Text *mPlayerTwoName;
 
     sf::Sprite *spriteBlackStone;
+    sf::Sprite *spriteWhiteStone;
+
+    std::pair<int, int> mStoneTmpPosition;
 };

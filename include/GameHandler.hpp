@@ -10,8 +10,8 @@ class GameHandler
 public:
     enum eTurn
     {
-        BLACK_TURN = 0,
-        WHITE_TURN = 1,
+        BLACK_TURN = 1,
+        WHITE_TURN = 2,
     };
 
     enum eGameUnit
@@ -57,10 +57,16 @@ public:
                 eAIType aiType);
     ~GameHandler();
 
-    bool PlaceStone(sf::Vector2i position);
+    bool PlaceStone(int x, int y);
     bool IsGameEnd();
 
-    bool IsLegalMove(sf::Vector2i position);
+    bool IsLegalMove(int x, int y);
+
+    eTurn GetTurn() const;
+
+    std::vector<std::pair<int, int> > GetBlackStoneHistory() const;
+    std::vector<std::pair<int, int> > GetWhiteStoneHistory() const;
+
 
 private:
     eTurn mTurn;
