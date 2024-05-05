@@ -1,4 +1,3 @@
-#include "SFML/System/Vector2.hpp"
 #include <GameHandler.hpp>
 
 GameHandler::GameHandler(GameHandler::eGameRule rule, \
@@ -60,8 +59,7 @@ bool GameHandler::PlaceStone(int x, int y)
     if (mBoard[y][x] != 0)
         return false;
     mBoard[y][x] = mTurn;
-    if (IsGameEnd())
-        return true;
+    IsGameEnd();
     if (mTurn == BLACK_TURN)
     {
         std::cout << "Black turn" << std::endl;
@@ -142,4 +140,9 @@ bool GameHandler::IsGameEnd()
 GameHandler::eTurn GameHandler::GetTurn() const
 {
     return mTurn;
+}
+
+GameHandler::eGameStatus GameHandler::GetGameStatus() const
+{
+    return mStatus;
 }

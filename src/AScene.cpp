@@ -1,5 +1,7 @@
 #include <AScene.hpp>
 
+bool AScene::isAnyClickEventHappening = false;
+
 AScene::AScene(eSceneType sceneType, sf::RenderWindow* window)
     : mSceneType(sceneType)
     , mNextSceneType(NOT_DEFINED)

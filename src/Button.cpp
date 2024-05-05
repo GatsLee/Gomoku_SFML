@@ -1,7 +1,5 @@
-#include "SFML/Window/Event.hpp"
+#include "AScene.hpp"
 #include <Button.hpp>
-
-bool Button::isAnyButtonClicked = false;
 
 Button::Button(std::string fileLocation, sf::Vector2f buttonPosition)
     : mButtonState(IDLE)
@@ -134,15 +132,19 @@ void Button::update(const sf::Vector2i &mousePosition, sf::Event event)
 
         if (event.type == sf::Event::MouseButtonPressed \
             && event.mouseButton.button == sf::Mouse::Left
-            && isAnyButtonClicked == false)
+            && AScene::isAnyClickEventHappening == false)
         {
+            std::cout << "Button Clicked" << std::endl;
             this->mButtonState = ACTIVE;
-            isAnyButtonClicked = true;
+            AScene::isAnyClickEventHappening = true;
         }
         else if (event.type == sf::Event::MouseButtonReleased \
-                && event.mouseButton.button == sf::Mouse::Left)
+                && event.mouseButton.button == sf::Mouse::Left
+                && AScene::isAnyClickEventHappening == true)
         {
-            isAnyButtonClicked = false;
+            std::cout << "Button Released" << std::endl;
+            this->mButtonState = HOVER;
+            AScene::isAnyClickEventHappening = false;
         }
     }
 

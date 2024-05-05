@@ -1,3 +1,4 @@
+#include "AScene.hpp"
 #include "GameHandler.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/Text.hpp"
@@ -8,6 +9,12 @@
  * @brief Global Variable for rule setting(0:free, 1:standard, 2:renju)
  */
 int PlayLocalScene::LocalRuleSetting = 0;
+
+
+/**
+ * @brief Global Variable for winner name
+ */
+std::string PlayLocalScene::WinnerName = "";
 
 PlayLocalScene::PlayLocalScene(sf::RenderWindow *window)
     : AScene(PLAY_LOCAL, window)
@@ -106,6 +113,10 @@ void PlayLocalScene::Update(const sf::Vector2i &mousePosition, \
     if (IsAnySceneRunning(mScenes) == false)
     {
         SetIsRunning(true);
+        if (event.type == sf::Event::MouseButtonReleased)
+        {
+            AScene::isAnyClickEventHappening = false;
+        }
         // check keyboard input
         if (event.type == sf::Event::KeyPressed
             && event.key.code == sf::Keyboard::Escape)
@@ -132,6 +143,19 @@ void PlayLocalScene::Update(const sf::Vector2i &mousePosition, \
         // set stone
         UpdateStone(mousePosition);
         // check game status
+        if (mGameHandler->GetGameStatus() != GameHandler::GAME_ONGOING)
+        {
+            if (mGameHandler->GetGameStatus() == GameHandler::GAME_BLACK_WIN)
+            {
+                WinnerName = "Player 1";
+            }
+            else if (mGameHandler->GetGameStatus() == GameHandler::GAME_WHITE_WIN)
+            {
+                WinnerName = "Player 2";
+            }
+            SetNextSceneType(AScene::GAME_OVER);
+            SetIsRunning(false);
+        }
     }
 }
 
@@ -178,12 +202,14 @@ void PlayLocalScene::UpdateStone(const sf::Vector2i &mousePosition)
         // temporary stone position: hover over the board
         if (mGameHandler->IsLegalMove(x, y))
         {
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left) \
+                && AScene::isAnyClickEventHappening == false)
             {
                 if (mGameHandler->PlaceStone(x, y))
                 {
                     std::cout << "Stone placed at " << x << ", " << y << std::endl;
                     mStoneTmpPosition = std::make_pair(-1, -1);
+                    AScene::isAnyClickEventHappening = true;
                 }
             }
         }

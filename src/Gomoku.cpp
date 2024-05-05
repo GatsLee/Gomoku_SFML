@@ -61,9 +61,9 @@ void Gomoku::update()
 		// case AScene::GAME:
 		// 	mScenes.push(new GameScene(mWindow));
 		// 	break;
-		// case AScene::GAME_OVER:
-		// 	mScenes.push(new GameOverScene(mWindow, mCurrentSceneType));
-		// 	break;
+		case AScene::GAME_OVER:
+			mScenes.push_back(new GameOverScene(mWindow));
+			break;
 		// POPUP
 		}
 		if (mScenes.back()->IsInit() == false)

@@ -37,6 +37,8 @@ public:
     void DrawStone();
 
     static int LocalRuleSetting;
+
+    static std::string WinnerName;
 private:
     enum eTextureType
     {

@@ -63,6 +63,7 @@ public:
     bool IsLegalMove(int x, int y);
 
     eTurn GetTurn() const;
+    eGameStatus GetGameStatus() const;
 
     std::vector<std::pair<int, int> > GetBlackStoneHistory() const;
     std::vector<std::pair<int, int> > GetWhiteStoneHistory() const;

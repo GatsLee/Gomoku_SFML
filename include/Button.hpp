@@ -3,9 +3,11 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
+#include <AScene.hpp>
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <mutex>
 
 class Button
 {
@@ -42,10 +44,6 @@ public:
     void update(const sf::Vector2i &mousePosition, sf::Event event);
     void render(sf::RenderWindow *window);
 
-    // static bool IsAnyButtonClicked();
-    // static void SetIsAnyButtonClicked();
-
-    static bool isAnyButtonClicked;
 private:
     eButtonState mButtonState;
     sf::Sprite mOriginal;

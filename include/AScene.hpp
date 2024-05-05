@@ -47,6 +47,8 @@ public:
     bool IsAnySceneRunning(std::vector<AScene *> *mScenes);
 
     void SetNextSceneType(eSceneType nextSceneType);
+
+    static bool isAnyClickEventHappening;
 protected:
     eSceneType mSceneType;
     eSceneType mNextSceneType;
