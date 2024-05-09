@@ -51,7 +51,7 @@ void GameOverScene::Init()
     //set Buttons
     mPlayAgainButton = new Button(Button::LARGE, "Play Again", sf::Vector2f(230, 300), sf::Vector2f(50, 26), 26);
     mBackToSelectModeButton = new Button(Button::LARGE, "Select Mode", sf::Vector2f(230, 410), sf::Vector2f(40, 26), 26);
-    mQuitButton = new Button(Button::SMALL, "Quit", sf::Vector2f(300, 520), sf::Vector2f(24, 22), 26);
+    mQuitButton = new Button(Button::LARGE, "Quit", sf::Vector2f(230, 520), sf::Vector2f(110, 24), 26);
 
     SetIsInit(true);
     SetIsRunning(true);

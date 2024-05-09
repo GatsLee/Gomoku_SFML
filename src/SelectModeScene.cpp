@@ -35,7 +35,7 @@ void SelectModeScene::Init()
     // set Buttons
     mPlayLocalButton = new Button(Button::LARGE, "Play Local", sf::Vector2f(240, 250), sf::Vector2f(35, 24));
     mPlayAIButton = new Button(Button::LARGE, "Play AI", sf::Vector2f(240, 360), sf::Vector2f(70, 24));
-    mBackButton = new Button(Button::SMALL, "Back", sf::Vector2f(240, 470), sf::Vector2f(110, 24));
+    mBackButton = new Button(Button::LARGE, "Back", sf::Vector2f(240, 470), sf::Vector2f(110, 24));
     SetIsInit(true);
     SetIsRunning(true);
 }
