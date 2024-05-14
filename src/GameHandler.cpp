@@ -40,6 +40,27 @@ std::vector<std::pair<int, int> > GameHandler::GetWhiteStoneHistory() const
     return mWhiteStoneHistory;
 }
 
+bool GameHandler::IsThreeThree(int x, int y, eTurn turn)
+{
+    std::vector <std::pair<int, int> > dir = {{1, 0}, {0, 1}, {1, 1}, {-1, 1} };
+    int count = 0;
+    int color = (turn == BLACK_TURN) ? BLACK_STONE : WHITE_STONE;
+
+    for (auto cur : dir)
+    {
+        int dx = cur.first, dy = cur.second;
+        // check the left side(3, 2, 1)
+        for (int i = -3; i <= 0; ++i)
+        {
+
+        }
+
+
+        if (count >= 2)
+            return true;
+    }
+    return  false;
+}
 
 
 bool GameHandler::IsLegalMove(int x, int y)

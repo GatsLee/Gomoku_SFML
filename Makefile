@@ -29,4 +29,8 @@ clean :
 clangd :
 	/bin/bash $(CLANGD_GEN)
 
+fclean :
+	$(MAKE) clean
+	rm -rf ./lib/sfml/2.6.1
+
 .PHONY : all clean

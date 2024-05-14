@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SFML/Graphics/RectangleShape.hpp"
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
@@ -8,8 +7,6 @@
 #include <Button.hpp>
 #include <GameHandler.hpp>
 #include <vector>
-#include <cmath>
-#include <iostream>
 
 class PlayLocalScene : public AScene
 {

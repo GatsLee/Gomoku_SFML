@@ -61,6 +61,8 @@ public:
     bool IsGameEnd();
 
     bool IsLegalMove(int x, int y);
+    bool IsThreeThree(int x, int y);
+    bool IsFourFour(int x, int y);
 
     eTurn GetTurn() const;
     eGameStatus GetGameStatus() const;
