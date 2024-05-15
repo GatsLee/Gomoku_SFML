@@ -40,34 +40,44 @@ std::vector<std::pair<int, int> > GameHandler::GetWhiteStoneHistory() const
     return mWhiteStoneHistory;
 }
 
-bool GameHandler::IsThreeThree(int x, int y, eTurn turn)
+bool GameHandler::IsOpenThree(int x, int y, std::pair<int, int> dir, eTurn turn)
 {
-    std::vector <std::pair<int, int> > dir = {{1, 0}, {0, 1}, {1, 1}, {-1, 1} };
     int count = 0;
     int color = (turn == BLACK_TURN) ? BLACK_STONE : WHITE_STONE;
+    int opponent = (turn == BLACK_TURN) ? WHITE_STONE : BLACK_STONE;
+    int dx = dir.first, dy = dir.second;
 
-    for (auto cur : dir)
-    {
-        int dx = cur.first, dy = cur.second;
-        // check the left side(3, 2, 1)
-        for (int i = -3; i <= 0; ++i)
-        {
+    // check the nearest place: no opponent stone
 
-        }
+    // possible open three: 3 is the place to put the stone
+    // 1. 0 1 1 0 3 0
+    // 2. 0 1 0 1 3 0
+    // 3. 0 0 1 1 3 0 0
+    // 4. 0 1 0 3 1 0
+    // 5. 0 1 3 0 1 0
+    // 6. 0 0 1 3 1 0 0
+    // 7. 0 0 3 1 1 0 0
+    // 8. 0 3 0 1 1 0
+    // 9. 0 3 1 0 1 0
 
-
-        if (count >= 2)
-            return true;
-    }
-    return  false;
+    // find out more than 2 possible open three is in same direction
 }
-
 
 bool GameHandler::IsLegalMove(int x, int y)
 {
     if (mStatus != GAME_ONGOING)
         return false;
     if (mBoard[y][x] != 0)
+        return false;
+    return true;
+}
+
+bool GameHandler::IsPossibleMove(int x, int y)
+{
+    if (mStatus != GAME_ONGOING)
+        return false;
+    if (x < 0 || x >= BOARD_SIZE \
+        || y < 0 || y >= BOARD_SIZE)
         return false;
     return true;
 }

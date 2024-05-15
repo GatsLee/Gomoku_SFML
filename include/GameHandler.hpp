@@ -10,6 +10,7 @@ class GameHandler
 public:
     enum eTurn
     {
+        EMPTY = 0,
         BLACK_TURN = 1,
         WHITE_TURN = 2,
     };
@@ -60,8 +61,9 @@ public:
     bool PlaceStone(int x, int y);
     bool IsGameEnd();
 
+    bool IsPossibleMove(int x, int y);
     bool IsLegalMove(int x, int y);
-    bool IsThreeThree(int x, int y);
+    bool IsOpenThree(int x, int y, std::pair<int, int> dir, eTurn turn);
     bool IsFourFour(int x, int y);
 
     eTurn GetTurn() const;
