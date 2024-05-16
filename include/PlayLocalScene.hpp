@@ -7,6 +7,7 @@
 #include <Button.hpp>
 #include <GameHandler.hpp>
 #include <vector>
+#include <cmath>
 
 class PlayLocalScene : public AScene
 {
@@ -18,6 +19,14 @@ public:
         GO_BOARD_GAP = 43,
         GO_BOARD_PADDING = 15,
         STONE_RADIUS = 56,
+    };
+
+public:
+    enum eTmpStoneType
+    {
+        AVAILABLE,
+        THREE_THREE_BAN,
+        FOUR_FOUR_BAN,
     };
 
 public:
@@ -43,7 +52,14 @@ private:
         WHITE_STONE_GUI,
         GO_BOARD,
     };
-    
+
+    enum eTmpTextureType
+    {
+        THREE_THREE_BAN_GUI,
+        FOUR_FOUR_BAN_GUI,
+    };
+
+
     GameHandler *mGameHandler;
 
     sf::Sprite mSprites[3];
@@ -57,5 +73,8 @@ private:
     sf::Sprite *spriteBlackStone;
     sf::Sprite *spriteWhiteStone;
 
+    sf::Sprite mTmpStoneSprites[2];
+
+    // for temporary stone: available, 3-3 ban, 4-4 ban
     std::pair<int, int> mStoneTmpPosition;
 };

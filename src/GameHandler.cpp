@@ -42,25 +42,102 @@ std::vector<std::pair<int, int> > GameHandler::GetWhiteStoneHistory() const
 
 bool GameHandler::IsOpenThree(int x, int y, std::pair<int, int> dir, eTurn turn)
 {
-    int count = 0;
+    // suppose that mBoard[y][x] is the stone to be placed: not placed yet(0)
     int color = (turn == BLACK_TURN) ? BLACK_STONE : WHITE_STONE;
     int opponent = (turn == BLACK_TURN) ? WHITE_STONE : BLACK_STONE;
     int dx = dir.first, dy = dir.second;
 
     // check the nearest place: no opponent stone
+    if ((IsPossibleMove(x + dx, y + dy) && mBoard[y + dy][x + dx] == opponent) && \
+        (IsPossibleMove(x - dx, y - dy) && mBoard[y - dy][x - dx] == opponent))
+        return false;
+    // check possible open three
+    for (auto pattern : openThree)
+    {
+        // check whether the pattern is applicable: check the edge & return the start point(else, return -16)
+        int start = IsPossiblePattern(pattern, x, y, dx, dy);
+        if (start == -16)
+            continue;
+        // check the pattern
+        int patternCount = 0;
+        int end =  start + pattern.size();
+        for (; start < end; ++start)
+        {
+            if ( (pattern[start] == 0 && pattern[start] == mBoard[y + dy * start][x + dx * start]) || \
+                 (pattern[start] == 1 && mBoard[y + dy * start][x + dx * start] == color) || \
+                 (pattern[start] == 3 && mBoard[y + dy * start][x + dx * start] == 0) )
+            {
+                patternCount++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        if (patternCount == pattern.size())
+            return true;
+    }
+    return false;
+}
 
-    // possible open three: 3 is the place to put the stone
-    // 1. 0 1 1 0 3 0
-    // 2. 0 1 0 1 3 0
-    // 3. 0 0 1 1 3 0 0
-    // 4. 0 1 0 3 1 0
-    // 5. 0 1 3 0 1 0
-    // 6. 0 0 1 3 1 0 0
-    // 7. 0 0 3 1 1 0 0
-    // 8. 0 3 0 1 1 0
-    // 9. 0 3 1 0 1 0
+int GameHandler::IsPossiblePattern(const std::vector<int>& pattern, int x, int y, int dx, int dy)
+{
+    int loc = 0;
+    for (int i = 0; i < pattern.size(); ++i)
+    {
+        if (pattern[i] == 3)
+        {
+            loc = i;
+            break;
+        }
+    }
+    int start = -1 * loc;
+    int end = pattern.size() - loc;
+    if (IsPossibleMove(x + dx * start, y + dy * start) && \
+        IsPossibleMove(x + dx * end, y + dy * end))
+        return start;
+    return -16;
+}
 
-    // find out more than 2 possible open three is in same direction
+int GameHandler::IsFourStone(int x, int y, std::pair<int, int> dir, eTurn turn)
+{
+    // suppose that mBoard[y][x] is the stone to be placed: not placed yet(0)
+    int count = 0;
+    int color = (turn == BLACK_TURN) ? BLACK_STONE : WHITE_STONE;
+    int opponent = (turn == BLACK_TURN) ? WHITE_STONE : BLACK_STONE;
+    int dx = dir.first, dy = dir.second;
+    for (int i = -4; i <= 0; ++i)
+    {
+        int blank = 0, stone = 0;
+        // check the scope(5stones: consist of 2 blank space && 3 same color stones)
+        for (int j = 0; j < 5; ++j)
+        {
+            if (IsPossibleMove(x + dx * (i + j), y + dy * (i + j)))
+            {
+                if (mBoard[y + dy * (i + j)][x + dx * (i + j)] == 0)
+                {
+                    blank++;
+                }
+                else if (mBoard[y + dy * (i + j)][x + dx * (i + j)] == color)
+                {
+                    stone++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+        if (blank == 2 && stone == 3)
+        {
+            count++;
+        }
+    }
+    return count;
 }
 
 bool GameHandler::IsLegalMove(int x, int y)
@@ -140,7 +217,6 @@ bool GameHandler::IsGameEnd()
             if (mBoard[y][x] != 0)
             {
                 int color = mBoard[y][x];
-
                 for (const auto& dir : directions)
                 {
                     int count = 1;
@@ -155,17 +231,43 @@ bool GameHandler::IsGameEnd()
                         nx += dx;
                         ny += dy;
                     }
-                    if (count == 5)
-                    {
-                        mStatus = (color == BLACK_STONE) ? GAME_BLACK_WIN : GAME_WHITE_WIN;
+                    if (count >= 5 && CheckWin(count, color))
                         return true;
-                    }
                 }
             }
         }
     }
-
     return false;
+}
+
+bool GameHandler::CheckWin(int count, int color)
+{
+    if (count == 5)
+    {
+        mStatus = (color == BLACK_STONE) ? GAME_BLACK_WIN : GAME_WHITE_WIN;
+        return true;
+    }
+    else
+    {
+        if (mRule == RULE_FREESTYLE)
+        {
+            mStatus = (color == BLACK_STONE) ? GAME_BLACK_WIN : GAME_WHITE_WIN;
+            return true;
+        }
+        else if (mRule == RULE_STANDARD)
+        {
+            return false;
+        }
+        else if (mRule == RULE_RENJU)
+        {
+            if (color == 2)
+            {
+                mStatus = GAME_WHITE_WIN;
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 GameHandler::eTurn GameHandler::GetTurn() const

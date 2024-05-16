@@ -99,6 +99,21 @@ void PlayLocalScene::Init()
     spriteBlackStone->setScale(0.6, 0.6);
     spriteWhiteStone->setScale(0.6, 0.6);
 
+    // set temporary stone sprite
+    sf::Texture *textureThreeThreeBan, *textureFourFourBan;
+    textureThreeThreeBan = new sf::Texture();
+    textureFourFourBan = new sf::Texture();
+    if (!textureThreeThreeBan->loadFromFile("asset/texture/ThreeThreeBan.png") \
+        || !textureFourFourBan->loadFromFile("asset/texture/FourFourBan.png"))
+    {
+        std::cerr << "Error: Could not load ThreeThreeBan.png or FourFourBan.png" << std::endl;
+        exit(1);
+    }
+    mTmpStoneSprites[THREE_THREE_BAN_GUI].setTexture(*textureThreeThreeBan);
+    mTmpStoneSprites[FOUR_FOUR_BAN_GUI].setTexture(*textureFourFourBan);
+    mTmpStoneSprites[THREE_THREE_BAN_GUI].setScale(0.6, 0.6);
+    mTmpStoneSprites[FOUR_FOUR_BAN_GUI].setScale(0.6, 0.6);
+
     mStoneTmpPosition = std::make_pair(-1, -1);
 
     SetIsInit(true);
@@ -211,6 +226,11 @@ void PlayLocalScene::UpdateStone(const sf::Vector2i &mousePosition)
                     mStoneTmpPosition = std::make_pair(-1, -1);
                     AScene::isAnyClickEventHappening = true;
                 }
+            }
+            else
+            {
+                mStoneTmpPosition = std::make_pair(x, y);
+                // check if the stone placement is illegal based on the rule
             }
         }
         else
