@@ -74,6 +74,7 @@ private:
     sf::Sprite *spriteWhiteStone;
 
     sf::Sprite mTmpStoneSprites[2];
+    sf::Sprite *mCurrentTmpStoneSprite;
 
     // for temporary stone: available, 3-3 ban, 4-4 ban
     std::pair<int, int> mStoneTmpPosition;

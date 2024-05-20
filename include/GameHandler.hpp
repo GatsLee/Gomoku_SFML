@@ -59,6 +59,13 @@ public:
         AI_MINIMAX,
         AI_MCTS,
     };
+    
+    enum eBannedMove
+    {
+        POSSIBLE,
+        OPEN_THREE,
+        FOUR_FOUR,
+    };
 
 public: //pattern
     const std::vector< std::vector<int> > openThree = { { 0, 3, 1, 0, 1, 0 }, \
@@ -78,6 +85,7 @@ public:
                 eAIType aiType);
     ~GameHandler();
 
+    bool CheckRule(int x, int y);
     bool PlaceStone(int x, int y);
     bool IsGameEnd();
 
@@ -95,12 +103,15 @@ public:
     std::vector<std::pair<int, int> > GetBlackStoneHistory() const;
     std::vector<std::pair<int, int> > GetWhiteStoneHistory() const;
 
+    void SetBannedMove(eBannedMove bannedMove);
+    eBannedMove GetBannedMove() const;
 
 private:
     eTurn mTurn;
     eGameRule mRule;
     ePlayMode mMode;
     eGameStatus mStatus;
+    eBannedMove mBannedMove;
     IAI*                mAI;
     
 	int mBoard[15][15];

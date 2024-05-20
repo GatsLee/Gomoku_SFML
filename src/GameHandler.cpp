@@ -1,4 +1,5 @@
 #include <GameHandler.hpp>
+#include <iterator>
 
 GameHandler::GameHandler(GameHandler::eGameRule rule, \
                          GameHandler::ePlayMode mode, \
@@ -7,6 +8,7 @@ GameHandler::GameHandler(GameHandler::eGameRule rule, \
     , mRule(rule)
     , mMode(mode)
     , mStatus(GAME_ONGOING)
+    , mBannedMove(POSSIBLE)
 {
     for (int i = 0; i < BOARD_SIZE; i++)
     {
@@ -106,6 +108,7 @@ int GameHandler::IsFourStone(int x, int y, std::pair<int, int> dir, eTurn turn)
     int color = (turn == BLACK_TURN) ? BLACK_STONE : WHITE_STONE;
     int opponent = (turn == BLACK_TURN) ? WHITE_STONE : BLACK_STONE;
     int dx = dir.first, dy = dir.second;
+    std::pair<int, int> start = {-1, -1};
     for (int i = -4; i <= 0; ++i)
     {
         int blank = 0, stone = 0;
@@ -121,6 +124,12 @@ int GameHandler::IsFourStone(int x, int y, std::pair<int, int> dir, eTurn turn)
                 else if (mBoard[y + dy * (i + j)][x + dx * (i + j)] == color)
                 {
                     stone++;
+                    if (stone == 1)
+                    {
+                        if (start == std::make_pair(x + dx * (i + j), y + dy * (i + j)))
+                            continue;
+                        start = {x + dx * (i + j), y + dy * (i + j)};
+                    }
                 }
                 else
                 {
@@ -159,24 +168,72 @@ bool GameHandler::IsPossibleMove(int x, int y)
     return true;
 }
 
+bool GameHandler::CheckRule(int x, int y)
+{
+    const std::vector<std::pair<int, int> > directions = { {1, 0}, {0, 1}, \
+                                                            {1, 1}, {1, -1}};
+    int threeCount = 0;
+    int fourCount = 0;
+
+    if (mRule == RULE_FREESTYLE)
+        return true;
+    else if (mRule == RULE_STANDARD)
+    {
+        for (const auto& dir : directions)
+        {
+            if (IsOpenThree(x, y, dir, mTurn))
+                threeCount++;
+        }
+        if (threeCount >= 2)
+        {
+            mBannedMove = OPEN_THREE;
+            return false;
+        }
+    }
+    else
+    {
+        for (const auto& dir : directions)
+        {
+            if (IsOpenThree(x, y, dir, mTurn))
+                threeCount++;
+            fourCount += IsFourStone(x, y, dir, mTurn);
+        }
+        if (mTurn == BLACK_TURN \
+            && (threeCount >= 2 || fourCount >= 2))
+        {
+            mBoard[y][x] = static_cast<int>(mTurn);
+            if (IsGameEnd() && mStatus == GAME_BLACK_WIN)
+            {
+                mStatus = GAME_ONGOING;
+                mBoard[y][x] = 0;
+                return true;
+            }
+            mBoard[y][x] = 0;
+            if (threeCount >= 2)
+                mBannedMove = OPEN_THREE;
+            if (fourCount >= 2)
+                mBannedMove = FOUR_FOUR;
+            return false;
+        }
+    }
+    return true;
+}
+
 bool GameHandler::PlaceStone(int x, int y)
 {
-    if (mStatus != GAME_ONGOING)
+    // check the legal move
+    if (!IsLegalMove(x, y))
         return false;
-    // based on free style rule: no limitation on the stone placement
-    if (mBoard[y][x] != 0)
-        return false;
+    // place the stone: suppose that mBoard[y][x] is properly placed based on the rule
     mBoard[y][x] = mTurn;
     IsGameEnd();
     if (mTurn == BLACK_TURN)
     {
-        std::cout << "Black turn" << std::endl;
         mBlackStoneHistory.push_back(std::make_pair(x, y));
         mTurn = WHITE_TURN;
     }
     else
     {
-        std::cout << "White turn" << std::endl;
         mWhiteStoneHistory.push_back(std::make_pair(x, y));
         mTurn = BLACK_TURN;
     }
@@ -278,4 +335,14 @@ GameHandler::eTurn GameHandler::GetTurn() const
 GameHandler::eGameStatus GameHandler::GetGameStatus() const
 {
     return mStatus;
+}
+
+GameHandler::eBannedMove GameHandler::GetBannedMove() const
+{
+    return mBannedMove;
+}
+
+void GameHandler::SetBannedMove(eBannedMove bannedMove)
+{
+    mBannedMove = bannedMove;
 }

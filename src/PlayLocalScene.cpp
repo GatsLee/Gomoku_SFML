@@ -115,6 +115,7 @@ void PlayLocalScene::Init()
     mTmpStoneSprites[FOUR_FOUR_BAN_GUI].setScale(0.6, 0.6);
 
     mStoneTmpPosition = std::make_pair(-1, -1);
+    mCurrentTmpStoneSprite = nullptr;
 
     SetIsInit(true);
     SetIsRunning(true);
@@ -217,20 +218,45 @@ void PlayLocalScene::UpdateStone(const sf::Vector2i &mousePosition)
         // temporary stone position: hover over the board
         if (mGameHandler->IsLegalMove(x, y))
         {
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left) \
-                && AScene::isAnyClickEventHappening == false)
+            if (mStoneTmpPosition.first != x || mStoneTmpPosition.second != y)
             {
-                if (mGameHandler->PlaceStone(x, y))
+                mGameHandler->SetBannedMove(GameHandler::POSSIBLE);
+            }
+            if (mGameHandler->CheckRule(x, y))
+            {
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left) \
+                    && AScene::isAnyClickEventHappening == false)
                 {
-                    std::cout << "Stone placed at " << x << ", " << y << std::endl;
-                    mStoneTmpPosition = std::make_pair(-1, -1);
-                    AScene::isAnyClickEventHappening = true;
+                    if (mGameHandler->PlaceStone(x, y))
+                    {
+                        std::cout << "Stone placed at " << x << ", " << y << std::endl;
+                        mStoneTmpPosition = std::make_pair(-1, -1);
+                        AScene::isAnyClickEventHappening = true;
+                        return ;
+                    }
                 }
+            }
+            mStoneTmpPosition = std::make_pair(x, y);    
+            // set sprite(banned move)
+            GameHandler::eBannedMove bannedMove = mGameHandler->GetBannedMove();
+            if (bannedMove == GameHandler::OPEN_THREE)
+            {
+                mCurrentTmpStoneSprite = &mTmpStoneSprites[THREE_THREE_BAN_GUI];
+            }
+            else if (bannedMove == GameHandler::FOUR_FOUR)
+            {
+                mCurrentTmpStoneSprite = &mTmpStoneSprites[FOUR_FOUR_BAN_GUI];
             }
             else
             {
-                mStoneTmpPosition = std::make_pair(x, y);
-                // check if the stone placement is illegal based on the rule
+                if (mGameHandler->GetTurn() == GameHandler::BLACK_TURN)
+                {
+                    mCurrentTmpStoneSprite = spriteBlackStone;
+                }
+                else
+                {
+                    mCurrentTmpStoneSprite = spriteWhiteStone;
+                }
             }
         }
         else
@@ -238,7 +264,6 @@ void PlayLocalScene::UpdateStone(const sf::Vector2i &mousePosition)
             mStoneTmpPosition = std::make_pair(-1, -1);
             return;
         }
-        // place stone if the user clicks the mouse
     }
 }
 
@@ -259,19 +284,10 @@ void PlayLocalScene::DrawStone()
     // for the temporary stone
     if (mStoneTmpPosition.first != -1)
     {
-        if (mGameHandler->GetTurn() == GameHandler::BLACK_TURN)
-        {
-            spriteBlackStone->setPosition(GO_BOARD_X + mStoneTmpPosition.first * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6) ), \
-                                        GO_BOARD_Y + mStoneTmpPosition.second * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6) ));
-            mWindow->draw(*spriteBlackStone);
-        }
-        else
-        {
-            spriteWhiteStone->setPosition(GO_BOARD_X + mStoneTmpPosition.first * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6) ), \
-                                        GO_BOARD_Y + mStoneTmpPosition.second * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6) ));
-            mWindow->draw(*spriteWhiteStone);
-        }
-        mStoneTmpPosition = std::make_pair(-1, -1);
+        std::cout << "Draw temporary stone" << std::endl;
+        mCurrentTmpStoneSprite->setPosition(GO_BOARD_X + mStoneTmpPosition.first * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)), \
+                                            GO_BOARD_Y + mStoneTmpPosition.second * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)));
+        mWindow->draw(*mCurrentTmpStoneSprite);
     }
 
 }
