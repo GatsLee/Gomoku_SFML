@@ -284,7 +284,6 @@ void PlayLocalScene::DrawStone()
     // for the temporary stone
     if (mStoneTmpPosition.first != -1)
     {
-        std::cout << "Draw temporary stone" << std::endl;
         mCurrentTmpStoneSprite->setPosition(GO_BOARD_X + mStoneTmpPosition.first * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)), \
                                             GO_BOARD_Y + mStoneTmpPosition.second * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)));
         mWindow->draw(*mCurrentTmpStoneSprite);

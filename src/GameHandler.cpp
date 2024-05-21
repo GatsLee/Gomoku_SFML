@@ -32,16 +32,6 @@ GameHandler::~GameHandler()
     }
 }
 
-std::vector<std::pair<int, int> > GameHandler::GetBlackStoneHistory() const
-{
-    return mBlackStoneHistory;
-}
-
-std::vector<std::pair<int, int> > GameHandler::GetWhiteStoneHistory() const
-{
-    return mWhiteStoneHistory;
-}
-
 bool GameHandler::IsOpenThree(int x, int y, std::pair<int, int> dir, eTurn turn)
 {
     // suppose that mBoard[y][x] is the stone to be placed: not placed yet(0)
@@ -63,11 +53,10 @@ bool GameHandler::IsOpenThree(int x, int y, std::pair<int, int> dir, eTurn turn)
         // check the pattern
         int patternCount = 0;
         int end =  start + pattern.size();
-        for (; start < end; ++start)
+        for (int i = 0; start < end; start++, i++)
         {
-            if ( (pattern[start] == 0 && pattern[start] == mBoard[y + dy * start][x + dx * start]) || \
-                 (pattern[start] == 1 && mBoard[y + dy * start][x + dx * start] == color) || \
-                 (pattern[start] == 3 && mBoard[y + dy * start][x + dx * start] == 0) )
+            if ( ( (pattern[i] == 0 || pattern[i] == 3) && mBoard[y + dy * start][x + dx * start] == 0 ) \
+                || (pattern[i] == 1 && mBoard[y + dy * start][x + dx * start] == color) )
             {
                 patternCount++;
             }
@@ -77,7 +66,9 @@ bool GameHandler::IsOpenThree(int x, int y, std::pair<int, int> dir, eTurn turn)
             }
         }
         if (patternCount == pattern.size())
+        {
             return true;
+        }
     }
     return false;
 }
@@ -106,7 +97,6 @@ int GameHandler::IsFourStone(int x, int y, std::pair<int, int> dir, eTurn turn)
     // suppose that mBoard[y][x] is the stone to be placed: not placed yet(0)
     int count = 0;
     int color = (turn == BLACK_TURN) ? BLACK_STONE : WHITE_STONE;
-    int opponent = (turn == BLACK_TURN) ? WHITE_STONE : BLACK_STONE;
     int dx = dir.first, dy = dir.second;
     std::pair<int, int> start = {-1, -1};
     for (int i = -4; i <= 0; ++i)
@@ -126,19 +116,20 @@ int GameHandler::IsFourStone(int x, int y, std::pair<int, int> dir, eTurn turn)
                     stone++;
                     if (stone == 1)
                     {
-                        if (start == std::make_pair(x + dx * (i + j), y + dy * (i + j)))
-                            continue;
-                        start = {x + dx * (i + j), y + dy * (i + j)};
+                        if (start != std::make_pair(x + dx * (i + j), y + dy * (i + j)))
+                        {
+                            start = {x + dx * (i + j), y + dy * (i + j)};
+                        }
+                        else
+                        {
+                            stone = 0;
+                        }
                     }
                 }
                 else
                 {
-                    break;
+                    continue;
                 }
-            }
-            else
-            {
-                break;
             }
         }
         if (blank == 2 && stone == 3)
@@ -325,6 +316,16 @@ bool GameHandler::CheckWin(int count, int color)
         }
         return false;
     }
+}
+
+std::vector<std::pair<int, int> > GameHandler::GetBlackStoneHistory() const
+{
+    return mBlackStoneHistory;
+}
+
+std::vector<std::pair<int, int> > GameHandler::GetWhiteStoneHistory() const
+{
+    return mWhiteStoneHistory;
 }
 
 GameHandler::eTurn GameHandler::GetTurn() const
