@@ -42,6 +42,8 @@ public:
     void UpdateStone(const sf::Vector2i &mousePosition);
     void DrawStone();
 
+    void ResetGameHandler();
+
     static int LocalRuleSetting;
 
     static std::string WinnerName;

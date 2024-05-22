@@ -106,6 +106,8 @@ public:
     void SetBannedMove(eBannedMove bannedMove);
     eBannedMove GetBannedMove() const;
 
+    void ResetGameHandler();
+
 private:
     eTurn mTurn;
     eGameRule mRule;

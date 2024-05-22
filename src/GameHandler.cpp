@@ -318,6 +318,22 @@ bool GameHandler::CheckWin(int count, int color)
     }
 }
 
+void GameHandler::ResetGameHandler()
+{
+    mTurn = BLACK_TURN;
+    mStatus = GAME_ONGOING;
+    mBannedMove = POSSIBLE;
+    mBlackStoneHistory.clear();
+    mWhiteStoneHistory.clear();
+    for (int i = 0; i < BOARD_SIZE; i++)
+    {
+        for (int j = 0; j < BOARD_SIZE; j++)
+        {
+            mBoard[i][j] = 0;
+        }
+    }
+}
+
 std::vector<std::pair<int, int> > GameHandler::GetBlackStoneHistory() const
 {
     return mBlackStoneHistory;

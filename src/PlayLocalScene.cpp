@@ -291,6 +291,10 @@ void PlayLocalScene::DrawStone()
 
 }
 
+void PlayLocalScene::ResetGameHandler()
+{
+    mGameHandler->ResetGameHandler();
+}
 
 void PlayLocalScene::Render()
 {

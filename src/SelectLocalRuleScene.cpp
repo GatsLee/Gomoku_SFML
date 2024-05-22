@@ -1,4 +1,3 @@
-#include "PlayLocalScene.hpp"
 #include <SelectLocalRuleScene.hpp>
 
 SelectLocalRuleScene::SelectLocalRuleScene(sf::RenderWindow* window)

@@ -1,3 +1,4 @@
+#include "PlayLocalScene.hpp"
 #include "SFML/Graphics/Font.hpp"
 #include <GameOverScene.hpp>
 
@@ -70,12 +71,16 @@ void GameOverScene::Update(const sf::Vector2i& mousePosition, std::vector<AScene
         //check if buttons are clicked
         if (mPlayAgainButton->getState() == Button::ACTIVE)
         {
-            // SetNextSceneType(AScene::PLAY_LOCAL);
+            mScenes->pop_back(); // remove GameOverScene
+            mScenes->back()->SetNextSceneType(AScene::NOT_DEFINED);
+            reinterpret_cast<PlayLocalScene *>(mScenes->back())->ResetGameHandler();
             SetIsRunning(false);
         }
         else if (mBackToSelectModeButton->getState() == Button::ACTIVE)
         {
-            // SetNextSceneType(AScene::SELECT_MODE);
+            mScenes->pop_back(); // remove GameOverScene
+            mScenes->pop_back(); // remove PlayLocalScene
+            mScenes->back()->SetNextSceneType(AScene::NOT_DEFINED);
             SetIsRunning(false);
         }
         else if (mQuitButton->getState() == Button::ACTIVE)
