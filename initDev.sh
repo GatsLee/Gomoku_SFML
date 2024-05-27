@@ -56,7 +56,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Rename extracted directory to versioned directory
-mv "./lib/sfml/SFML-2.6.1-macOS-clang-64-bit" "./lib/sfml/2.6.1"
+mv "./lib/sfml/SFML-2.6.1-macOS-clang-arm64" "./lib/sfml/2.6.1"
 
 # Move required frameworks to Frameworks directory
 mv "./lib/sfml/2.6.1/extlibs/FLAC.framework" "./lib/sfml/2.6.1/Frameworks/"
