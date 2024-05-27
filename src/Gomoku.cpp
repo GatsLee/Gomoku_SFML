@@ -44,6 +44,12 @@ void Gomoku::update()
 		case AScene::SELECT_LOCAL_RULE:
 			mScenes.push_back(new SelectLocalRuleScene(mWindow));
 			break;
+		case AScene::SELECT_AI_RULE:
+			mScenes.push_back(new SelectAIRuleScene(mWindow));
+			break;
+		case AScene::SELECT_AI_STONE:
+			mScenes.push_back(new SelectAIStoneScene(mWindow));
+			break;
 		case AScene::PLAY_LOCAL:
 			mScenes.push_back(new PlayLocalScene(mWindow));
 			break;

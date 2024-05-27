@@ -58,7 +58,7 @@ void SelectModeScene::Update(const sf::Vector2i& mousePosition, std::vector<ASce
         }
         else if (mPlayAIButton->getState() == Button::ACTIVE)
         {
-            SetNextSceneType(AScene::SELECT_AI);
+            SetNextSceneType(AScene::SELECT_AI_RULE);
             SetIsRunning(false);
         }
         else if (mBackButton->getState() == Button::ACTIVE)

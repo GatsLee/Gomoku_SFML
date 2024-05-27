@@ -6,6 +6,8 @@
 #include <StartMenuScene.hpp>
 #include <SelectModeScene.hpp>
 #include <SelectLocalRuleScene.hpp>
+#include <SelectAIRuleScene.hpp>
+#include <SelectAIStoneScene.hpp>
 #include <PlayLocalScene.hpp>
 #include <GameOverScene.hpp>
 #include <iostream>

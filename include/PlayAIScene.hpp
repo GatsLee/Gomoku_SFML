@@ -1,5 +1,7 @@
 #pragma once
 
+#include "SFML/Graphics/RectangleShape.hpp"
+#include "SFML/Graphics/Sprite.hpp"
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
@@ -9,10 +11,10 @@
 #include <vector>
 #include <cmath>
 
-class PlayLocalScene : public AScene
+class PlayAIScene : public AScene
 {
 public:
-    enum ePlayLocalSceneUnit
+    enum ePlayAISceneUnit
     {
         GO_BOARD_X = 101,
         GO_BOARD_Y = 160,
@@ -29,8 +31,8 @@ public:
     };
 
 public:
-    PlayLocalScene(sf::RenderWindow* window);
-    ~PlayLocalScene();
+    PlayAIScene(sf::RenderWindow* window);
+    ~PlayAIScene();
 
     void Init();
     void Update(const sf::Vector2i &mousePosition, \
@@ -43,7 +45,8 @@ public:
 
     void ResetGameHandler();
 
-    static int LocalRuleSetting;
+    static int AIRuleSetting;
+    static int AITurn;
 
     static std::string WinnerName;
 private:
@@ -60,13 +63,12 @@ private:
         FOUR_FOUR_BAN_GUI,
     };
 
-
-    GameHandler *mGameHandler;
+    GameHandler* mGameHandler;
 
     sf::Sprite mSprites[3];
     sf::RectangleShape mWhiteBackground;
     Button *mOptionButton;
-    Button *mRuleButton;
+    Button *mBackButton;
 
     sf::Text *mPlayerOneName;
     sf::Text *mPlayerTwoName;
@@ -74,9 +76,8 @@ private:
     sf::Sprite *spriteBlackStone;
     sf::Sprite *spriteWhiteStone;
 
-    sf::Sprite mTmpStoneSprites[2];
-    sf::Sprite *mCurrentTmpStoneSprite;
+    sf::Sprite mTmpStoneSprite[2];
+    sf::Sprite *mTmpTextureSprite;
 
-    // for temporary stone: available, 3-3 ban, 4-4 ban
-    std::pair<int, int> mStoneTmpPosition;
+    std::pair<int, int> mTmpStonePosition;
 };

@@ -29,18 +29,6 @@ if [ "$compiler" == "gcc" ]; then
     echo "Error: Unsupported architecture '$arch' for gcc."
     exit 1
   fi
-elif [ "$compiler" == "clang" ]; then
-  if [ "$arch" == "x86_64" ]; then
-    sfml_bundle="SFML-2.6.1-macOS-clang-64-bit.tar.gz"
-  elif [ "$arch" == "arm64" ]; then
-    sfml_bundle="SFML-2.6.1-macOS-clang-arm64.tar.gz"
-  else
-    echo "Error: Unsupported architecture '$arch' for clang."
-    exit 1
-  fi
-else
-  echo "Error: Unsupported compiler '$compiler' or architecture '$arch'."
-  exit 1
 fi
 
 echo "Using SFML bundle: $sfml_bundle"
@@ -56,7 +44,12 @@ if [ $? -ne 0 ]; then
 fi
 
 # Rename extracted directory to versioned directory
-mv "./lib/sfml/SFML-2.6.1-macOS-clang-arm64" "./lib/sfml/2.6.1"
+
+if [[ "$arch" == "x86_64" && "$compiler" == "gcc" ]]; then
+  mv "./lib/sfml/SFML-2.6.1-macOS-clang-64-bit" "./lib/sfml/2.6.1"
+elif [[ "$arch" == "arm64" && "$compiler" == "gcc" ]]; then
+  mv "./lib/sfml/SFML-2.6.1-macOS-clang-arm64" "./lib/sfml/2.6.1"
+fi
 
 # Move required frameworks to Frameworks directory
 mv "./lib/sfml/2.6.1/extlibs/FLAC.framework" "./lib/sfml/2.6.1/Frameworks/"
