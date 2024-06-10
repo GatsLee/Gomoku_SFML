@@ -1,9 +1,11 @@
 #include <GameHandler.hpp>
-#include <iterator>
 
+/**
+ * @brief constructor for local mode
+ * 
+ */
 GameHandler::GameHandler(GameHandler::eGameRule rule, \
-                         GameHandler::ePlayMode mode, \
-                         eAIType aiType)
+                         GameHandler::ePlayMode mode)
     : mTurn(BLACK_TURN)
     , mRule(rule)
     , mMode(mode)
@@ -17,20 +19,34 @@ GameHandler::GameHandler(GameHandler::eGameRule rule, \
             mBoard[i][j] = 0;
         }
     }
-    if (aiType == AI_NOTDEFINED)
-        mAI = nullptr;
-    else
-        mAI = nullptr;
+    mAIMinMax = nullptr;
+}
+
+/**
+ * @brief constructor for AI mode
+ * 
+ */
+GameHandler::GameHandler(GameHandler::eGameRule rule, \
+                         GameHandler::ePlayMode mode, \
+                         eTurn aiTurn)
+    : mTurn(BLACK_TURN)
+    , mRule(rule)
+    , mMode(mode)
+    , mStatus(GAME_ONGOING)
+    , mBannedMove(POSSIBLE)
+{
+    for (int i = 0; i < BOARD_SIZE; i++)
+    {
+        for (int j = 0; j < BOARD_SIZE; j++)
+        {
+            mBoard[i][j] = 0;
+        }
+    }
+    mAIMinMax = new AIMinMax(aiTurn);
 }
 
 GameHandler::~GameHandler()
-{
-    if (mAI != nullptr)
-    {
-        delete mAI;
-        mAI = nullptr;
-    }
-}
+{}
 
 bool GameHandler::IsOpenThree(int x, int y, std::pair<int, int> dir, eTurn turn)
 {
@@ -347,6 +363,11 @@ std::vector<std::pair<int, int> > GameHandler::GetWhiteStoneHistory() const
 GameHandler::eTurn GameHandler::GetTurn() const
 {
     return mTurn;
+}
+
+GameHandler::eTurn GameHandler::GetAITurn() const
+{
+    return mAIMinMax->GetAITurn();
 }
 
 GameHandler::eGameStatus GameHandler::GetGameStatus() const

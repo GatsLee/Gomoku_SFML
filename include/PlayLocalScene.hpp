@@ -65,8 +65,6 @@ private:
 
     sf::Sprite mSprites[3];
     sf::RectangleShape mWhiteBackground;
-    Button *mOptionButton;
-    Button *mRuleButton;
 
     sf::Text *mPlayerOneName;
     sf::Text *mPlayerTwoName;

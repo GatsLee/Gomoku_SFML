@@ -2,8 +2,8 @@
 
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
-#include <IAI.hpp>
 #include <AScene.hpp>
+#include <AIMinMax.hpp>
 
 class GameHandler
 {
@@ -52,14 +52,6 @@ public:
         MODE_AI,
     };
 
-    enum eAIType
-    {
-        AI_NOTDEFINED,
-        AI_RANDOM,
-        AI_MINIMAX,
-        AI_MCTS,
-    };
-    
     enum eBannedMove
     {
         POSSIBLE,
@@ -81,8 +73,10 @@ public: //pattern
 
 public:
     GameHandler(GameHandler::eGameRule rule, \
+                GameHandler::ePlayMode mode);
+    GameHandler(GameHandler::eGameRule rule, \
                 GameHandler::ePlayMode mode, \
-                eAIType aiType);
+                eTurn aiTurn);
     ~GameHandler();
 
     bool CheckRule(int x, int y);
@@ -98,6 +92,7 @@ public:
     bool CheckWin(int count, int color);
 
     eTurn GetTurn() const;
+    eTurn GetAITurn() const;
     eGameStatus GetGameStatus() const;
 
     std::vector<std::pair<int, int> > GetBlackStoneHistory() const;
@@ -114,11 +109,12 @@ private:
     ePlayMode mMode;
     eGameStatus mStatus;
     eBannedMove mBannedMove;
-    IAI*                mAI;
-    
 	int mBoard[15][15];
+    AIMinMax *mAIMinMax;
 
 private:
     std::vector<std::pair<int, int> > mBlackStoneHistory;
     std::vector<std::pair<int, int> > mWhiteStoneHistory;
+    // for AI game
+    std::vector<std::pair<int, int> > mPossiblePoints;
 };

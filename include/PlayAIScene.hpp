@@ -1,7 +1,5 @@
 #pragma once
 
-#include "SFML/Graphics/RectangleShape.hpp"
-#include "SFML/Graphics/Sprite.hpp"
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
@@ -67,8 +65,6 @@ private:
 
     sf::Sprite mSprites[3];
     sf::RectangleShape mWhiteBackground;
-    Button *mOptionButton;
-    Button *mBackButton;
 
     sf::Text *mPlayerOneName;
     sf::Text *mPlayerTwoName;
@@ -76,8 +72,8 @@ private:
     sf::Sprite *spriteBlackStone;
     sf::Sprite *spriteWhiteStone;
 
-    sf::Sprite mTmpStoneSprite[2];
-    sf::Sprite *mTmpTextureSprite;
+    sf::Sprite mTmpStoneSprites[2];
+    sf::Sprite *mCurrentTmpStoneSprite;
 
-    std::pair<int, int> mTmpStonePosition;
+    std::pair<int, int> mStoneTmpPosition;
 };

@@ -1,8 +1,3 @@
-#include "AScene.hpp"
-#include "GameHandler.hpp"
-#include "SFML/Graphics/Sprite.hpp"
-#include "SFML/Graphics/Text.hpp"
-#include "SFML/Graphics/Texture.hpp"
 #include <PlayLocalScene.hpp>
 
 /**
@@ -27,8 +22,7 @@ void PlayLocalScene::Init()
 {
     // GameHandler init
     mGameHandler = new GameHandler( static_cast<enum GameHandler::eGameRule>(LocalRuleSetting), \
-                                     GameHandler::MODE_LOCAL , \
-                                     GameHandler::AI_NOTDEFINED);
+                                     GameHandler::MODE_LOCAL);
     // set Sprites
     sf::Texture* textureGoBoard, *textureWhiteGui, *textureBlackGui;
     textureGoBoard = new sf::Texture();
@@ -75,13 +69,6 @@ void PlayLocalScene::Init()
     // set background
     mWhiteBackground.setSize(sf::Vector2f(800, 800));
     mWhiteBackground.setFillColor(sf::Color::White);
-
-    // set Buttons
-    mOptionButton = new Button(Button::MEDIUM, "Option", sf::Vector2f(320, 10), sf::Vector2f(22, 13), 25);
-    mRuleButton = new Button(Button::MEDIUM, "Rule", sf::Vector2f(320, 75), sf::Vector2f(40, 13), 25);
-
-    mOptionButton->setScale(0.8, 0.8);
-    mRuleButton->setScale(0.8, 0.8);
 
     // set stone sprite
     sf::Texture *textureBlackStone = new sf::Texture();
@@ -141,21 +128,6 @@ void PlayLocalScene::Update(const sf::Vector2i &mousePosition, \
             SetIsRunning(false);
         }
 
-        // update buttons  
-        mOptionButton->update(mousePosition, event);
-        mRuleButton->update(mousePosition, event);
-        
-        // check button clicked
-        if (mOptionButton->getState() == Button::ACTIVE)
-        {
-            SetNextSceneType(AScene::OPTION_POPUP);
-            SetIsRunning(false);
-        }
-        else if (mRuleButton->getState() == Button::ACTIVE)
-        {
-            SetNextSceneType(AScene::RULE_POPUP);
-            SetIsRunning(false);
-        }
         // set stone
         UpdateStone(mousePosition);
         // check game status
@@ -308,9 +280,6 @@ void PlayLocalScene::Render()
     // draw player name
     mWindow->draw(*mPlayerOneName);
     mWindow->draw(*mPlayerTwoName);
-    // draw buttons
-    mOptionButton->render(mWindow);
-    mRuleButton->render(mWindow);
     // draw stone
     DrawStone();
 }

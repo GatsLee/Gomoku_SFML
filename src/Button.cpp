@@ -126,6 +126,13 @@ void Button::setScale(float x, float y)
 void Button::update(const sf::Vector2i &mousePosition, sf::Event event)
 {
     this->mButtonState = IDLE;
+    if (event.type == sf::Event::MouseButtonReleased \
+            && event.mouseButton.button == sf::Mouse::Left
+            && AScene::isAnyClickEventHappening == true)
+    {
+        std::cout << "Button Released" << std::endl;
+        AScene::isAnyClickEventHappening = false;
+    }
     if ((*mCurrent).getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
     {
         this->mButtonState = HOVER;
@@ -137,14 +144,6 @@ void Button::update(const sf::Vector2i &mousePosition, sf::Event event)
             std::cout << "Button Clicked" << std::endl;
             this->mButtonState = ACTIVE;
             AScene::isAnyClickEventHappening = true;
-        }
-        else if (event.type == sf::Event::MouseButtonReleased \
-                && event.mouseButton.button == sf::Mouse::Left
-                && AScene::isAnyClickEventHappening == true)
-        {
-            std::cout << "Button Released" << std::endl;
-            this->mButtonState = HOVER;
-            AScene::isAnyClickEventHappening = false;
         }
     }
 
