@@ -3,8 +3,6 @@
 #include <deque>
 #include <climits>
 
-#include <GameHandler.hpp>
-
 class AIMinMax
 {
 public:
@@ -24,15 +22,15 @@ public:
     };
 
 public:
-    AIMinMax(GameHandler::eTurn turn);
+    AIMinMax(int turn);
     ~AIMinMax();
 
     void Init();
 
-    GameHandler::eTurn GetAiTurn() const;
+    int GetAiTurn() const;
 
 private:
-    GameHandler::eTurn mAiTurn;
+    int mAiTurn;
 
     std::pair<int, int> mStartPoint;
     std::pair<int, int> mAnsPoint;

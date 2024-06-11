@@ -1,7 +1,8 @@
 #include <AIMinMax.hpp>
 
-AIMinMax::AIMinMax(GameHandler::eTurn turn)
-    : mStartPoint(std::make_pair(-1, -1))
+AIMinMax::AIMinMax(int turn, int board)
+    : mAiTurn(turn)
+    , mStartPoint(std::make_pair(-1, -1))
     , mAnsPoint(std::make_pair(-1, -1))
 {
     mPossiblePoints.clear();
@@ -11,7 +12,12 @@ AIMinMax::AIMinMax(GameHandler::eTurn turn)
 AIMinMax::~AIMinMax()
 {}
 
-GameHandler::eTurn AIMinMax::GetAiTurn() const
+int AIMinMax::GetAiTurn() const
 {
     return mAiTurn;
+}
+
+void AIMinMax::Init()
+{
+
 }

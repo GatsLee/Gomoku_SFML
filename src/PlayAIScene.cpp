@@ -14,10 +14,7 @@ void PlayAIScene::Init()
 {
     // Set the game handler
     mGameHandler = new GameHandler(static_cast<enum GameHandler::eGameRule>(AIRuleSetting), \
-    GameHandler::MODE_AI, 
-    GameHandler::AI_MINIMAX);
-
-    // Set AI
+    GameHandler::MODE_AI, AITurn);
 
     // set Sprites
     sf::Texture *textureGoBoard, *textureWhiteGui, *textureBlackGui;
@@ -188,7 +185,7 @@ void PlayAIScene::UpdateStone(const sf::Vector2i &mousePosition)
                     {
                         if (mGameHandler->PlaceStone(x, y))
                         {
-                            std::cout << "Stone placed at " << x << ", " << y << std::endl;
+                            std::cout << "Stone placed at " << x << ", " << y << std::endl; 
                             mStoneTmpPosition = std::make_pair(-1, -1);
                             AScene::isAnyClickEventHappening = true;
                             return ;
@@ -227,12 +224,21 @@ void PlayAIScene::UpdateStone(const sf::Vector2i &mousePosition)
     }
     else // for AI's turn
     {
-    
+        // 1. show AI is thinking
+        // 2. show AI's possible stone
+        // 3. place AI's stone
     }
 }
 
 void PlayAIScene::DrawStone()
 {
+    // AI's turn: draw the possible stones after AI's calculation: elapsed time
+    if (mGameHandler->GetTurn() == mGameHandler->GetAITurn())
+    {
+        // draw the possible stones
+        // draw the AI's stone
+    }
+    // draw the go stones: distinguish the stone color: player & AI
     for (auto &stone : mGameHandler->GetBlackStoneHistory())
     {
         spriteBlackStone->setPosition(GO_BOARD_X + stone.first * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)), \
@@ -252,9 +258,6 @@ void PlayAIScene::DrawStone()
                                             GO_BOARD_Y + mStoneTmpPosition.second * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)));
         mWindow->draw(*mCurrentTmpStoneSprite);
     }
-
-    // draw possible points: AI's turn : draw with yellow circle
-
 }
 
 void PlayAIScene::ResetGameHandler()
@@ -264,6 +267,18 @@ void PlayAIScene::ResetGameHandler()
 
 void PlayAIScene::Render()
 {
-    mWindow->clear();
-    mWindow->display();
+    // draw background
+    mWindow->draw(mWhiteBackground);
+    // draw go board
+    mWindow->draw(mSprites[GO_BOARD]);
+    // draw stone gui
+    mWindow->draw(mSprites[WHITE_STONE_GUI]);
+    mWindow->draw(mSprites[BLACK_STONE_GUI]);
+    // draw player name
+    mWindow->draw(*mPlayerOneName);
+    mWindow->draw(*mPlayerTwoName);
+    // draw AI related animation & possible stones
+    
+    // draw stones
+    DrawStone();
 }

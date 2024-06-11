@@ -19,7 +19,7 @@ GameHandler::GameHandler(GameHandler::eGameRule rule, \
             mBoard[i][j] = 0;
         }
     }
-    mAIMinMax = nullptr;
+    mAI = nullptr;
 }
 
 /**
@@ -28,7 +28,7 @@ GameHandler::GameHandler(GameHandler::eGameRule rule, \
  */
 GameHandler::GameHandler(GameHandler::eGameRule rule, \
                          GameHandler::ePlayMode mode, \
-                         eTurn aiTurn)
+                         int aiTurn)
     : mTurn(BLACK_TURN)
     , mRule(rule)
     , mMode(mode)
@@ -42,7 +42,8 @@ GameHandler::GameHandler(GameHandler::eGameRule rule, \
             mBoard[i][j] = 0;
         }
     }
-    mAIMinMax = new AIMinMax(aiTurn);
+    //aiTurn: 1(BLACK_TURN) or 2(WHITE_TURN)
+    mAI = new AIMinMax(aiTurn);
 }
 
 GameHandler::~GameHandler()

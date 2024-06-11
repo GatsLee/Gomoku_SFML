@@ -49,7 +49,17 @@ public:
     enum ePlayMode
     {
         MODE_LOCAL,
+        // PlayLocalScene.hpp
+        // IsLegalMove -> CheckRule(check bannedMove)
+        // -> (if button pressed)PlaceStone / SetBannedMove(show Sprites)
+        // -> CheckWin
         MODE_AI,
+        // PlayAIScene.hpp : suppose 1 player 2 AI
+        // (if turn is player) IsLegalMove -> CheckRule(check bannedMove)
+        // -> (if button pressed)PlaceStone / SetBannedMove(show Sprites)
+        // -> CheckWin
+        // (if turn is AI) mGameHandler-mAI -> calculateMove -> PlaceStone
+
     };
 
     enum eBannedMove
@@ -76,7 +86,7 @@ public:
                 GameHandler::ePlayMode mode);
     GameHandler(GameHandler::eGameRule rule, \
                 GameHandler::ePlayMode mode, \
-                eTurn aiTurn);
+                int aiTurn);
     ~GameHandler();
 
     bool CheckRule(int x, int y);
@@ -110,7 +120,7 @@ private:
     eGameStatus mStatus;
     eBannedMove mBannedMove;
 	int mBoard[15][15];
-    AIMinMax *mAIMinMax;
+    AIMinMax *mAI;
 
 private:
     std::vector<std::pair<int, int> > mBlackStoneHistory;
