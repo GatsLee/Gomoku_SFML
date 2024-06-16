@@ -97,6 +97,15 @@ void PlayAIScene::Init()
     mStoneTmpPosition = std::make_pair(-1, -1);
     mCurrentTmpStoneSprite = nullptr;
 
+    if (AITurn == 1)
+    {
+        mAIStatus = CALCULATE_MOVE;
+    }
+    else
+    {
+        mAIStatus = PLAYER_TURN;
+    }
+
     SetIsInit(true);
     SetIsRunning(true);
 }
@@ -111,16 +120,26 @@ void PlayAIScene::Update(const sf::Vector2i& mousePosition, std::vector<AScene*>
             AScene::isAnyClickEventHappening = false;
         }
 
-        UpdateStone(mousePosition);
+        // Execute Game according to the turn
+        if (mGameHandler->GetTurn() == AITurn)
+        {
+            UpdateAIStone();
+        }
+        else
+        {
+            UpdatePlayerStone(mousePosition);
+        }
+
+        // Check the game status: if the game is over
         if (mGameHandler->GetGameStatus() != GameHandler::GAME_ONGOING)
         {
             if (mGameHandler->GetGameStatus() == GameHandler::GAME_BLACK_WIN)
             {
-                WinnerName = "Player 1";
+                WinnerName = AITurn == 1 ? "AI" : "Player";
             }
             else if (mGameHandler->GetGameStatus() == GameHandler::GAME_WHITE_WIN)
             {
-                WinnerName = "Player 2";
+                WinnerName = AITurn == 1 ? "Player" : "AI";
             }
             SetNextSceneType(AScene::GAME_OVER);
             SetIsRunning(false);
@@ -128,105 +147,130 @@ void PlayAIScene::Update(const sf::Vector2i& mousePosition, std::vector<AScene*>
     }
 }
 
-void PlayAIScene::UpdateStone(const sf::Vector2i &mousePosition)
+void PlayAIScene::UpdateAIStone()
+{
+    // 1. show AI is thinking
+    // 1.1. check whether Scene is first time UpdateAIStone
+    // 1.2. if it is, calculate AI's move
+    if (mAIStatus == CALCULATE_MOVE)
+    {
+        mGameHandler->CalculateAIMove();
+        mTimeElapsed = mGameHandler->GetTimeUsedToCalculate();
+        mAIStatus = SHOW_INFO;
+    }
+    // 2. show AI's possible stone && time used to Calculate: 1s
+    else if (mAIStatus == SHOW_INFO)
+    {
+        // first check 
+        // show AI's possible stone
+        // show AI's thinking time
+        mAIStatus = PLACE_STONE;
+    }
+    // 3. place AI's stone
+    else if (mAIStatus == PLACE_STONE)
+    {
+        // place AI's stone
+        std::pair<int, int> AIMove = mGameHandler->GetAIMove();
+        // check the game status
+        if (mGameHandler->PlaceStone(AIMove.first, AIMove.second))
+        {
+            std::cout << "AI Stone placed at " << AIMove.first << ", " << AIMove.second << std::endl;
+            mTimeElapsed = 0.0;
+            mAIStatus = PLAYER_TURN;
+        }
+    }
+}
+
+void PlayAIScene::UpdatePlayerStone(const sf::Vector2i &mousePosition)
 {
     int x = -1, y = -1;
 
-    // for player's turn
-    if (mGameHandler->GetTurn() != mGameHandler->GetAITurn())
+    // Check if the mousePosition is on the go board
+    if (mousePosition.x >= GO_BOARD_X - GO_BOARD_PADDING \
+            && mousePosition.x <= GO_BOARD_X + GO_BOARD_GAP * 14 + GO_BOARD_PADDING \
+            && mousePosition.y >= GO_BOARD_Y - GO_BOARD_PADDING \
+            && mousePosition.y <= GO_BOARD_Y + GO_BOARD_GAP * 14 + GO_BOARD_PADDING)
     {
-        // Check if the mousePosition is on the go board
+        // classify the position near edge
         if (mousePosition.x >= GO_BOARD_X - GO_BOARD_PADDING \
-                && mousePosition.x <= GO_BOARD_X + GO_BOARD_GAP * 14 + GO_BOARD_PADDING \
-                && mousePosition.y >= GO_BOARD_Y - GO_BOARD_PADDING \
-                && mousePosition.y <= GO_BOARD_Y + GO_BOARD_GAP * 14 + GO_BOARD_PADDING)
+            && mousePosition.x <= GO_BOARD_X)
+        {   
+            x = 0;
+        }
+        else if (mousePosition.x >= GO_BOARD_X + GO_BOARD_GAP * 14 \
+            && mousePosition.x <= GO_BOARD_X + GO_BOARD_GAP * 14 + GO_BOARD_PADDING)
         {
-            // classify the position near edge
-            if (mousePosition.x >= GO_BOARD_X - GO_BOARD_PADDING \
-                && mousePosition.x <= GO_BOARD_X)
-            {   
-                x = 0;
-            }
-            else if (mousePosition.x >= GO_BOARD_X + GO_BOARD_GAP * 14 \
-                && mousePosition.x <= GO_BOARD_X + GO_BOARD_GAP * 14 + GO_BOARD_PADDING)
-            {
-                x = 14;
-            }
-            if (mousePosition.y >= GO_BOARD_Y - GO_BOARD_PADDING \
-                && mousePosition.y <= GO_BOARD_Y)
-            {
-                y = 0;
-            }
-            else if (mousePosition.y >= GO_BOARD_Y + GO_BOARD_GAP * 14 \
-                && mousePosition.y <= GO_BOARD_Y + GO_BOARD_GAP * 14 + GO_BOARD_PADDING)
-            {
-                y = 14;
-            }
-            // classify the position: rest of the board
-            float tmpX = std::roundf(static_cast<float>(mousePosition.x - GO_BOARD_X) / GO_BOARD_GAP);
-            float tmpY = std::roundf(static_cast<float>(mousePosition.y - GO_BOARD_Y) / GO_BOARD_GAP);
+            x = 14;
+        }
+        if (mousePosition.y >= GO_BOARD_Y - GO_BOARD_PADDING \
+            && mousePosition.y <= GO_BOARD_Y)
+        {
+            y = 0;
+        }
+        else if (mousePosition.y >= GO_BOARD_Y + GO_BOARD_GAP * 14 \
+            && mousePosition.y <= GO_BOARD_Y + GO_BOARD_GAP * 14 + GO_BOARD_PADDING)
+        {
+            y = 14;
+        }
+        // classify the position: rest of the board
+        float tmpX = std::roundf(static_cast<float>(mousePosition.x - GO_BOARD_X) / GO_BOARD_GAP);
+        float tmpY = std::roundf(static_cast<float>(mousePosition.y - GO_BOARD_Y) / GO_BOARD_GAP);
 
-            // set x, y
-            if (x == -1)
-                x = static_cast<int>(tmpX);
-            if (y == -1)
-                y = static_cast<int>(tmpY);
-            // temporary stone position: hover over the board
-            if (mGameHandler->IsLegalMove(x, y))
+        // set x, y
+        if (x == -1)
+            x = static_cast<int>(tmpX);
+        if (y == -1)
+            y = static_cast<int>(tmpY);
+        // temporary stone position: hover over the board
+        if (mGameHandler->IsLegalMove(x, y))
+        {
+            if (mStoneTmpPosition.first != x || mStoneTmpPosition.second != y)
             {
-                if (mStoneTmpPosition.first != x || mStoneTmpPosition.second != y)
+                mGameHandler->SetBannedMove(GameHandler::POSSIBLE);
+            }
+            if (mGameHandler->CheckRule(x, y))
+            {
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left) \
+                    && AScene::isAnyClickEventHappening == false)
                 {
-                    mGameHandler->SetBannedMove(GameHandler::POSSIBLE);
-                }
-                if (mGameHandler->CheckRule(x, y))
-                {
-                    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) \
-                        && AScene::isAnyClickEventHappening == false)
+                    if (mGameHandler->PlaceStone(x, y))
                     {
-                        if (mGameHandler->PlaceStone(x, y))
-                        {
-                            std::cout << "Stone placed at " << x << ", " << y << std::endl; 
-                            mStoneTmpPosition = std::make_pair(-1, -1);
-                            AScene::isAnyClickEventHappening = true;
-                            return ;
-                        }
+                        std::cout << "Stone placed at " << x << ", " << y << std::endl; 
+                        mStoneTmpPosition = std::make_pair(-1, -1);
+                        mGameHandler->UpdateAIBoard(x, y);
+                        AScene::isAnyClickEventHappening = true;
+                        return ;
                     }
                 }
-                mStoneTmpPosition = std::make_pair(x, y);    
-                // set sprite(banned move)
-                GameHandler::eBannedMove bannedMove = mGameHandler->GetBannedMove();
-                if (bannedMove == GameHandler::OPEN_THREE)
-                {
-                    mCurrentTmpStoneSprite = &mTmpStoneSprites[THREE_THREE_BAN_GUI];
-                }
-                else if (bannedMove == GameHandler::FOUR_FOUR)
-                {
-                    mCurrentTmpStoneSprite = &mTmpStoneSprites[FOUR_FOUR_BAN_GUI];
-                }
-                else
-                {
-                    if (mGameHandler->GetTurn() == GameHandler::BLACK_TURN)
-                    {
-                        mCurrentTmpStoneSprite = spriteBlackStone;
-                    }
-                    else
-                    {
-                        mCurrentTmpStoneSprite = spriteWhiteStone;
-                    }
-                }
+            }
+            mStoneTmpPosition = std::make_pair(x, y);    
+            // set sprite(banned move)
+            GameHandler::eBannedMove bannedMove = mGameHandler->GetBannedMove();
+            if (bannedMove == GameHandler::OPEN_THREE)
+            {
+                mCurrentTmpStoneSprite = &mTmpStoneSprites[THREE_THREE_BAN_GUI];
+            }
+            else if (bannedMove == GameHandler::FOUR_FOUR)
+            {
+                mCurrentTmpStoneSprite = &mTmpStoneSprites[FOUR_FOUR_BAN_GUI];
             }
             else
             {
-                mStoneTmpPosition = std::make_pair(-1, -1);
-                return;
+                if (mGameHandler->GetTurn() == GameHandler::BLACK_TURN)
+                {
+                    mCurrentTmpStoneSprite = spriteBlackStone;
+                }
+                else
+                {
+                    mCurrentTmpStoneSprite = spriteWhiteStone;
+                }
             }
         }
-    }
-    else // for AI's turn
-    {
-        // 1. show AI is thinking
-        // 2. show AI's possible stone
-        // 3. place AI's stone
+        else
+        {
+            mStoneTmpPosition = std::make_pair(-1, -1);
+            return;
+        }
     }
 }
 
@@ -277,6 +321,7 @@ void PlayAIScene::Render()
     // draw player name
     mWindow->draw(*mPlayerOneName);
     mWindow->draw(*mPlayerTwoName);
+
     // draw AI related animation & possible stones
     
     // draw stones

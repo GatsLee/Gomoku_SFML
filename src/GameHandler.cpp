@@ -385,3 +385,31 @@ void GameHandler::SetBannedMove(eBannedMove bannedMove)
 {
     mBannedMove = bannedMove;
 }
+
+// for AI game
+void GameHandler::UpdateAIBoard(int x, int y)
+{
+    mAI->UpdateBoard(x, y);
+}
+
+void GameHandler::CalculateAIMove()
+{
+    auto startTime = std::chrono::high_resolution_clock::now();
+    mAI->CalculateMove(mBoard);
+    auto endTime = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = endTime - startTime;
+    mTimeUsedToCalculate = duration.count();
+}
+
+double GameHandler::GetTimeUsedToCalculate()
+{
+    return mTimeUsedToCalculate;
+}
+
+std::pair<int, int> GameHandler::GetAIMove()
+{
+    if (mAI->IsCalculated())
+        return mAI->GetMove();
+    else
+        return std::make_pair(-1, -1);
+}

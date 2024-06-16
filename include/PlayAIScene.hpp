@@ -28,6 +28,15 @@ public:
         FOUR_FOUR_BAN,
     };
 
+    enum eAIStatus
+    {
+        CALCULATE_MOVE,
+        SHOW_INFO,
+        PLACE_STONE,
+        // 
+        PLAYER_TURN,
+    };
+
 public:
     PlayAIScene(sf::RenderWindow* window);
     ~PlayAIScene();
@@ -38,7 +47,8 @@ public:
                 sf::Event event);
     void Render();
 
-    void UpdateStone(const sf::Vector2i &mousePosition);
+    void UpdateAIStone();
+    void UpdatePlayerStone(const sf::Vector2i &mousePosition);
     void DrawStone();
 
     void ResetGameHandler();
@@ -76,4 +86,7 @@ private:
     sf::Sprite *mCurrentTmpStoneSprite;
 
     std::pair<int, int> mStoneTmpPosition;
+
+    eAIStatus mAIStatus;
+    double mTimeElapsed;
 };

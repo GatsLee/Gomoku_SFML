@@ -15,11 +15,18 @@ public:
         FIV = INT_MAX,
     };
 
-    struct sCoor
+    typedef struct sCount
     {
-        std::pair<int, int> XY;
-        enum eWeight weight;
-    };
+        int weight;
+        int emptySpace;
+        int enemy;
+    } tCount;
+    typedef struct sCoor
+    {
+        int x;
+        int y;
+        int weight;
+    } tCoor;
 
 public:
     AIMinMax(int turn);
@@ -27,14 +34,32 @@ public:
 
     void Init();
 
-    int GetAiTurn() const;
+    void CalculateAIMove(); // main function
+    void UpdateBoard(int x, int y);
+    void SetWeight();
+    void FindPossiblePoints();
+    void SearchBestMove(int depth);
+
+    std::pair<int, int> GetBestMove() const;
+    void SetBestMove(int x, int y);
+    bool cmpWeight(struct sCoor &a, struct sCoor &b);
 
 private:
-    int mAiTurn;
+    const int dir[8][2] = {
+        {0, 1}, {1, 0}, {1, 1}, {1, -1}, \
+        {0, -1}, {-1, 0}, {-1, -1}, {-1, 1}
+    };
+
+private:
+    int mTurn[2]; // first: player, second: AI
+    int mBoard[15][15];
+    int mWeight[15][15];
+    int w2[2][6][3][2]; // 2: player, AI, 6: num, 3: 2, 3, 4, 5, 6, 7, 2: 2, 3
 
     std::pair<int, int> mStartPoint;
     std::pair<int, int> mAnsPoint;
+    std::pair<int, int> mCurBestMove;
 
+    std::deque< tCoor > mSavePos;
     std::deque< std::pair<int, int> > mPossiblePoints;
-
 };

@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <AScene.hpp>
 #include <AIMinMax.hpp>
+#include <chrono>
 
 class GameHandler
 {
@@ -113,6 +114,12 @@ public:
 
     void ResetGameHandler();
 
+    // for AI game
+    void                UpdateAIBoard(int x, int y);
+    void                CalculateAIMove();
+    double              GetTimeUsedToCalculate();
+    std::pair<int, int> GetAIMove();
+
 private:
     eTurn mTurn;
     eGameRule mRule;
@@ -121,6 +128,8 @@ private:
     eBannedMove mBannedMove;
 	int mBoard[15][15];
     AIMinMax *mAI;
+    // for AI game: calculate time elapsed
+    double mTimeUsedToCalculate;
 
 private:
     std::vector<std::pair<int, int> > mBlackStoneHistory;
