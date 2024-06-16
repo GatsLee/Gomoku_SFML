@@ -135,7 +135,7 @@ int GameHandler::IsFourStone(int x, int y, std::pair<int, int> dir, eTurn turn)
                     {
                         if (start != std::make_pair(x + dx * (i + j), y + dy * (i + j)))
                         {
-                            start = {x + dx * (i + j), y + dy * (i + j)};
+                            start = std::make_pair(x + dx * (i + j), y + dy * (i + j));
                         }
                         else
                         {
@@ -395,7 +395,7 @@ void GameHandler::UpdateAIBoard(int x, int y)
 void GameHandler::CalculateAIMove()
 {
     auto startTime = std::chrono::high_resolution_clock::now();
-    mAI->CalculateMove(mBoard);
+    mAI->CalculateAIMove();
     auto endTime = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = endTime - startTime;
     mTimeUsedToCalculate = duration.count();
@@ -409,7 +409,12 @@ double GameHandler::GetTimeUsedToCalculate()
 std::pair<int, int> GameHandler::GetAIMove()
 {
     if (mAI->IsCalculated())
-        return mAI->GetMove();
+        return mAI->GetBestMove();
     else
         return std::make_pair(-1, -1);
+}
+
+bool GameHandler::IsCalculated()
+{
+    return mAI->IsCalculated();
 }

@@ -1,6 +1,6 @@
 #include <AIMinMax.hpp>
 
-bool AIMinMax::cmpWeight(struct sCoor &a, struct sCoor &b)
+bool AIMinMax::cmpWeight(struct sCoor a, struct sCoor b)
 {
     return a.weight > b.weight;
 }
@@ -67,7 +67,7 @@ void AIMinMax::FindPossiblePoints()
     }
 }
 
-void AIMinMax::SetWeight()
+void AIMinMax::SetWeight(int curTurn[2])
 {
     memset(mWeight, 0, sizeof(mWeight));
 
@@ -175,15 +175,105 @@ void AIMinMax::SetWeight()
     }
 }
 
-void AIMinMax::SearchBestMove(int depth)
+void AIMinMax::SearchBestMove(int depth, int curTurn)
 {
-    SetWeight();
-    
-}
+    int curColor[2] = {0,0};
+    if (curTurn == 1)
+    {
+        curColor[0] = mTurn[0];
+        curColor[1] = mTurn[1];
+    }
+    else
+    {
+        curColor[0] = mTurn[1];
+        curColor[1] = mTurn[0];
+    }
+    int high = 0;
+    SetWeight(curColor);
+    std::deque<tCoor> savePos;
+    for (int i = 0; i < 15; i++)
+    {
+        for (int j = 0; j < 15; j++)
+        {
+            int weight = mWeight[i][j];
+            if (weight > 0)
+            {
+                if (weight >= 301 || weight == 302) weight = 24;
+                else if (weight >= 118 && weight <= 200) weight = 320;
+                savePos.push_back({i, j, weight});
+                high = std::max(high, weight);
+            }
+        }
+    }
 
+    sort(savePos.begin(), savePos.end(), cmpWeight);
+
+    int curMax = savePos.front().weight;
+    int idx = 0;
+    for (int i = 1; i < savePos.size(); i++)
+    {
+        idx = i;
+        int num = savePos[i].weight;
+        if (num != curMax) break;
+    }
+
+    savePos.erase(savePos.begin() + idx, savePos.end());
+
+    int tempColor;
+    if (curTurn == 1) tempColor = 2;
+    else tempColor = 1;
+    if (depth % 2 == 1 && checkWin(tempColor))
+    {
+        return;
+    }
+    if (mTflag)
+    {
+        return;
+    }
+
+    if (!mTflag && (depth % 2 == 1 && ((curMax >= 326 && curMax < 406) || curMax >= 521)))
+    {
+        if (!((105 <= curMax && curMax <= 300) || (4000 <= curMax && curMax <= 20000)))
+        {
+            mTflag = true;
+            mCurBestMove = std::make_pair(savePos.front().x, savePos.front().y);
+            return;
+        }
+    }
+
+    if (depth == MAX_DEPTH)
+    {
+        return;
+    }
+
+    if (curTurn == 1)
+    {
+        for (auto &pos : savePos)
+        {
+            int x = pos.x, y = pos.y;
+            mBoard[x][y] = mTurn[1];
+            SearchBestMove(depth + 1, 2);
+            mBoard[x][y] = 0;
+        }
+    }
+    else if (curTurn == 2)
+    {
+        for (auto &pos : savePos)
+        {
+            int x = pos.x, y = pos.y;
+            mBoard[x][y] = mTurn[0];
+            SearchBestMove(depth + 1, 1);
+            mBoard[x][y] = 0;
+        }
+    }
+}
+/**
+ * @brief main function to calculate the AI move
+ * 
+ */
 void AIMinMax::CalculateAIMove()
 {
-    SetWeight();
+    SetWeight(mTurn);
     std::deque<tCoor> savePos;
 
     int highestWeight = 0;
@@ -215,7 +305,7 @@ void AIMinMax::CalculateAIMove()
         {
             int x = pos.x, y = pos.y;
             mBoard[x][y] = mTurn[1];
-            SearchBestMove(0);
+            SearchBestMove(0, mTurn[1]);
             mBoard[x][y] = 0;
         }
     }
@@ -233,4 +323,9 @@ std::pair<int, int> AIMinMax::GetBestMove() const
 void AIMinMax::SetBestMove(int x, int y)
 {
     mCurBestMove = std::make_pair(x, y);
+}
+
+bool AIMinMax::IsCalculated() const
+{
+    return mTflag;
 }

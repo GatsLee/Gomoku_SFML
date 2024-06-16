@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SFML/Graphics/CircleShape.hpp"
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
@@ -81,6 +82,8 @@ private:
 
     sf::Sprite *spriteBlackStone;
     sf::Sprite *spriteWhiteStone;
+    sf::CircleShape *mPossibleStone;
+    sf::Text        *mTimeText;
 
     sf::Sprite mTmpStoneSprites[2];
     sf::Sprite *mCurrentTmpStoneSprite;

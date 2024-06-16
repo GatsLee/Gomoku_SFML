@@ -94,14 +94,18 @@ void PlayAIScene::Init()
     mTmpStoneSprites[THREE_THREE_BAN_GUI].setScale(0.6, 0.6);
     mTmpStoneSprites[FOUR_FOUR_BAN_GUI].setScale(0.6, 0.6);
 
+    //set AI possible stone sprite: yellow circle
+    mPossibleStone = new sf::CircleShape(3, 100);
+    mPossibleStone->setFillColor(sf::Color::Yellow);
+
     mStoneTmpPosition = std::make_pair(-1, -1);
     mCurrentTmpStoneSprite = nullptr;
 
-    if (AITurn == 1)
+    if (AITurn == 1) // AI is black
     {
         mAIStatus = CALCULATE_MOVE;
     }
-    else
+    else // Player is black
     {
         mAIStatus = PLAYER_TURN;
     }
@@ -154,9 +158,12 @@ void PlayAIScene::UpdateAIStone()
     // 1.2. if it is, calculate AI's move
     if (mAIStatus == CALCULATE_MOVE)
     {
-        mGameHandler->CalculateAIMove();
-        mTimeElapsed = mGameHandler->GetTimeUsedToCalculate();
-        mAIStatus = SHOW_INFO;
+        if (mGameHandler->IsCalculated() == false)
+        {
+            mGameHandler->CalculateAIMove();
+            mTimeElapsed = mGameHandler->GetTimeUsedToCalculate();
+            mAIStatus = SHOW_INFO;
+        }
     }
     // 2. show AI's possible stone && time used to Calculate: 1s
     else if (mAIStatus == SHOW_INFO)
@@ -164,6 +171,10 @@ void PlayAIScene::UpdateAIStone()
         // first check 
         // show AI's possible stone
         // show AI's thinking time
+        mTimeText = new sf::Text("Time used to calculate: " + std::to_string(mTimeElapsed) + "s", \
+                                            *mPlayerOneName->getFont(), 25);
+        mTimeText->setFillColor(sf::Color::Black);
+        mTimeText->setPosition(30, 50);
         mAIStatus = PLACE_STONE;
     }
     // 3. place AI's stone
@@ -296,11 +307,14 @@ void PlayAIScene::DrawStone()
         mWindow->draw(*spriteWhiteStone);
     }
     // for the temporary stone: player's turn
-    if (mStoneTmpPosition.first != -1)
+    if (mGameHandler->GetTurn() != mGameHandler->GetAITurn())
     {
-        mCurrentTmpStoneSprite->setPosition(GO_BOARD_X + mStoneTmpPosition.first * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)), \
-                                            GO_BOARD_Y + mStoneTmpPosition.second * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)));
-        mWindow->draw(*mCurrentTmpStoneSprite);
+        if (mStoneTmpPosition.first != -1)
+        {
+            mCurrentTmpStoneSprite->setPosition(GO_BOARD_X + mStoneTmpPosition.first * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)), \
+                                                GO_BOARD_Y + mStoneTmpPosition.second * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)));
+            mWindow->draw(*mCurrentTmpStoneSprite);
+        }
     }
 }
 
@@ -322,8 +336,20 @@ void PlayAIScene::Render()
     mWindow->draw(*mPlayerOneName);
     mWindow->draw(*mPlayerTwoName);
 
-    // draw AI related animation & possible stones
-    
     // draw stones
     DrawStone();
+
+    // draw AI related animation & possible stones
+    if (mAIStatus == SHOW_INFO)
+    {
+        // draw AI's possible stone
+        for(auto &stone : mGameHandler->GetPossibleStone())
+        {
+            spriteBlackStone->setPosition(GO_BOARD_X + stone.first * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)), \
+                                        GO_BOARD_Y + stone.second * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)) );
+            mWindow->draw(*spriteBlackStone);
+        }
+        // draw AI's thinking time
+        mWindow->draw(*mTimeText);
+    }
 }

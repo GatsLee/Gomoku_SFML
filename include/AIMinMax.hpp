@@ -3,6 +3,7 @@
 #include <deque>
 #include <climits>
 
+#define MAX_DEPTH 30
 class AIMinMax
 {
 public:
@@ -36,13 +37,15 @@ public:
 
     void CalculateAIMove(); // main function
     void UpdateBoard(int x, int y);
-    void SetWeight();
+    void SetWeight(int curTurn[2]);
     void FindPossiblePoints();
-    void SearchBestMove(int depth);
+    void SearchBestMove(int depth, int curTurn);
 
     std::pair<int, int> GetBestMove() const;
     void SetBestMove(int x, int y);
-    bool cmpWeight(struct sCoor &a, struct sCoor &b);
+    static bool cmpWeight(struct sCoor a, struct sCoor b);
+
+    bool IsCalculated() const;
 
 private:
     const int dir[8][2] = {
@@ -55,6 +58,7 @@ private:
     int mBoard[15][15];
     int mWeight[15][15];
     int w2[2][6][3][2]; // 2: player, AI, 6: num, 3: 2, 3, 4, 5, 6, 7, 2: 2, 3
+    bool mTflag;
 
     std::pair<int, int> mStartPoint;
     std::pair<int, int> mAnsPoint;

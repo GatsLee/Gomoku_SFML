@@ -119,6 +119,8 @@ public:
     void                CalculateAIMove();
     double              GetTimeUsedToCalculate();
     std::pair<int, int> GetAIMove();
+    std::deque < std::pair<int, int> > &GetPossibleStone();
+    bool                IsCalculated();
 
 private:
     eTurn mTurn;
