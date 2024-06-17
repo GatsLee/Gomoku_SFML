@@ -368,7 +368,7 @@ GameHandler::eTurn GameHandler::GetTurn() const
 
 GameHandler::eTurn GameHandler::GetAITurn() const
 {
-    return mAIMinMax->GetAITurn();
+    return mAI->GetTurn();
 }
 
 GameHandler::eGameStatus GameHandler::GetGameStatus() const

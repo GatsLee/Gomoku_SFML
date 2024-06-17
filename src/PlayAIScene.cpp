@@ -12,7 +12,7 @@ PlayAIScene::~PlayAIScene()
 
 void PlayAIScene::Init()
 {
-    // Set the game handler
+    // Set the game handler: give handler which turn AI will get
     mGameHandler = new GameHandler(static_cast<enum GameHandler::eGameRule>(AIRuleSetting), \
     GameHandler::MODE_AI, AITurn);
 
@@ -21,7 +21,7 @@ void PlayAIScene::Init()
     textureGoBoard = new sf::Texture();
     textureWhiteGui = new sf::Texture();
     textureBlackGui = new sf::Texture();
-    if (!textureGoBoard->loadFromFile("asset/texture/GoBan.png")
+    if (!textureGoBoard->loadFromFile("asset/texture/GoBoard.png")
         || !textureWhiteGui->loadFromFile("asset/texture/WhiteStoneGui.png")
         || !textureBlackGui->loadFromFile("asset/texture/BlackStoneGui.png"))
     {
@@ -95,7 +95,7 @@ void PlayAIScene::Init()
     mTmpStoneSprites[FOUR_FOUR_BAN_GUI].setScale(0.6, 0.6);
 
     //set AI possible stone sprite: yellow circle
-    mPossibleStone = new sf::CircleShape(3, 100);
+    mPossibleStone = new sf::CircleShape(3, 30);
     mPossibleStone->setFillColor(sf::Color::Yellow);
 
     mStoneTmpPosition = std::make_pair(-1, -1);
@@ -175,6 +175,12 @@ void PlayAIScene::UpdateAIStone()
                                             *mPlayerOneName->getFont(), 25);
         mTimeText->setFillColor(sf::Color::Black);
         mTimeText->setPosition(30, 50);
+        auto startTime = std::chrono::high_resolution_clock::now();
+        auto currentTime = std::chrono::high_resolution_clock::now();
+        while (std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count() < 1)
+        {
+            currentTime = std::chrono::high_resolution_clock::now();
+        } // check the time for 1s
         mAIStatus = PLACE_STONE;
     }
     // 3. place AI's stone
@@ -287,12 +293,6 @@ void PlayAIScene::UpdatePlayerStone(const sf::Vector2i &mousePosition)
 
 void PlayAIScene::DrawStone()
 {
-    // AI's turn: draw the possible stones after AI's calculation: elapsed time
-    if (mGameHandler->GetTurn() == mGameHandler->GetAITurn())
-    {
-        // draw the possible stones
-        // draw the AI's stone
-    }
     // draw the go stones: distinguish the stone color: player & AI
     for (auto &stone : mGameHandler->GetBlackStoneHistory())
     {

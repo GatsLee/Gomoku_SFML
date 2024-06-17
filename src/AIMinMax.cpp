@@ -5,12 +5,14 @@ bool AIMinMax::cmpWeight(struct sCoor a, struct sCoor b)
     return a.weight > b.weight;
 }
 
-AIMinMax::AIMinMax(int turn)
+AIMinMax::AIMinMax(int AITurn)
     : mStartPoint(std::make_pair(-1, -1))
     , mAnsPoint(std::make_pair(-1, -1))
 {
-    mTurn[0] = (turn == 1) ? 1 : 2;
-    mTurn[1] = turn;
+    mTurn[0] = (AITurn == 1) ? 2 : 1; // player
+    mTurn[1] = AITurn; // AI
+    mIsCalculated = false;
+    memset(highestWeight, 0, sizeof(highestWeight));
 }
 
 AIMinMax::~AIMinMax()
@@ -78,8 +80,8 @@ void AIMinMax::SetWeight(int curTurn[2])
             for (int j = 0; j < 15; j++)
             {
                 int sum = 0;
-                tCount count[5];
-                if (mBoard[i][j]) continue;
+                tCount count[4]; // 0: horizontal, 1: vertical, 2: diagonal, 3: anti-diagonal
+                if (mBoard[i][j]) continue; // if the point is already occupied, skip
                 for (int d = 0; d < 4; d++)
                 {
                     int nx, ny;
@@ -92,10 +94,13 @@ void AIMinMax::SetWeight(int curTurn[2])
                     int enemyCnt = 0;
                     int before;
 
+                    // check the direction
                     while (true) {
 						nx = i + (cnt * dir[d][0]), ny = j + (cnt * dir[d][1]);
 						before = mBoard[nx - dir[d][0]][ny - dir[d][1]];
-						if (nx < 0 || ny < 0 || nx >= 15 || ny >= 15) {
+                        // if the point is out of the board
+						if (nx < 0 || ny < 0 || nx >= 15 || ny >= 15)
+                        {
 							if (remember || zeroCnt1 == 0) {
 								enemyCnt++;
 							}
@@ -103,7 +108,9 @@ void AIMinMax::SetWeight(int curTurn[2])
 
 							break;
 						}
-						if (mBoard[nx][ny] == mTurn[(type + 1) % 2]) {
+                        // if the point is occupied by the enemy
+						if (mBoard[nx][ny] == mTurn[(type + 1) % 2])
+                        {
 							if (remember || zeroCnt1 == 0) {
 								enemyCnt++;
 							}
@@ -111,20 +118,22 @@ void AIMinMax::SetWeight(int curTurn[2])
 
 							break;
 						}
-
+                        // if the point is occupied by the current one
 						if (mBoard[nx][ny] == mTurn[type]) {
 							remember = zeroCnt1;
 							num++;
 						}
+                        // if the point is empty
 						if (mBoard[nx][ny] == 0)zeroCnt1++;
+                        // if the empty space is more than 2, break
 						if (zeroCnt1 >= 2)break;
 						cnt++;
 					}
-					//cout <<"d: "<<d<< "remember " << remember <<" length "<<length<< endl;
 					zeroCnt1 = remember;
 					cnt = 1;
 					remember = 0;
 
+                    // check the opposite direction
                     while (true)
                     {
                         nx = i + (cnt * dir[d + 4][0]), ny = j + (cnt * dir[d + 4][1]);
@@ -163,7 +172,7 @@ void AIMinMax::SetWeight(int curTurn[2])
                 {
                     int num = count[d].weight, enemy = count[d].enemy, emptyspace = count[d].emptySpace;
 					int temp_w = w2[(type + 1) % 2][num][enemy][emptyspace];
-					//빈 공간은 하나만 감당, num+emptyspace>=5,enemy 2개 가중치 부여하지 않는다. 
+
 					if (emptyspace >= 2 || num + emptyspace >= 5)continue;
 					if (num != 4 && enemy >= 2)continue;
 					sum += temp_w;
@@ -175,144 +184,103 @@ void AIMinMax::SetWeight(int curTurn[2])
     }
 }
 
-void AIMinMax::SearchBestMove(int depth, int curTurn)
+double AIMinMax::EvaluateCurBoard(std::vector< std::vector<int> >curBoard, bool isMax, int curTurn)
 {
-    int curColor[2] = {0,0};
-    if (curTurn == 1)
+    double blackScore, whiteScore;
+    if (curTurn == 1) // black
     {
-        curColor[0] = mTurn[0];
-        curColor[1] = mTurn[1];
+        blackScore = GetScore(curBoard, true, curTurn);
+        whiteScore = GetScore(curBoard, false, curTurn);
     }
     else
     {
-        curColor[0] = mTurn[1];
-        curColor[1] = mTurn[0];
+        blackScore = GetScore(curBoard, false, curTurn);
+        whiteScore = GetScore(curBoard, true, curTurn);
     }
-    int high = 0;
-    SetWeight(curColor);
-    std::deque<tCoor> savePos;
+
+    if (blackScore == 0) blackScore = 1.0;
+
+    if (curTurn == 1)
+    {
+        return whiteScore / blackScore;
+    }
+    else
+    {
+        return blackScore / whiteScore;
+    }
+}
+
+std::deque < std::pair<int, int> > AIMinMax::FindPossibleMove(std::vector < std::vector<int> >curBoard)
+{
+    std::deque < std::pair<int, int> > possibleMove;
     for (int i = 0; i < 15; i++)
     {
         for (int j = 0; j < 15; j++)
         {
-            int weight = mWeight[i][j];
-            if (weight > 0)
+            if (curBoard[i][j] == 0)
             {
-                if (weight >= 301 || weight == 302) weight = 24;
-                else if (weight >= 118 && weight <= 200) weight = 320;
-                savePos.push_back({i, j, weight});
-                high = std::max(high, weight);
+                possibleMove.push_back(std::make_pair(i, j));
             }
         }
     }
+    return possibleMove;
+}
 
-    sort(savePos.begin(), savePos.end(), cmpWeight);
 
-    int curMax = savePos.front().weight;
-    int idx = 0;
-    for (int i = 1; i < savePos.size(); i++)
-    {
-        idx = i;
-        int num = savePos[i].weight;
-        if (num != curMax) break;
-    }
-
-    savePos.erase(savePos.begin() + idx, savePos.end());
-
-    int tempColor;
-    if (curTurn == 1) tempColor = 2;
-    else tempColor = 1;
-    if (depth % 2 == 1 && checkWin(tempColor))
-    {
-        return;
-    }
-    if (mTflag)
-    {
-        return;
-    }
-
-    if (!mTflag && (depth % 2 == 1 && ((curMax >= 326 && curMax < 406) || curMax >= 521)))
-    {
-        if (!((105 <= curMax && curMax <= 300) || (4000 <= curMax && curMax <= 20000)))
-        {
-            mTflag = true;
-            mCurBestMove = std::make_pair(savePos.front().x, savePos.front().y);
-            return;
-        }
-    }
-
+AIMinMax::tCoor AIMinMax::SearchBestMove(std::vector < std::vector<int> >curBoard, int depth, bool isMax, double alpha, double beta)
+{
     if (depth == MAX_DEPTH)
     {
-        return;
+        return {-1,-1, EvaluateCurBoard(curBoard, !isMax, mTurn[1])};
     }
 
-    if (curTurn == 1)
+    std::deque< std::pair<int, int> > possibleMove = FindPossibleMove(curBoard);
+
+
+    if (isMax == true)
     {
-        for (auto &pos : savePos)
-        {
-            int x = pos.x, y = pos.y;
-            mBoard[x][y] = mTurn[1];
-            SearchBestMove(depth + 1, 2);
-            mBoard[x][y] = 0;
-        }
+
     }
-    else if (curTurn == 2)
+    else
     {
-        for (auto &pos : savePos)
-        {
-            int x = pos.x, y = pos.y;
-            mBoard[x][y] = mTurn[0];
-            SearchBestMove(depth + 1, 1);
-            mBoard[x][y] = 0;
-        }
+    
     }
 }
+
 /**
  * @brief main function to calculate the AI move
  * 
  */
 void AIMinMax::CalculateAIMove()
 {
-    SetWeight(mTurn);
-    std::deque<tCoor> savePos;
-
-    int highestWeight = 0;
-    for (int i = 0; i < 15; i++)
+    // if the board is empty, set the first point to the center
+    if (mStartPoint.first == -1 && mStartPoint.second == -1)
     {
-        for (int j = 0; j < 15; i++)
-        {
-            int weight = mWeight[i][j];
-            if (weight > 0)
-            {
-                if (weight >= 301 || weight == 302) weight = 24;
-                else if (weight >= 118 && weight <= 200) weight = 320;
-                savePos.push_back({i, j, weight});
-                if (highestWeight < weight)
-                {
-                    highestWeight = weight;
-                    mCurBestMove = std::make_pair(i, j);
-                }
-            }
-        }
+        mCurBestMove = std::make_pair(7, 7);
+        mStartPoint = mCurBestMove;
+        mIsCalculated = true;
+        return;
     }
+    // if the board is not empty, calculate the best move
+    // if there is a move that can finish the game, do it
+    bool isEnd = SearchFinishingMove();
 
-    sort(savePos.begin(), savePos.end(), cmpWeight);
+    if (isEnd == true)
+    {
+        mIsCalculated = true;
+        return;
+    }
+    else // if there is no move that can finish the game, calculate the best move
+    {
+        mCurBestMove = SearchBestMove(mBoard, 0, true, 0.0, 0.0);  
+        mIsCalculated = true;
+        return;
+    }
+}
 
-    int curMax = savePos.front().weight;
-    if (!(curMax >= 326 && curMax < 406) || curMax >= 521)
-    {
-        for (auto &pos : savePos)
-        {
-            int x = pos.x, y = pos.y;
-            mBoard[x][y] = mTurn[1];
-            SearchBestMove(0, mTurn[1]);
-            mBoard[x][y] = 0;
-        }
-    }
-    if (!mPossiblePoints.empty())
-    {
-        mCurBestMove = mPossiblePoints.front();
-    }
+bool AIMinMax::SearchFinishingMove()
+{
+    return IsGameEnd(mTurn[1]);
 }
 
 std::pair<int, int> AIMinMax::GetBestMove() const
@@ -328,4 +296,96 @@ void AIMinMax::SetBestMove(int x, int y)
 bool AIMinMax::IsCalculated() const
 {
     return mTflag;
+}
+
+// clone functions for rule check(win, banned move, etc.) from GameHandler
+bool AIMinMax::CheckWin(int count, int color)
+{
+    if (count == 5)
+    {
+        mStatus = (color == BLACK_STONE) ? GAME_BLACK_WIN : GAME_WHITE_WIN;
+        return true;
+    }
+    else
+    {
+        if (mRule == RULE_FREESTYLE)
+        {
+            mStatus = (color == BLACK_STONE) ? GAME_BLACK_WIN : GAME_WHITE_WIN;
+            return true;
+        }
+        else if (mRule == RULE_STANDARD)
+        {
+            return false;
+        }
+        else if (mRule == RULE_RENJU)
+        {
+            if (color == 2)
+            {
+                mStatus = GAME_WHITE_WIN;
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+bool AIMinMax::IsGameEnd(int curTurn)
+{
+    const int directions[8][2] = {{1, 0}, {-1, 0}, \
+                                {0, 1}, {0, -1}, \
+                                {1, 1}, {-1, -1}, \
+                                {1, -1}, {-1, 1}};
+    bool isFull = true;
+
+    // check if the board is a draw
+    for (int y = 0; y < 15; ++y)
+    {
+        for (int x = 0; x < 15; ++x)
+        {
+            if (mBoard[y][x] == 0)
+            {
+                isFull = false;
+                break;
+            }
+        }
+    }
+    if (isFull)
+    {
+        return true;
+    }
+
+    // check if the game is finished
+    for (int y = 0; y < 15; ++y)
+    {
+        for (int x = 0; x < 15; ++x)
+        {
+            if (mBoard[y][x] == curTurn)
+            {
+                for (const auto& dir : directions)
+                {
+                    int count = 1;
+
+                    int dx = dir[0], dy = dir[1];
+                    int nx = x + dx, ny = y + dy;
+                    
+                    while (nx >= 0 && nx < 15 && ny >= 0 && ny < 15 &&
+                           mBoard[ny][nx] == curTurn)
+                    {
+                        ++count;
+                        nx += dx;
+                        ny += dy;
+                    }
+                    if (count >= 5 && CheckWin(count, curTurn))
+                    {
+                        if (curTurn == mTurn[1])
+                        {
+                            mCurBestMove = std::make_pair(x, y);
+                        }
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    return false;
 }

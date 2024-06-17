@@ -1,9 +1,11 @@
 #pragma once
 
 #include <deque>
+#include <vector>
 #include <climits>
 
 #define MAX_DEPTH 30
+
 class AIMinMax
 {
 public:
@@ -22,15 +24,17 @@ public:
         int emptySpace;
         int enemy;
     } tCount;
+
+    // 
     typedef struct sCoor
     {
         int x;
         int y;
-        int weight;
+        double weight;
     } tCoor;
 
 public:
-    AIMinMax(int turn);
+    AIMinMax(int AITurn);
     ~AIMinMax();
 
     void Init();
@@ -39,13 +43,22 @@ public:
     void UpdateBoard(int x, int y);
     void SetWeight(int curTurn[2]);
     void FindPossiblePoints();
-    void SearchBestMove(int depth, int curTurn);
+    
+
+    std::deque < std::pair<int, int> > FindPossibleMove(std::vector < std::vector<int> >curBoard);
+    double EvaluateCurBoard(std::vector< std::vector<int> > curBoard, bool isMax, int curTurn);
+    bool SearchFinishingMove();
+    tCoor SearchBestMove(std::vector< std::vector<int> > curBoard, int depth, bool isMax, double alpha, double beta);
 
     std::pair<int, int> GetBestMove() const;
     void SetBestMove(int x, int y);
     static bool cmpWeight(struct sCoor a, struct sCoor b);
 
     bool IsCalculated() const;
+
+   // clone functions for rule check(win, banned move, etc.) from GameHandler
+    bool CheckWin(int count, int color);
+    bool IsGameEnd(int curTurn);
 
 private:
     const int dir[8][2] = {
@@ -58,7 +71,8 @@ private:
     int mBoard[15][15];
     int mWeight[15][15];
     int w2[2][6][3][2]; // 2: player, AI, 6: num, 3: 2, 3, 4, 5, 6, 7, 2: 2, 3
-    bool mTflag;
+    int highestWeight[6];
+    bool mIsCalculated;
 
     std::pair<int, int> mStartPoint;
     std::pair<int, int> mAnsPoint;
