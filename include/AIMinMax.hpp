@@ -41,15 +41,19 @@ public:
 
     void CalculateAIMove(); // main function
     void UpdateBoard(int x, int y);
-    void SetWeight(int curTurn[2]);
     void FindPossiblePoints();
-    
+
 
     std::deque < std::pair<int, int> > FindPossibleMove(std::vector < std::vector<int> >curBoard);
     double EvaluateCurBoard(std::vector< std::vector<int> > curBoard, bool isMax, int curTurn);
     bool SearchFinishingMove();
     tCoor SearchBestMove(std::vector< std::vector<int> > curBoard, int depth, bool isMax, double alpha, double beta);
 
+    double GetScore(std::vector< std::vector<int> >curBoard, bool isAI, int curTurn);
+    double CalculateHorizontalScore(std::vector< std::vector<int> > curBoard, bool isMax, int curTurn);
+    double CalculateVerticalScore(std::vector< std::vector<int> > curBoard, bool isMax, int curTurn);
+    double CalculateDiagonalScore(std::vector< std::vector<int> > curBoard, bool isMax, int curTurn);
+    
     std::pair<int, int> GetBestMove() const;
     void SetBestMove(int x, int y);
     static bool cmpWeight(struct sCoor a, struct sCoor b);

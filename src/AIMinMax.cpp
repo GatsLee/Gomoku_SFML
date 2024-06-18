@@ -18,31 +18,6 @@ AIMinMax::AIMinMax(int AITurn)
 AIMinMax::~AIMinMax()
 {}
 
-void AIMinMax::Init()
-{
-	//0,2,25,421,1200000,10000000 },{ 0,1,22,105,17000,10000000
-	// my or your / num / enemy / space
-	//num=1 일때 빈공간 0인것만 1 나머지는 0
-	//map[5][9] = 1; map[5][10] = 2; map[5][11] = 2; map[5][13] = 2; map[5][14] = 1;
-	w2[0][1][0][0] = 2; w2[1][1][0][0] = 1;
-	w2[0][1][0][1] = 2; w2[1][1][0][1] = 0;
-	//num=2 일때
-	w2[0][2][0][0] = 25, w2[1][2][0][0] = 4;
-	w2[0][2][0][1] = 25, w2[1][2][0][1] = 1;
-	w2[0][2][1][1] = 2; w2[1][2][1][1] = 1;
-	w2[0][2][1][0] = 2; w2[1][2][1][0] = 1;
-	
-
-	//num=3
-	w2[0][3][0][0] = 521, w2[1][3][0][0] = 105;
-	w2[0][3][0][1] = 301; w2[1][3][0][1] = 13;	
-	w2[0][3][1][0] = 301, w2[1][3][1][0] = 13;
-	w2[0][3][1][1] = 301, w2[1][3][1][1] = 13;
-	//num=4
-	w2[0][4][0][0] = 21000; w2[0][4][1][0] = 20010; w2[0][4][2][0] = 20010;
-	w2[1][4][0][0] = 4001; w2[1][4][1][0] = 4001; w2[1][4][2][0] = 4001;
-}
-
 /**
  * @brief update the board with the new point: player
  * 
@@ -69,119 +44,16 @@ void AIMinMax::FindPossiblePoints()
     }
 }
 
-void AIMinMax::SetWeight(int curTurn[2])
+double AIMinMax::CalculateHorizontalScore(std::vector<std::vector<int> > curBoard, bool isMax, int curTurn)
 {
-    memset(mWeight, 0, sizeof(mWeight));
+    
+}
 
-    for (int type = 0; type < 2; type++)
-    {
-        for (int i = 0; i < 15; i++)
-        {
-            for (int j = 0; j < 15; j++)
-            {
-                int sum = 0;
-                tCount count[4]; // 0: horizontal, 1: vertical, 2: diagonal, 3: anti-diagonal
-                if (mBoard[i][j]) continue; // if the point is already occupied, skip
-                for (int d = 0; d < 4; d++)
-                {
-                    int nx, ny;
-                    int cnt = 1;
-                    int zeroCnt = 0;
-                    int zeroCnt1 = 0;
-                    int remember = 0;
-                    int zeroCnt2 = 0;
-                    int num = 0;
-                    int enemyCnt = 0;
-                    int before;
-
-                    // check the direction
-                    while (true) {
-						nx = i + (cnt * dir[d][0]), ny = j + (cnt * dir[d][1]);
-						before = mBoard[nx - dir[d][0]][ny - dir[d][1]];
-                        // if the point is out of the board
-						if (nx < 0 || ny < 0 || nx >= 15 || ny >= 15)
-                        {
-							if (remember || zeroCnt1 == 0) {
-								enemyCnt++;
-							}
-							if (before != 0)remember = zeroCnt1;
-
-							break;
-						}
-                        // if the point is occupied by the enemy
-						if (mBoard[nx][ny] == mTurn[(type + 1) % 2])
-                        {
-							if (remember || zeroCnt1 == 0) {
-								enemyCnt++;
-							}
-							if (before != 0)remember = zeroCnt1;
-
-							break;
-						}
-                        // if the point is occupied by the current one
-						if (mBoard[nx][ny] == mTurn[type]) {
-							remember = zeroCnt1;
-							num++;
-						}
-                        // if the point is empty
-						if (mBoard[nx][ny] == 0)zeroCnt1++;
-                        // if the empty space is more than 2, break
-						if (zeroCnt1 >= 2)break;
-						cnt++;
-					}
-					zeroCnt1 = remember;
-					cnt = 1;
-					remember = 0;
-
-                    // check the opposite direction
-                    while (true)
-                    {
-                        nx = i + (cnt * dir[d + 4][0]), ny = j + (cnt * dir[d + 4][1]);
-						if (nx < 0 || ny < 0 || nx >= 15 || ny >= 15)
-                        {
-							if (remember || zeroCnt2 == 0) {
-								enemyCnt++;
-							}
-							if (before != 0)remember = zeroCnt2;
-							break;
-						}
-						if (mBoard[nx][ny] == mTurn[(type + 1) % 2])
-                        {
-							if (remember || zeroCnt2 == 0) {
-								enemyCnt++;
-							}
-							if (before != 0)remember = zeroCnt2;
-							break;
-						}
-
-						if (mBoard[nx][ny] == mTurn[type])
-                        {
-							remember = zeroCnt2;
-							num++;
-						}
-						if (mBoard[nx][ny] == 0)zeroCnt2++;
-						if (zeroCnt2 >= 2) break;
-						cnt++;
-                    }
-                    zeroCnt2 = remember;
-                    zeroCnt = zeroCnt1 + zeroCnt2;
-                    count[d] = {num, zeroCnt, enemyCnt};
-                }
-
-                for (int d = 0; d < 4; d++)
-                {
-                    int num = count[d].weight, enemy = count[d].enemy, emptyspace = count[d].emptySpace;
-					int temp_w = w2[(type + 1) % 2][num][enemy][emptyspace];
-
-					if (emptyspace >= 2 || num + emptyspace >= 5)continue;
-					if (num != 4 && enemy >= 2)continue;
-					sum += temp_w;
-                }
-                mWeight[i][j] += sum;
-                if (mBoard[i][j]) mWeight[i][j] = 0;
-            }
-        }
-    }
+double AIMinMax::GetScore(std::vector< std::vector<int> >curBoard, bool isAI, int curTurn)
+{
+    return CalculateHorizontalScore(curBoard, isAI, curTurn) \
+                + CalculateVerticalScore(curBoard, isAI, curTurn) \
+                + CalculateDiagonalScore(curBoard, isAI, curTurn);
 }
 
 double AIMinMax::EvaluateCurBoard(std::vector< std::vector<int> >curBoard, bool isMax, int curTurn)
@@ -219,13 +91,58 @@ std::deque < std::pair<int, int> > AIMinMax::FindPossibleMove(std::vector < std:
         {
             if (curBoard[i][j] == 0)
             {
-                possibleMove.push_back(std::make_pair(i, j));
+                if (i > 0)
+                {
+                    if (j > 0)
+                    {
+                        // check if there is a stone around the point
+                        if (curBoard[i - 1][j - 1] != 0
+                            || curBoard[i - 1][j] != 0)
+                        {
+                            possibleMove.push_back(std::make_pair(i, j));
+                        }
+                    }
+                    else if (j < 14)
+                    {
+                        if (curBoard[i - 1][j] != 0
+                            || curBoard[i - 1][j + 1] != 0)
+                        {
+                            possibleMove.push_back(std::make_pair(i, j));
+                        }
+                    }
+                    else if (curBoard[i - 1][j] != 0)
+                    {
+                        possibleMove.push_back(std::make_pair(i, j));
+                    }
+                }
+                else if (i < 14)
+                {
+                    if (j > 0)
+                    {
+                        if (curBoard[i][j - 1] != 0
+                            || curBoard[i + 1][j - 1] != 0)
+                        {
+                            possibleMove.push_back(std::make_pair(i, j));
+                        }
+                    }
+                    else if (j < 14)
+                    {
+                        if (curBoard[i][j+1] != 0
+                            || curBoard[i + 1][j + 1] != 0)
+                        {
+                            possibleMove.push_back(std::make_pair(i, j));
+                        }
+                    }
+                    else if (curBoard[i + 1][j] != 0)
+                    {
+                        possibleMove.push_back(std::make_pair(i, j));
+                    }
+                }
             }
         }
     }
     return possibleMove;
 }
-
 
 AIMinMax::tCoor AIMinMax::SearchBestMove(std::vector < std::vector<int> >curBoard, int depth, bool isMax, double alpha, double beta)
 {
@@ -236,15 +153,55 @@ AIMinMax::tCoor AIMinMax::SearchBestMove(std::vector < std::vector<int> >curBoar
 
     std::deque< std::pair<int, int> > possibleMove = FindPossibleMove(curBoard);
 
+    if (possibleMove.empty())
+    {
+        return {-1, -1, EvaluateCurBoard(curBoard, !isMax, mTurn[1])};
+    }
 
+    tCoor bestMove = {-1, -1, (isMax) ? -1.0 : 1.0};
     if (isMax == true)
     {
+        for (auto move : possibleMove)
+        {
+            curBoard[move.first][move.second] = mTurn[1]; // AI
+            tCoor curMove = SearchBestMove(curBoard, depth + 1, !isMax, alpha, beta);
+            curMove.x = move.first;
+            curMove.y = move.second;
+            curBoard[move.first][move.second] = 0;
 
+            if (curMove.weight > bestMove.weight)
+            {
+                bestMove = curMove;
+            }
+            alpha = std::max(alpha, bestMove.weight);
+            if (beta <= alpha)
+            {
+                break;
+            }
+        }
     }
     else
     {
-    
+        for (auto move : possibleMove)
+        {
+            curBoard[move.first][move.second] = mTurn[0]; // player
+            tCoor curMove = SearchBestMove(curBoard, depth + 1, !isMax, alpha, beta);
+            curMove.x = move.first;
+            curMove.y = move.second;
+            curBoard[move.first][move.second] = 0;
+
+            if (curMove.weight < bestMove.weight)
+            {
+                bestMove = curMove;
+            }
+            beta = std::min(beta, bestMove.weight);
+            if (beta <= alpha)
+            {
+                break;
+            }
+        }
     }
+    return bestMove;
 }
 
 /**
