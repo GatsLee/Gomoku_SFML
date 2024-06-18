@@ -9,6 +9,7 @@
 #include <SelectAIRuleScene.hpp>
 #include <SelectAIStoneScene.hpp>
 #include <PlayLocalScene.hpp>
+#include <PlayAIScene.hpp>
 #include <GameOverScene.hpp>
 #include <iostream>
 #include <vector>

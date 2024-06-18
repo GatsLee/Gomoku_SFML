@@ -1,8 +1,10 @@
+#include "AScene.hpp"
 #include <SelectAIStoneScene.hpp>
 
 SelectAIStoneScene::SelectAIStoneScene(sf::RenderWindow* window)
     : AScene(SELECT_AI_STONE, window)
-{}
+{
+}
 
 SelectAIStoneScene::~SelectAIStoneScene()
 {}
@@ -107,14 +109,18 @@ void SelectAIStoneScene::Update(const sf::Vector2i &mousePosition, \
     if (IsAnySceneRunning(mScenes) == false)
     {
         SetIsRunning(true);
+        if (event.type == sf::Event::MouseButtonReleased)
+        {
+            AScene::isAnyClickEventHappening = false;
+        }
         // update buttons
         mBackButton->update(mousePosition, event);
-
         // select stone: mouse hover || click event
         if (mRectangles[BLACK_STONE_BACKGROUND]->getGlobalBounds().contains(mousePosition.x, mousePosition.y))
         {
             mRectangles[BLACK_STONE_BACKGROUND]->setFillColor(sf::Color(0, 0, 0, 70));
-            if (event.type == sf::Event::MouseButtonPressed \
+            if (AScene::isAnyClickEventHappening == false 
+                && event.type == sf::Event::MouseButtonPressed \
                 && event.mouseButton.button == sf::Mouse::Left)
             {
                 PlayAIScene::AITurn = 1;
@@ -130,10 +136,11 @@ void SelectAIStoneScene::Update(const sf::Vector2i &mousePosition, \
         if (mRectangles[WHITE_STONE_BACKGROUND]->getGlobalBounds().contains(mousePosition.x, mousePosition.y))
         {
             mRectangles[WHITE_STONE_BACKGROUND]->setFillColor(sf::Color(0, 0, 0, 70));
-            if (event.type == sf::Event::MouseButtonPressed \
+            if (AScene::isAnyClickEventHappening == false \
+                && event.type == sf::Event::MouseButtonPressed \
                 && event.mouseButton.button == sf::Mouse::Left)
             {
-                PlayAIScene::AITurn = 0;
+                PlayAIScene::AITurn = 2;
                 SetNextSceneType(AScene::PLAY_AI);
                 SetIsRunning(false);
             }
@@ -146,10 +153,10 @@ void SelectAIStoneScene::Update(const sf::Vector2i &mousePosition, \
         // check if buttons are clicked
         if (mBackButton->getState() == Button::ACTIVE)
         {
-            SetNextSceneType(AScene::NOT_DEFINED);
             SetIsRunning(false);
+            mScenes->pop_back();
+            mScenes->back()->SetNextSceneType(AScene::NOT_DEFINED);
         }
-    
     }
 }
 

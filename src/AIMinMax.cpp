@@ -11,6 +11,7 @@ AIMinMax::AIMinMax(int AITurn)
 {
     mTurn[0] = (AITurn == 1) ? 2 : 1; // player
     mTurn[1] = AITurn; // AI
+    mBoard.resize(15, std::vector<int>(15, 0));
     mIsCalculated = false;
 }
 

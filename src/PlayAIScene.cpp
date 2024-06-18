@@ -47,8 +47,8 @@ void PlayAIScene::Init()
         std::cerr << "Error: Could not load font for Play Local Scene" << std::endl;
         exit(1);
     }
-    std::string tmpPlayerOne = (AITurn == 0) ? "AI": "Player";
-    std::string tmpPlayerTwo = (AITurn == 0) ? "Player": "AI";
+    std::string tmpPlayerOne = (AITurn == 1) ? "Player": "AI";
+    std::string tmpPlayerTwo = (AITurn == 1) ? "AI": "Player";
 
     mPlayerOneName = new sf::Text(tmpPlayerOne, *font, 25);
     mPlayerTwoName = new sf::Text(tmpPlayerTwo, *font, 25);
@@ -102,6 +102,8 @@ void PlayAIScene::Init()
     mStoneTmpPosition = std::make_pair(-1, -1);
     mCurrentTmpStoneSprite = nullptr;
 
+    mTimeText = nullptr;
+
     if (AITurn == 1) // AI is black
     {
         mAIStatus = CALCULATE_MOVE;
@@ -113,18 +115,19 @@ void PlayAIScene::Init()
 
     SetIsInit(true);
     SetIsRunning(true);
+    std::cout << "PlayAIScene Init" << std::endl;
 }
 
 void PlayAIScene::Update(const sf::Vector2i& mousePosition, std::vector<AScene*>* mScenes, sf::Event event)
 {
     if (IsAnySceneRunning(mScenes) == false)
     {
+        std::cout << "PlayAIScene Update" << std::endl;
         SetIsRunning(true);
         if (event.type == sf::Event::MouseButtonReleased)
         {
             AScene::isAnyClickEventHappening = false;
         }
-
         // Execute Game according to the turn
         if (mGameHandler->GetTurn() == AITurn)
         {

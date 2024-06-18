@@ -43,6 +43,8 @@ GameHandler::GameHandler(GameHandler::eGameRule rule, \
         }
     }
     //aiTurn: 1(BLACK_TURN) or 2(WHITE_TURN)
+    if (aiTurn == 0)
+        exit(0);
     mAI = new AIMinMax(aiTurn);
 }
 

@@ -53,24 +53,17 @@ void Gomoku::update()
 		case AScene::PLAY_LOCAL:
 			mScenes.push_back(new PlayLocalScene(mWindow));
 			break;
+		case AScene::PLAY_AI:
+			mScenes.push_back(new PlayAIScene(mWindow));
+			break;
 		case AScene::EXIT:
 			exit(0);
 			break;
 		case AScene::NOT_DEFINED:
 			break;
-		// case AScene::SELECT_AI:
-		// 	mScenes.push(new SelectAIScene(mWindow));
-		// 	break;
-		// case AScene::PAUSE:
-		// 	mScenes.push(new PauseScene(mWindow));
-		// 	break;
-		// case AScene::GAME:
-		// 	mScenes.push(new GameScene(mWindow));
-		// 	break;
 		case AScene::GAME_OVER:
 			mScenes.push_back(new GameOverScene(mWindow));
 			break;
-		// POPUP
 		}
 		if (mScenes.back()->IsInit() == false)
 		{

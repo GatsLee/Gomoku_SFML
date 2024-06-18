@@ -45,6 +45,10 @@ void SelectAIRuleScene::Update(const sf::Vector2i& mousePosition, std::vector<AS
     if (IsAnySceneRunning(mScenes) == false)
     {
         SetIsRunning(true);
+        if (event.type == sf::Event::MouseButtonReleased)
+        {
+            AScene::isAnyClickEventHappening = false;
+        }
         //update buttons
         mFreeRuleButton->update(mousePosition, event);
         mStandardRuleButton->update(mousePosition, event);
