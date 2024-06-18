@@ -3,10 +3,11 @@
 #include <deque>
 #include <vector>
 #include <climits>
+#include <cmath>
 
 #define MAX_DEPTH 30
 
-class AIMinMax
+class AIMinMax final
 {
 public:
     enum eWeight {
@@ -21,8 +22,8 @@ public:
     typedef struct sCount
     {
         int weight;
-        int emptySpace;
-        int enemy;
+        int consecutive;
+        int block; // blocked by enemy or board border
     } tCount;
 
     // 
@@ -44,12 +45,17 @@ public:
     void FindPossiblePoints();
 
 
-    std::deque < std::pair<int, int> > FindPossibleMove(std::vector < std::vector<int> >curBoard);
     double EvaluateCurBoard(std::vector< std::vector<int> > curBoard, bool isMax, int curTurn);
+    std::deque < std::pair<int, int> > FindPossibleMove(std::vector< std::vector<int> > curBoard);
     bool SearchFinishingMove();
     tCoor SearchBestMove(std::vector< std::vector<int> > curBoard, int depth, bool isMax, double alpha, double beta);
 
     double GetScore(std::vector< std::vector<int> >curBoard, bool isAI, int curTurn);
+
+    double CalculateConsecutiveWeight(int consecutive, int block, bool isMax, int curTurn);
+    void CalculateWeight(std::vector< std::vector<int> > curBoard, int i , int j, bool isMax, int curTurn, tCount &count);
+    void CalculatedAftermath(tCount &count,bool isMax, int curTurn);
+
     double CalculateHorizontalScore(std::vector< std::vector<int> > curBoard, bool isMax, int curTurn);
     double CalculateVerticalScore(std::vector< std::vector<int> > curBoard, bool isMax, int curTurn);
     double CalculateDiagonalScore(std::vector< std::vector<int> > curBoard, bool isMax, int curTurn);
@@ -60,22 +66,13 @@ public:
 
     bool IsCalculated() const;
 
-   // clone functions for rule check(win, banned move, etc.) from GameHandler
-    bool CheckWin(int count, int color);
+    // clone functions from game handler
     bool IsGameEnd(int curTurn);
-
-private:
-    const int dir[8][2] = {
-        {0, 1}, {1, 0}, {1, 1}, {1, -1}, \
-        {0, -1}, {-1, 0}, {-1, -1}, {-1, 1}
-    };
+    bool CheckWin(int count, int color);
 
 private:
     int mTurn[2]; // first: player, second: AI
-    int mBoard[15][15];
-    int mWeight[15][15];
-    int w2[2][6][3][2]; // 2: player, AI, 6: num, 3: 2, 3, 4, 5, 6, 7, 2: 2, 3
-    int highestWeight[6];
+    std::vector< std::vector <int> > mBoard;
     bool mIsCalculated;
 
     std::pair<int, int> mStartPoint;

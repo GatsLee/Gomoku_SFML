@@ -2,6 +2,7 @@
 
 int PlayAIScene::AIRuleSetting = 0;
 int PlayAIScene::AITurn = 0;
+std::string PlayAIScene::WinnerName = "";
 
 PlayAIScene::PlayAIScene(sf::RenderWindow* window)
     : AScene(PLAY_AI, window)
@@ -139,11 +140,11 @@ void PlayAIScene::Update(const sf::Vector2i& mousePosition, std::vector<AScene*>
         {
             if (mGameHandler->GetGameStatus() == GameHandler::GAME_BLACK_WIN)
             {
-                WinnerName = AITurn == 1 ? "AI" : "Player";
+                PlayAIScene::WinnerName = AITurn == 1 ? "AI" : "Player";
             }
             else if (mGameHandler->GetGameStatus() == GameHandler::GAME_WHITE_WIN)
             {
-                WinnerName = AITurn == 1 ? "Player" : "AI";
+                PlayAIScene::WinnerName = AITurn == 1 ? "Player" : "AI";
             }
             SetNextSceneType(AScene::GAME_OVER);
             SetIsRunning(false);
@@ -307,7 +308,7 @@ void PlayAIScene::DrawStone()
         mWindow->draw(*spriteWhiteStone);
     }
     // for the temporary stone: player's turn
-    if (mGameHandler->GetTurn() != mGameHandler->GetAITurn())
+    if (mGameHandler->GetTurn() != AITurn)
     {
         if (mStoneTmpPosition.first != -1)
         {
@@ -343,12 +344,12 @@ void PlayAIScene::Render()
     if (mAIStatus == SHOW_INFO)
     {
         // draw AI's possible stone
-        for(auto &stone : mGameHandler->GetPossibleStone())
-        {
-            spriteBlackStone->setPosition(GO_BOARD_X + stone.first * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)), \
-                                        GO_BOARD_Y + stone.second * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)) );
-            mWindow->draw(*spriteBlackStone);
-        }
+        // for(auto &stone : mGameHandler->GetPossibleStone())
+        // {
+        //     spriteBlackStone->setPosition(GO_BOARD_X + stone.first * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)), \
+        //                                 GO_BOARD_Y + stone.second * GO_BOARD_GAP - (static_cast<int>(STONE_RADIUS / 2 * 0.6)) );
+        //     mWindow->draw(*spriteBlackStone);
+        // }
         // draw AI's thinking time
         mWindow->draw(*mTimeText);
     }

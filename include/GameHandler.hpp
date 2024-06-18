@@ -103,7 +103,6 @@ public:
     bool CheckWin(int count, int color);
 
     eTurn GetTurn() const;
-    eTurn GetAITurn() const;
     eGameStatus GetGameStatus() const;
 
     std::vector<std::pair<int, int> > GetBlackStoneHistory() const;
@@ -119,7 +118,6 @@ public:
     void                CalculateAIMove();
     double              GetTimeUsedToCalculate();
     std::pair<int, int> GetAIMove();
-    std::deque < std::pair<int, int> > &GetPossibleStone();
     bool                IsCalculated();
 
 private:

@@ -366,11 +366,6 @@ GameHandler::eTurn GameHandler::GetTurn() const
     return mTurn;
 }
 
-GameHandler::eTurn GameHandler::GetAITurn() const
-{
-    return mAI->GetTurn();
-}
-
 GameHandler::eGameStatus GameHandler::GetGameStatus() const
 {
     return mStatus;
