@@ -119,7 +119,7 @@ public:
     double              GetTimeUsedToCalculate();
     std::pair<int, int> GetAIMove();
     bool                IsCalculated();
-
+    void                ResetCalculation();
 private:
     eTurn mTurn;
     eGameRule mRule;

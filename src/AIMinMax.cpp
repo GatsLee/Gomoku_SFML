@@ -414,6 +414,19 @@ bool AIMinMax::IsCalculated() const
     return mIsCalculated;
 }
 
+void AIMinMax::SetCalculated(bool isCalculated)
+{
+    mIsCalculated = isCalculated;
+}
+
+void AIMinMax::ResetCalculation()
+{
+   SetCalculated(false);
+   mCurBestMove = std::make_pair(-1, -1);
+   mSavePos.clear();
+   mPossiblePoints.clear();
+}
+
 //clone function from game handler
 bool AIMinMax::IsGameEnd(int curTurn)
 {

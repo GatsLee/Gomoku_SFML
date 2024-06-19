@@ -415,3 +415,8 @@ bool GameHandler::IsCalculated()
 {
     return mAI->IsCalculated();
 }
+
+void GameHandler::ResetCalculation()
+{
+    mAI->ResetCalculation();
+}

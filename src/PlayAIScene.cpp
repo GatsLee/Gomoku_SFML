@@ -160,6 +160,8 @@ void PlayAIScene::UpdateAIStone()
     // 1. show AI is thinking
     // 1.1. check whether Scene is first time UpdateAIStone
     // 1.2. if it is, calculate AI's move
+    std::cout << "AI's Turn" << std::endl;
+    std::cout << "AI Status: " << mAIStatus << std::endl;
     if (mAIStatus == CALCULATE_MOVE)
     {
         if (mGameHandler->IsCalculated() == false)
@@ -175,29 +177,33 @@ void PlayAIScene::UpdateAIStone()
         // first check 
         // show AI's possible stone
         // show AI's thinking time
-        mTimeText = new sf::Text("Time used to calculate: " + std::to_string(mTimeElapsed) + "s", \
-                                            *mPlayerOneName->getFont(), 25);
-        mTimeText->setFillColor(sf::Color::Black);
-        mTimeText->setPosition(30, 50);
-        auto startTime = std::chrono::high_resolution_clock::now();
-        auto currentTime = std::chrono::high_resolution_clock::now();
-        while (std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count() < 1)
-        {
-            currentTime = std::chrono::high_resolution_clock::now();
-        } // check the time for 1s
+        // mTimeText = new sf::Text("Time used to calculate: " + std::to_string(mTimeElapsed) + "s", \
+        //                                     *mPlayerOneName->getFont(), 25);
+        // mTimeText->setFillColor(sf::Color::Black);
+        // mTimeText->setPosition(30, 50);
+        // auto startTime = std::chrono::high_resolution_clock::now();
+        // auto currentTime = std::chrono::high_resolution_clock::now();
+        // while (std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count() < 1)
+        // {
+        //     currentTime = std::chrono::high_resolution_clock::now();
+        // } // check the time for 1s
         mAIStatus = PLACE_STONE;
     }
     // 3. place AI's stone
     else if (mAIStatus == PLACE_STONE)
     {
         // place AI's stone
-        std::pair<int, int> AIMove = mGameHandler->GetAIMove();
-        // check the game status
-        if (mGameHandler->PlaceStone(AIMove.first, AIMove.second))
+        if (mGameHandler->IsCalculated() == true)
         {
-            std::cout << "AI Stone placed at " << AIMove.first << ", " << AIMove.second << std::endl;
-            mTimeElapsed = 0.0;
-            mAIStatus = PLAYER_TURN;
+            std::pair<int, int> AIMove = mGameHandler->GetAIMove();
+            // check the game status
+            if (mGameHandler->PlaceStone(AIMove.first, AIMove.second))
+            {
+                std::cout << "AI Stone placed at " << AIMove.first << ", " << AIMove.second << std::endl;
+                mTimeElapsed = 0.0;
+                mAIStatus = PLAYER_TURN;
+                mGameHandler->ResetCalculation();
+            }
         }
     }
 }
@@ -206,6 +212,7 @@ void PlayAIScene::UpdatePlayerStone(const sf::Vector2i &mousePosition)
 {
     int x = -1, y = -1;
 
+    std::cout << "Player's Turn" << std::endl;
     // Check if the mousePosition is on the go board
     if (mousePosition.x >= GO_BOARD_X - GO_BOARD_PADDING \
             && mousePosition.x <= GO_BOARD_X + GO_BOARD_GAP * 14 + GO_BOARD_PADDING \
@@ -260,6 +267,7 @@ void PlayAIScene::UpdatePlayerStone(const sf::Vector2i &mousePosition)
                         mStoneTmpPosition = std::make_pair(-1, -1);
                         mGameHandler->UpdateAIBoard(x, y);
                         AScene::isAnyClickEventHappening = true;
+                        mAIStatus = CALCULATE_MOVE;
                         return ;
                     }
                 }
@@ -354,6 +362,6 @@ void PlayAIScene::Render()
         //     mWindow->draw(*spriteBlackStone);
         // }
         // draw AI's thinking time
-        mWindow->draw(*mTimeText);
+        // mWindow->draw(*mTimeText);
     }
 }

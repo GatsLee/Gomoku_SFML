@@ -44,7 +44,6 @@ public:
     void UpdateBoard(int x, int y);
     void FindPossiblePoints();
 
-
     double EvaluateCurBoard(std::vector< std::vector<int> > curBoard, bool isMax, int curTurn);
     std::deque < std::pair<int, int> > FindPossibleMove(std::vector< std::vector<int> > curBoard);
     bool SearchFinishingMove();
@@ -65,6 +64,9 @@ public:
     static bool cmpWeight(struct sCoor a, struct sCoor b);
 
     bool IsCalculated() const;
+    void SetCalculated(bool isCalculated);
+
+    void ResetCalculation();
 
     // clone functions from game handler
     bool IsGameEnd(int curTurn);
