@@ -1,0 +1,923 @@
+Button Clicked
+Button Released
+Button Clicked
+Button Clicked
+AI's Turn
+AI Status: 0
+AI's Move:7, 7
+AI's Turn
+AI Status: 1
+AI's Move:7, 7
+AI's Turn
+AI Status: 2
+AI Stone placed at 7, 7
+AI's Move:-1, -1
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Stone placed at 6, 6
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI Stone placed at 6, 7
+AI's Move:-1, -1
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Player's Turn
+Stone placed at 8, 7
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7
+AI's Turn
+AI Status: 2
+AI's Move:-1, -1
+AI's Turn
+AI Status: 0
+AI's Move:6, 7
+AI's Turn
+AI Status: 1
+AI's Move:6, 7

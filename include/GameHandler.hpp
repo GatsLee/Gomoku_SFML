@@ -114,7 +114,7 @@ public:
     void ResetGameHandler();
 
     // for AI game
-    void                UpdateAIBoard(int x, int y);
+    void                UpdateAIBoard(int x, int y, bool isAI);
     void                CalculateAIMove();
     double              GetTimeUsedToCalculate();
     std::pair<int, int> GetAIMove();

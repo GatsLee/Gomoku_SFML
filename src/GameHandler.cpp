@@ -384,9 +384,9 @@ void GameHandler::SetBannedMove(eBannedMove bannedMove)
 }
 
 // for AI game
-void GameHandler::UpdateAIBoard(int x, int y)
+void GameHandler::UpdateAIBoard(int x, int y, bool isAI)
 {
-    mAI->UpdateBoard(x, y);
+    mAI->UpdateBoard(x, y, isAI);
 }
 
 void GameHandler::CalculateAIMove()

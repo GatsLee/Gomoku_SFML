@@ -103,26 +103,17 @@ void PlayAIScene::Init()
     mCurrentTmpStoneSprite = nullptr;
 
     mTimeText = nullptr;
-
-    if (AITurn == 1) // AI is black
-    {
-        mAIStatus = CALCULATE_MOVE;
-    }
-    else // Player is black
-    {
-        mAIStatus = PLAYER_TURN;
-    }
+    mAIStatus = CALCULATE_MOVE;
 
     SetIsInit(true);
     SetIsRunning(true);
-    std::cout << "PlayAIScene Init" << std::endl;
+    isAnyClickEventHappening = true;
 }
 
 void PlayAIScene::Update(const sf::Vector2i& mousePosition, std::vector<AScene*>* mScenes, sf::Event event)
 {
     if (IsAnySceneRunning(mScenes) == false)
     {
-        std::cout << "PlayAIScene Update" << std::endl;
         SetIsRunning(true);
         if (event.type == sf::Event::MouseButtonReleased)
         {
@@ -160,8 +151,6 @@ void PlayAIScene::UpdateAIStone()
     // 1. show AI is thinking
     // 1.1. check whether Scene is first time UpdateAIStone
     // 1.2. if it is, calculate AI's move
-    std::cout << "AI's Turn" << std::endl;
-    std::cout << "AI Status: " << mAIStatus << std::endl;
     if (mAIStatus == CALCULATE_MOVE)
     {
         if (mGameHandler->IsCalculated() == false)
@@ -169,6 +158,11 @@ void PlayAIScene::UpdateAIStone()
             mGameHandler->CalculateAIMove();
             mTimeElapsed = mGameHandler->GetTimeUsedToCalculate();
             mAIStatus = SHOW_INFO;
+            if (mGameHandler->GetAIMove().first == -1 && mGameHandler->GetAIMove().second == -1)
+            {
+                mAIStatus = CALCULATE_MOVE;
+                mGameHandler->ResetCalculation();
+            }
         }
     }
     // 2. show AI's possible stone && time used to Calculate: 1s
@@ -200,9 +194,10 @@ void PlayAIScene::UpdateAIStone()
             if (mGameHandler->PlaceStone(AIMove.first, AIMove.second))
             {
                 std::cout << "AI Stone placed at " << AIMove.first << ", " << AIMove.second << std::endl;
+                mGameHandler->UpdateAIBoard(AIMove.first, AIMove.second, true);
                 mTimeElapsed = 0.0;
-                mAIStatus = PLAYER_TURN;
                 mGameHandler->ResetCalculation();
+                mAIStatus = CALCULATE_MOVE;
             }
         }
     }
@@ -263,13 +258,13 @@ void PlayAIScene::UpdatePlayerStone(const sf::Vector2i &mousePosition)
                 {
                     if (mGameHandler->PlaceStone(x, y))
                     {
-                        std::cout << "Stone placed at " << x << ", " << y << std::endl; 
                         mStoneTmpPosition = std::make_pair(-1, -1);
-                        mGameHandler->UpdateAIBoard(x, y);
+                        mGameHandler->UpdateAIBoard(x, y, false);
                         AScene::isAnyClickEventHappening = true;
                         mAIStatus = CALCULATE_MOVE;
                         return ;
                     }
+                    mGameHandler->ResetCalculation();
                 }
             }
             mStoneTmpPosition = std::make_pair(x, y);    

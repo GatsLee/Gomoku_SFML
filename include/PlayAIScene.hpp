@@ -34,8 +34,6 @@ public:
         CALCULATE_MOVE,
         SHOW_INFO,
         PLACE_STONE,
-        // 
-        PLAYER_TURN,
     };
 
 public:

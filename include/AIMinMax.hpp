@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <deque>
 #include <vector>
 #include <climits>
@@ -10,15 +11,6 @@
 class AIMinMax final
 {
 public:
-    enum eWeight {
-        ZER = 0,
-        FIR = 1,
-        SEC = 40,
-        THR = 999,
-        FOU = 1000000,
-        FIV = INT_MAX,
-    };
-
     typedef struct sCount
     {
         int weight;
@@ -26,7 +18,6 @@ public:
         int block; // blocked by enemy or board border
     } tCount;
 
-    // 
     typedef struct sCoor
     {
         int x;
@@ -41,7 +32,7 @@ public:
     void Init();
 
     void CalculateAIMove(); // main function
-    void UpdateBoard(int x, int y);
+    void UpdateBoard(int x, int y, bool isAI);
     void FindPossiblePoints();
 
     double EvaluateCurBoard(std::vector< std::vector<int> > curBoard, bool isMax, int curTurn);
@@ -75,10 +66,9 @@ public:
 private:
     int mTurn[2]; // first: player, second: AI
     std::vector< std::vector <int> > mBoard;
+    bool mIsFirstMove;
     bool mIsCalculated;
 
-    std::pair<int, int> mStartPoint;
-    std::pair<int, int> mAnsPoint;
     std::pair<int, int> mCurBestMove;
 
     std::deque< tCoor > mSavePos;

@@ -6,21 +6,29 @@ bool AIMinMax::cmpWeight(struct sCoor a, struct sCoor b)
 }
 
 AIMinMax::AIMinMax(int AITurn)
-    : mStartPoint(std::make_pair(-1, -1))
-    , mAnsPoint(std::make_pair(-1, -1))
 {
     mTurn[0] = (AITurn == 1) ? 2 : 1; // player
     mTurn[1] = AITurn; // AI
     mBoard.resize(15, std::vector<int>(15, 0));
     mIsCalculated = false;
+    mIsFirstMove = false;
 }
 
 AIMinMax::~AIMinMax()
 {}
 
-void AIMinMax::UpdateBoard(int x, int y)
+void AIMinMax::UpdateBoard(int x, int y, bool isAI)
 {
-    mBoard[x][y] = mTurn[0]; // player
+    if (isAI == true) // AI
+    {
+        std::cout << "AI: " << x << " " << y << std::endl;
+        mBoard[x][y] = mTurn[1];
+    }
+    else // player
+    {
+        std::cout << "Player: " << x << " " << y << std::endl;
+        mBoard[x][y] = mTurn[0];
+    }
 }
 
 std::deque < std::pair<int, int> > AIMinMax::FindPossibleMove(std::vector< std::vector<int> > curBoard)
@@ -43,7 +51,7 @@ std::deque < std::pair<int, int> > AIMinMax::FindPossibleMove(std::vector< std::
                             continue;
                         }
                     }
-                    else if ( j < 14)
+                    else if (j < 14)
                     {
                         if (curBoard[i - 1][j + 1] != 0
                             || curBoard[i][j + 1] != 0)
@@ -290,15 +298,16 @@ double AIMinMax::EvaluateCurBoard(std::vector< std::vector<int> >curBoard, bool 
         whiteScore = GetScore(curBoard, true, curTurn);
     }
 
-    if (blackScore == 0) blackScore = 1.0;
 
-    if (curTurn == 1)
+    if (curTurn == 1) // black
     {
-        return whiteScore / blackScore;
-    }
-    else
-    {
+        if (whiteScore == 0) whiteScore = 1.0;
         return blackScore / whiteScore;
+    }
+    else // white
+    {
+        if (blackScore == 0) blackScore = 1.0;
+        return whiteScore / blackScore;
     }
 }
 
@@ -316,7 +325,7 @@ AIMinMax::tCoor AIMinMax::SearchBestMove(std::vector < std::vector<int> >curBoar
         return {-1, -1, EvaluateCurBoard(curBoard, !isMax, mTurn[1])};
     }
 
-    tCoor bestMove = {-1, -1, (isMax) ? -1.0 : 1.0};
+    tCoor bestMove = {-1, -1, (isMax) ? -1.0 : 100000000000.0};
     if (isMax == true) // maximize the score of AI move
     {
         for (auto move : possibleMove)
@@ -327,14 +336,17 @@ AIMinMax::tCoor AIMinMax::SearchBestMove(std::vector < std::vector<int> >curBoar
             curMove.y = move.second;
             curBoard[move.first][move.second] = 0;
 
+            if (curMove.weight > alpha)
+            {
+                alpha = curMove.weight;
+            }
+            if (curMove.weight >= beta)
+            {
+                return curMove;
+            }
             if (curMove.weight > bestMove.weight)
             {
                 bestMove = curMove;
-            }
-            alpha = std::max(alpha, bestMove.weight);
-            if (beta <= alpha)
-            {
-                break;
             }
         }
     }
@@ -348,14 +360,18 @@ AIMinMax::tCoor AIMinMax::SearchBestMove(std::vector < std::vector<int> >curBoar
             curMove.y = move.second;
             curBoard[move.first][move.second] = 0;
 
+            if (curMove.weight < beta)
+            {
+                beta = curMove.weight;
+            }
+
+            if (curMove.weight <= alpha)
+            {
+                return curMove;
+            }
             if (curMove.weight < bestMove.weight)
             {
                 bestMove = curMove;
-            }
-            beta = std::min(beta, bestMove.weight);
-            if (beta <= alpha)
-            {
-                break;
             }
         }
     }
@@ -369,11 +385,11 @@ AIMinMax::tCoor AIMinMax::SearchBestMove(std::vector < std::vector<int> >curBoar
 void AIMinMax::CalculateAIMove()
 {
     // if the board is empty, set the first point to the center
-    if (mStartPoint.first == -1 && mStartPoint.second == -1)
+    if (mTurn[1] == 1 && mIsFirstMove == false)
     {
-        mCurBestMove = std::make_pair(7, 7);
-        mStartPoint = mCurBestMove;
+        mCurBestMove = std::make_pair(8, 8);
         mIsCalculated = true;
+        mIsFirstMove = true;
         return;
     }
     // if the board is not empty, calculate the best move
@@ -387,7 +403,7 @@ void AIMinMax::CalculateAIMove()
     }
     else // if there is no move that can finish the game, calculate the best move
     {
-        tCoor tmp = SearchBestMove(mBoard, 0, true, 0.0, 0.0);  
+        tCoor tmp = SearchBestMove(mBoard, 0, true, -1.0, 100000000000.0);  
         mCurBestMove = std::make_pair(tmp.x, tmp.y);
         mIsCalculated = true;
         return;
@@ -457,7 +473,10 @@ bool AIMinMax::IsGameEnd(int curTurn)
                         ny += dy;
                     }
                     if (count >= 5 && CheckWin(count, curTurn))
+                    {
+                        mCurBestMove = std::make_pair(x, y);
                         return true;
+                    }
                 }
             }
         }

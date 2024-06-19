@@ -130,6 +130,7 @@ void PlayLocalScene::Update(const sf::Vector2i &mousePosition, \
 
         // set stone
         UpdateStone(mousePosition);
+
         // check game status
         if (mGameHandler->GetGameStatus() != GameHandler::GAME_ONGOING)
         {

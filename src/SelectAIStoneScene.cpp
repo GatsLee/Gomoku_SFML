@@ -123,7 +123,7 @@ void SelectAIStoneScene::Update(const sf::Vector2i &mousePosition, \
                 && event.type == sf::Event::MouseButtonPressed \
                 && event.mouseButton.button == sf::Mouse::Left)
             {
-                PlayAIScene::AITurn = 1;
+                PlayAIScene::AITurn = 2;
                 SetNextSceneType(AScene::PLAY_AI);
                 SetIsRunning(false);
             }
@@ -140,7 +140,7 @@ void SelectAIStoneScene::Update(const sf::Vector2i &mousePosition, \
                 && event.type == sf::Event::MouseButtonPressed \
                 && event.mouseButton.button == sf::Mouse::Left)
             {
-                PlayAIScene::AITurn = 2;
+                PlayAIScene::AITurn = 1;
                 SetNextSceneType(AScene::PLAY_AI);
                 SetIsRunning(false);
             }
