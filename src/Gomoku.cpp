@@ -1,4 +1,3 @@
-#include "AScene.hpp"
 #include <Gomoku.hpp>
 
 Gomoku::Gomoku()

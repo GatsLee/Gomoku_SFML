@@ -6,7 +6,7 @@
 #include <climits>
 #include <cmath>
 
-#define MAX_DEPTH 30
+#define MAX_DEPTH 5
 
 class AIMinMax final
 {
@@ -35,20 +35,20 @@ public:
     void UpdateBoard(int x, int y, bool isAI);
     void FindPossiblePoints();
 
-    double EvaluateCurBoard(std::vector< std::vector<int> > curBoard, bool isMax, int curTurn);
+    double EvaluateCurBoard(std::vector< std::vector<int> > curBoard, bool isAITurn);
     std::deque < std::pair<int, int> > FindPossibleMove(std::vector< std::vector<int> > curBoard);
-    bool SearchFinishingMove();
-    tCoor SearchBestMove(std::vector< std::vector<int> > curBoard, int depth, bool isMax, double alpha, double beta);
+    tCoor SearchFinishingMove();
+    tCoor SearchBestMove(std::vector< std::vector<int> > curBoard, int depth, bool isBlack, double alpha, double beta);
 
-    double GetScore(std::vector< std::vector<int> >curBoard, bool isAI, int curTurn);
+    double GetScore(std::vector< std::vector<int> >curBoard, bool forBlack, bool isAITurn);
 
-    double CalculateConsecutiveWeight(int consecutive, int block, bool isMax, int curTurn);
-    void CalculateWeight(std::vector< std::vector<int> > curBoard, int i , int j, bool isMax, int curTurn, tCount &count);
-    void CalculatedAftermath(tCount &count,bool isMax, int curTurn);
+    double CalculateConsecutiveWeight(int consecutive, int block, bool isAITurn);
+    void CalculateWeight(std::vector< std::vector<int> > curBoard, int i , int j, bool forBlack, bool isAITurn, tCount &count);
 
-    double CalculateHorizontalScore(std::vector< std::vector<int> > curBoard, bool isMax, int curTurn);
-    double CalculateVerticalScore(std::vector< std::vector<int> > curBoard, bool isMax, int curTurn);
-    double CalculateDiagonalScore(std::vector< std::vector<int> > curBoard, bool isMax, int curTurn);
+    void CalculatedAftermath(tCount &count, bool forBlack, bool isAITurn);
+    double CalculateHorizontalScore(std::vector< std::vector<int> > curBoard, bool forBlack, bool isAITurn);
+    double CalculateVerticalScore(std::vector< std::vector<int> > curBoard, bool forBlack, bool isAITurn);
+    double CalculateDiagonalScore(std::vector< std::vector<int> > curBoard, bool forBlack, bool isAITurn);
     
     std::pair<int, int> GetBestMove() const;
     void SetBestMove(int x, int y);
@@ -59,9 +59,6 @@ public:
 
     void ResetCalculation();
 
-    // clone functions from game handler
-    bool IsGameEnd(int curTurn);
-    bool CheckWin(int count, int color);
 
 private:
     int mTurn[2]; // first: player, second: AI
