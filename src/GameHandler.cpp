@@ -391,11 +391,11 @@ void GameHandler::UpdateAIBoard(int x, int y, bool isAI)
 
 void GameHandler::CalculateAIMove()
 {
-    auto startTime = std::chrono::high_resolution_clock::now();
+    // auto startTime = std::chrono::high_resolution_clock::now();
     mAI->CalculateAIMove();
     auto endTime = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> duration = endTime - startTime;
-    mTimeUsedToCalculate = duration.count();
+    // std::chrono::duration<double> duration = endTime - startTime;
+    // mTimeUsedToCalculate = duration.count();
 }
 
 double GameHandler::GetTimeUsedToCalculate()

@@ -153,13 +153,17 @@ void PlayAIScene::UpdateAIStone()
     // 1.2. if it is, calculate AI's move
     if (mAIStatus == CALCULATE_MOVE)
     {
+        std::cout << "AI's Turn" << std::endl;
         if (mGameHandler->IsCalculated() == false)
         {
             mGameHandler->CalculateAIMove();
+            std::cout << "AI's Move Calculated" << std::endl;
+            std::cout << mGameHandler->GetAIMove().first << ", " << mGameHandler->GetAIMove().second << std::endl;
             mTimeElapsed = mGameHandler->GetTimeUsedToCalculate();
             mAIStatus = SHOW_INFO;
             if (mGameHandler->GetAIMove().first == -1 && mGameHandler->GetAIMove().second == -1)
             {
+                std::cout << "AI has no possible move" << std::endl;
                 mAIStatus = CALCULATE_MOVE;
                 mGameHandler->ResetCalculation();
             }
@@ -190,6 +194,11 @@ void PlayAIScene::UpdateAIStone()
         if (mGameHandler->IsCalculated() == true)
         {
             std::pair<int, int> AIMove = mGameHandler->GetAIMove();
+            if (AIMove.first == -1 && AIMove.second == -1)
+            {
+                std::cout << "AI has no possible move" << std::endl;
+                exit(0);
+            }
             // check the game status
             if (mGameHandler->PlaceStone(AIMove.first, AIMove.second))
             {
@@ -262,9 +271,9 @@ void PlayAIScene::UpdatePlayerStone(const sf::Vector2i &mousePosition)
                         mGameHandler->UpdateAIBoard(x, y, false);
                         AScene::isAnyClickEventHappening = true;
                         mAIStatus = CALCULATE_MOVE;
+                        mGameHandler->ResetCalculation();
                         return ;
                     }
-                    mGameHandler->ResetCalculation();
                 }
             }
             mStoneTmpPosition = std::make_pair(x, y);    

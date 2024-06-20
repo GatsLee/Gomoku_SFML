@@ -1,4 +1,5 @@
 #include <AIMinMax.hpp>
+#include <iostream>
 
 bool AIMinMax::cmpWeight(struct sCoor a, struct sCoor b)
 {
@@ -19,6 +20,7 @@ AIMinMax::~AIMinMax()
 
 void AIMinMax::UpdateBoard(int x, int y, bool isAI)
 {
+    std::cout << "Update AI board" << std::endl;
     if (isAI == true) // AI
     {
         std::cout << "AI: " << x << " " << y << std::endl;
@@ -100,7 +102,7 @@ std::deque < std::pair<int, int> > AIMinMax::FindPossibleMove(std::vector< std::
 
 void AIMinMax::CalculateWeight(std::vector< std::vector<int> > curBoard, int i , int j, bool isMax, int curTurn, tCount &count)
 {
-    if (curBoard[i][j] == ((curTurn == mTurn[1]) ? 2 : 1))
+    if (curBoard[i][j] == ((isMax) ? mTurn[1] : mTurn[0]))
     {
         count.consecutive++;
     }
@@ -145,7 +147,7 @@ double AIMinMax::CalculateConsecutiveWeight(int consecutive, int block, bool isM
     switch(consecutive)
     {
         case 5 :
-            return 1000000000.0;
+            return 100000000.0;
         case 4 :
         {
             if (curTurn == mTurn[1])
@@ -325,28 +327,27 @@ AIMinMax::tCoor AIMinMax::SearchBestMove(std::vector < std::vector<int> >curBoar
         return {-1, -1, EvaluateCurBoard(curBoard, !isMax, mTurn[1])};
     }
 
-    tCoor bestMove = {-1, -1, (isMax) ? -1.0 : 100000000000.0};
+    tCoor bestMove = {-1, -1, (isMax) ? -1.0 : 100000000.0};
     if (isMax == true) // maximize the score of AI move
     {
         for (auto move : possibleMove)
         {
             curBoard[move.first][move.second] = mTurn[1]; // AI
-            tCoor curMove = SearchBestMove(curBoard, depth + 1, !isMax, alpha, beta);
+            tCoor curMove = SearchBestMove(curBoard, depth + 1, true, alpha, beta);
             curMove.x = move.first;
             curMove.y = move.second;
+
             curBoard[move.first][move.second] = 0;
 
-            if (curMove.weight > alpha)
-            {
-                alpha = curMove.weight;
-            }
-            if (curMove.weight >= beta)
-            {
-                return curMove;
-            }
             if (curMove.weight > bestMove.weight)
             {
                 bestMove = curMove;
+            }
+
+            alpha = std::max(alpha, curMove.weight);
+            if (beta <= alpha)
+            {
+                break; // Beta cut-off
             }
         }
     }
@@ -355,23 +356,21 @@ AIMinMax::tCoor AIMinMax::SearchBestMove(std::vector < std::vector<int> >curBoar
         for (auto move : possibleMove)
         {
             curBoard[move.first][move.second] = mTurn[0]; // player
-            tCoor curMove = SearchBestMove(curBoard, depth + 1, !isMax, alpha, beta);
+            tCoor curMove = SearchBestMove(curBoard, depth + 1, false, alpha, beta);
             curMove.x = move.first;
             curMove.y = move.second;
+
             curBoard[move.first][move.second] = 0;
 
-            if (curMove.weight < beta)
-            {
-                beta = curMove.weight;
-            }
-
-            if (curMove.weight <= alpha)
-            {
-                return curMove;
-            }
             if (curMove.weight < bestMove.weight)
             {
                 bestMove = curMove;
+            }
+
+            beta = std::min(beta, curMove.weight);
+            if (beta <= alpha)
+            {
+                break; // Alpha cut-off
             }
         }
     }
@@ -384,28 +383,33 @@ AIMinMax::tCoor AIMinMax::SearchBestMove(std::vector < std::vector<int> >curBoar
  */
 void AIMinMax::CalculateAIMove()
 {
-    // if the board is empty, set the first point to the center
+    std::cout << "AI is calculating the best move" << std::endl;
+    // if the board is empty(AI turn is black), set the first point to the center
     if (mTurn[1] == 1 && mIsFirstMove == false)
     {
-        mCurBestMove = std::make_pair(8, 8);
+        mCurBestMove = std::make_pair(7, 7);
         mIsCalculated = true;
         mIsFirstMove = true;
         return;
     }
+    std::cout << "AI is calculating the best move2" << std::endl;
     // if the board is not empty, calculate the best move
     // if there is a move that can finish the game, do it
     bool isEnd = SearchFinishingMove();
 
     if (isEnd == true)
     {
+        std::cout << "AI is calculating the finishing move" << std::endl;
         mIsCalculated = true;
         return;
     }
     else // if there is no move that can finish the game, calculate the best move
     {
-        tCoor tmp = SearchBestMove(mBoard, 0, true, -1.0, 100000000000.0);  
+        std::cout << "AI is calculating the best move3" << std::endl;
+        tCoor tmp = SearchBestMove(mBoard, 0, true, -1.0, 10000000.0);  
         mCurBestMove = std::make_pair(tmp.x, tmp.y);
         mIsCalculated = true;
+        std::cout << "AI is calculating the best move4" << std::endl;
         return;
     }
 }
@@ -466,7 +470,8 @@ bool AIMinMax::IsGameEnd(int curTurn)
                     int dx = dir[0], dy = dir[1];
                     int nx = x + dx, ny = y + dy;
                     
-                    while (nx >= 0 && nx < 15 && ny >= 0 && ny < 15)
+                    while (nx >= 0 && nx < 15 && ny >= 0 && ny < 15
+                            && mBoard[ny][nx] == curTurn)
                     {
                         ++count;
                         nx += dx;
